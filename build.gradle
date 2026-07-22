@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.1.0'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id "org.openapi.generator" version "7.4.0"
 }
 
 group = 'airlineReservation'
@@ -19,19 +20,55 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:4.0.1'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+	implementation 'org.mybatis.generator:mybatis-generator-core:1.4.2'
+	implementation 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+// openApiGenerate 설정부
+openApiGenerate {
+	generatorName.set("spring") // 스프링 부트용 코드를 구워라
+	inputSpec.set("$projectDir/src/main/resources/api-spec.yaml") // ◀ 읽어 들일 YML 위치
+	outputDir.set(file("src/main").absolutePath)// 코드가 떨어질 임시 폴더
+	apiPackage.set("airlineReservation.domain.api")
+	modelPackage.set("airlineReservation.domain.dto") // ◀ DTO(Request/Response)가 생성될 패키지 경로!
+
+	configOptions.set([
+			interfaceOnly: "true", // 컨트롤러는 껍데기(인터페이스)만 만들고 로직은 내가 직접 구현하겠다
+			useSpringBoot3: "true", // 스프링부트 3/4 스펙 (jakarta 패키지) 적용
+			useOptional: "false",
+			sourceFolder      : "java",
+			serializableModel : "true",
+			openApiNullable: "false"
+	])
+}
+
+tasks.register("mbGenerator", JavaExec) {
+	group = "mybatis"
+	description = "Run MyBatis Generator"
+
+	classpath = sourceSets.main.runtimeClasspath
+
+	mainClass = "org.mybatis.generator.api.ShellRunner"
+
+	args = [
+			"-configfile",
+			"${projectDir}/src/main/resources/generatorConfig.xml",
+			"-overwrite"
+	]
 }
 
 tasks.named('test') {

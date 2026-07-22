@@ -1,0 +1,618 @@
+openapi: 3.0.3
+info:
+  title: 비행기 예약 시스템 API
+  version: 1.0.0
+paths:
+  /api/v1/admin/createAircraft:
+    post:
+      summary: 항공기 등록 API
+      operationId: createAircraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAircraftRequest'
+      responses:
+        '201':
+          description: 항공기 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAircraftResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/searchAircraft:
+    get:
+      summary: 항공기 검색 API
+      operationId: searchAircraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchAircraftRequest'
+      responses:
+        '200':
+          description: 항공기 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchAircraftResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/updateAircraft:
+    post:
+      summary: 항공기 수정 API
+      operationId: updateAircraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAircraftRequest'
+      responses:
+        '201':
+          description: 항공기 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAircraftResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/deleteAircraft:
+    post:
+      summary: 항공기 삭제 API
+      operationId: deleteAircraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAircraftRequest'
+      responses:
+        '201':
+          description: 항공기 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAircraftResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/getAirports:
+    get:
+      summary: 공항 검색 API
+      operationId: getAirports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAirportsRequest'
+      responses:
+        '200':
+          description: 항공기 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAirportsResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/createScheduleTemplate:
+    post:
+      summary: 스케줄 등록 API
+      operationId: createSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateScheduleTemplateRequest'
+      responses:
+        '201':
+          description: 스케줄 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateScheduleTemplateResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/searchScheduleTemplate:
+    get:
+      summary: 정기 스케줄 검색 API
+      operationId: searchScheduleTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchScheduleTemplateRequest'
+      responses:
+        '200':
+          description: 정기 스케줄 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchScheduleTemplateResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/searchSchedule:
+    get:
+      summary: 스케줄 검색 API
+      operationId: searchSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchScheduleRequest'
+      responses:
+        '200':
+          description: 스케줄 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchScheduleResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/deleteScheduleTemplate:
+    post:
+      summary: 정기 스케줄 삭제 API
+      operationId: deleteScheduleTemplate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteScheduleTemplateRequest'
+      responses:
+        '201':
+          description: 정기 스케줄 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteScheduleTemplateResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/deleteSchedule:
+    post:
+      summary: 스케줄 삭제 API
+      operationId: deleteSchedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteScheduleRequest'
+      responses:
+        '201':
+          description: 스케줄 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteScheduleResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    CreateAircraftRequest:
+      type: object
+      required:
+        - aircraftId
+        - aircraftName
+        - rowCount
+        - columnCount
+      properties:
+        aircraftId:
+          type: string
+          example: SEO123
+        aircraftName:
+          type: string
+          example: Boeing-777
+        rowCount:
+          type: integer
+        columnCount:
+          type: integer
+
+    CreateAircraftResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    SearchAircraftRequest:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+          example: SEO123
+        aircraftName:
+          type: string
+          example: Boeing-777
+
+    SearchAircraftResponse:
+      type: object
+      properties:
+        aircraftList:
+          type: array
+          items:
+            type: object
+            properties:
+              aircraftId:
+                type: string
+                example: SEO123
+              aircraftName:
+                type: string
+                example: Boeing-777
+              rowCount:
+                type: integer
+              columnCount:
+                type: integer
+
+    UpdateAircraftRequest:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+          example: SEO123
+        aircraftName:
+          type: string
+          example: Boeing-777
+        rowCount:
+          type: integer
+        columnCount:
+          type: integer
+
+    UpdateAircraftResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    DeleteAircraftRequest:
+      type: object
+      required:
+        - aircraftId
+      properties:
+        aircraftId:
+          type: string
+          example: SEO123
+
+    DeleteAircraftResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    GetAirportsRequest:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+          example: SEO123
+
+    GetAirportsResponse:
+        type: object
+        properties:
+          airportList:
+            type: array
+            items:
+              type: object
+              properties:
+                airportId:
+                  type: string
+                airportNameKo:
+                  type: string
+                airportNameEn:
+                  type: string
+                country:
+                  type: string
+                city:
+                  type: string
+
+    CreateScheduleTemplateRequest:
+      type: object
+      required:
+        - aircraftId
+        - departureAirportId
+        - arrivalAirportId
+        - startDate
+        - endDate
+        - departureTime
+        - arrivalTime
+        - price
+        - daysOfWeek
+      properties:
+        aircraftId:
+          type: string
+        departureAirportId:
+          type: string
+        arrivalAirportId:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        departureTime:
+          type: string
+          format: partial-time
+        arrivalTime:
+          type: string
+          format: partial-time
+        price:
+          type: integer
+        daysOfWeek:
+          type: object
+          properties:
+            mon:
+              type: boolean
+            tue:
+              type: boolean
+            wed:
+              type: boolean
+            thu:
+              type: boolean
+            fri:
+              type: boolean
+            sat:
+              type: boolean
+            sun:
+              type: boolean
+
+    CreateScheduleTemplateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    SearchScheduleTemplateRequest:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+
+    SearchScheduleTemplateResponse:
+      type: object
+      properties:
+        scheduleTemplateList:
+          type: array
+          items:
+            type: object
+            properties:
+              templateId:
+                type: integer
+              aircraftId:
+                type: string
+              departureAirportId:
+                type: string
+              arrivalAirportId:
+                type: string
+              startDate:
+                type: string
+                format: date
+              endDate:
+                type: string
+                format: date
+              departureTime:
+                type: string
+                format: partial-time
+              arrivalTime:
+                type: string
+                format: partial-time
+              price:
+                type: integer
+              daysOfWeek:
+                type: object
+                properties:
+                  mon:
+                    type: boolean
+                  tue:
+                    type: boolean
+                  wed:
+                    type: boolean
+                  thu:
+                    type: boolean
+                  fri:
+                    type: boolean
+                  sat:
+                    type: boolean
+                  sun:
+                    type: boolean
+
+    SearchScheduleRequest:
+      type: object
+      properties:
+        aircraftId:
+          type: string
+        departureAirportId:
+          type: string
+        arrivalAirportId:
+          type: string
+        departureDate:
+          type: string
+          format: date
+
+    SearchScheduleResponse:
+      type: object
+      properties:
+        scheduleList:
+          type: array
+          items:
+            type: object
+            properties:
+              scheduleId:
+                type: integer
+              templateId:
+                type: integer
+              aircraftId:
+                type: string
+              departureAirportId:
+                type: string
+              arrivalAirportId:
+                type: string
+              departureDatetime:
+                type: string
+                format: date-time
+              arrivalDatetime:
+                type: string
+                format: date-time
+              status:
+                type: string
+
+    DeleteScheduleTemplateRequest:
+      type: object
+      properties:
+        templateId:
+          type: integer
+
+    DeleteScheduleTemplateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    DeleteScheduleRequest:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+
+    DeleteScheduleResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    # ⭕ [신규 추가] 공통 에러 응답 객체 (ErrorResponse)
+    # openApiGenerate를 돌리면 이 구조 그대로 ErrorResponse.java 클래스가 자동 생성됩니다!
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          description: "HTTP 상태 코드"
+          example: 400
+        code:
+          type: string
+          description: "비즈니스 에러 식별 코드"
+          example: "INVALID_INPUT_VALUE"
+        message:
+          type: string
+          description: "에러 상세 메시지"
+          example: "이메일 형식이 올바르지 않습니다."
