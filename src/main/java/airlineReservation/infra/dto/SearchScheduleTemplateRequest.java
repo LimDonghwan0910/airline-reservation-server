@@ -1,4 +1,4 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
@@ -15,17 +15,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * GetAirportsRequest
+ * SearchScheduleTemplateRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
-public class GetAirportsRequest implements Serializable {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:00:28.871973+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+public class SearchScheduleTemplateRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private String aircraftId;
 
-  public GetAirportsRequest aircraftId(String aircraftId) {
+  public SearchScheduleTemplateRequest aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -35,7 +35,7 @@ public class GetAirportsRequest implements Serializable {
    * @return aircraftId
   */
   
-  @Schema(name = "aircraftId", example = "SEO123", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "aircraftId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("aircraftId")
   public String getAircraftId() {
     return aircraftId;
@@ -53,8 +53,8 @@ public class GetAirportsRequest implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GetAirportsRequest getAirportsRequest = (GetAirportsRequest) o;
-    return Objects.equals(this.aircraftId, getAirportsRequest.aircraftId);
+    SearchScheduleTemplateRequest searchScheduleTemplateRequest = (SearchScheduleTemplateRequest) o;
+    return Objects.equals(this.aircraftId, searchScheduleTemplateRequest.aircraftId);
   }
 
   @Override
@@ -65,7 +65,7 @@ public class GetAirportsRequest implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GetAirportsRequest {\n");
+    sb.append("class SearchScheduleTemplateRequest {\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
     sb.append("}");
     return sb.toString();

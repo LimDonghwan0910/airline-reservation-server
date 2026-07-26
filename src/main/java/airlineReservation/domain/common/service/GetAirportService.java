@@ -1,8 +1,8 @@
-package airlineReservation.domain.admin.service;
+package airlineReservation.domain.common.service;
 
-import airlineReservation.domain.admin.serviceOutput.GetAirportServiceOutput;
-import airlineReservation.domain.entity.Airport;
-import airlineReservation.domain.entity.AirportExample;
+import airlineReservation.domain.common.serviceOutput.GetAirportServiceOutput;
+import airlineReservation.infra.entity.Airport;
+import airlineReservation.infra.entity.AirportExample;
 import airlineReservation.infra.mapper.AirportMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

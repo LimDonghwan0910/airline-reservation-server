@@ -1,9 +1,9 @@
-package airlineReservation.domain.admin.serviceMapper;
+package airlineReservation.domain.common.serviceMapper;
 
-import airlineReservation.domain.admin.serviceOutput.GetAirportServiceOutput;
-import airlineReservation.domain.dto.GetAirportsResponse;
-import airlineReservation.domain.dto.GetAirportsResponseAirportListInner;
-import airlineReservation.domain.entity.Airport;
+import airlineReservation.domain.common.serviceOutput.GetAirportServiceOutput;
+import airlineReservation.infra.dto.GetAirportsResponse;
+import airlineReservation.infra.dto.GetAirportsResponseAirportListInner;
+import airlineReservation.infra.entity.Airport;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

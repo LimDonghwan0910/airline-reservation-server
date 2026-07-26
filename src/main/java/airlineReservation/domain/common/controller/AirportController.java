@@ -1,9 +1,9 @@
-package airlineReservation.domain.admin.controller;
+package airlineReservation.domain.common.controller;
 
-import airlineReservation.domain.admin.service.GetAirportService;
-import airlineReservation.domain.admin.serviceMapper.GetAirportServiceMapper;
-import airlineReservation.domain.admin.serviceOutput.GetAirportServiceOutput;
-import airlineReservation.domain.dto.GetAirportsResponse;
+import airlineReservation.domain.common.service.GetAirportService;
+import airlineReservation.domain.common.serviceMapper.GetAirportServiceMapper;
+import airlineReservation.domain.common.serviceOutput.GetAirportServiceOutput;
+import airlineReservation.infra.dto.GetAirportsResponse;
 import airlineReservation.global.constant.ApiEndpoints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
