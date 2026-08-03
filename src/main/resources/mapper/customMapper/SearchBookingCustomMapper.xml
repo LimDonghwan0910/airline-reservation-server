@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  예약 조회 SQL.
+  bookings + users + schedules + passenger_details + schedule_seats JOIN.
+  탑승객 수만큼 row가 늘어나므로 Service의 buildOutput()에서 bookingId로 묶는다.
+-->
+<mapper namespace="airlineReservation.infra.mapper.customMapper.SearchBookingCustomMapper">
+
+    <!-- 일반회원/관리자 공통 SELECT + JOIN -->
+    <sql id="searchBookingSelect">
+        SELECT
+            b.booking_id,
+            b.user_id,
+            b.schedule_id,
+            u.user_name,
+            s.aircraft_id,
+            s.departure_airport_id,
+            s.arrival_airport_id,
+            s.departure_datetime,
+            s.arrival_datetime,
+            b.status,
+            b.total_price,
+            b.booking_time AS booked_time,
+            pd.passenger_name,
+            ss.seat_name
+        FROM
+            bookings b
+        JOIN
+            users u ON b.user_id = u.user_id
+        JOIN
+            schedules s ON b.schedule_id = s.schedule_id
+        LEFT JOIN
+            passenger_details pd ON b.booking_id = pd.booking_id AND pd.is_deleted = FALSE
+        LEFT JOIN
+            schedule_seats ss ON pd.schedule_seat_no = ss.scheduled_seat_no
+        WHERE
+            b.is_deleted = FALSE
+            AND u.is_deleted = FALSE
+    </sql>
+
+    <!-- 일반회원: 본인 예약 + 출발일(fromDate) 이후 필터 -->
+    <select id="selectBookingListForMember"
+            resultType="airlineReservation.domain.booking.vo.SearchBookingVo">
+        <include refid="searchBookingSelect"/>
+        AND b.user_id = #{userId}
+        <if test="fromDate != null">
+            AND s.departure_datetime <![CDATA[ >= ]]> #{fromDate}
+        </if>
+        ORDER BY
+            s.departure_datetime ASC,
+            b.booking_id ASC
+    </select>
+
+    <!-- 관리자: 조건 파라미터가 있을 때만 AND 추가 -->
+    <select id="selectBookingListForAdmin"
+            resultType="airlineReservation.domain.booking.vo.SearchBookingVo">
+        <include refid="searchBookingSelect"/>
+        <if test="userId != null">
+            AND b.user_id = #{userId}
+        </if>
+        <if test="aircraftId != null and aircraftId != ''">
+            AND s.aircraft_id = #{aircraftId}
+        </if>
+        <if test="departureDate != null">
+            AND CAST(s.departure_datetime AS DATE) = #{departureDate}
+        </if>
+        <if test="arrivalDate != null">
+            AND CAST(s.arrival_datetime AS DATE) = #{arrivalDate}
+        </if>
+        ORDER BY
+            s.departure_datetime ASC,
+            b.booking_id ASC
+    </select>
+
+</mapper>

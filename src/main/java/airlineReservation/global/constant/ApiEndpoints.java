@@ -27,7 +27,9 @@ public class ApiEndpoints {
 
     // 예약
     public static class Booking {
-        public static final String BASE = API_V1 + "/bookings";
+        public static final String CREATE_BOOKING = API_V1 + "/bookings/create";
+        public static final String SEARCH_BOOKING = API_V1 + "/bookings/search";
+        public static final String DELETE_BOOKING = API_V1 + "/bookings/delete";
     }
 
     // 관리자
