@@ -43,5 +43,7 @@ public class ApiEndpoints {
         public static final String DELETE_SCHEDULE_TEMPLATE = ADMIN_V1 + "/schedule-template/delete";
         public static final String SEARCH_SCHEDULE = ADMIN_V1 + "/schedule/search";
         public static final String DELETE_SCHEDULE = ADMIN_V1 + "/schedule/delete";
+        public static final String SEARCH_BOOKING_BY_ADMIN = ADMIN_V1 + "/bookings/search";
+        public static final String DELETE_BOOKING = ADMIN_V1 + "/bookings/delete";
     }
 }
