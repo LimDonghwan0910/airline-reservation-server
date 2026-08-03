@@ -15,6 +15,8 @@ public class ApiEndpoints {
     // 공통
     public static class Common {
         public static final String GET_AIRPORTS = API_V1 + "/airports/get";
+        public static final String GET_FLIGHTS = API_V1 + "/flights/get";
+        public static final String GET_SEATS = API_V1 + "/seats/get";
     }
 
     // 일정

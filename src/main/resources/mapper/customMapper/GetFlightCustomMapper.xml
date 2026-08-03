@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="airlineReservation.infra.mapper.customMapper.GetFlightCustomMapper">
+    <select id="selectFlightList"
+            resultType="airlineReservation.domain.common.vo.GetFlightVo">
+        SELECT
+            s.schedule_id,
+            a.aircraft_id,
+            s.departure_airport_id,
+            s.arrival_airport_id,
+            s.departure_datetime,
+            s.arrival_datetime,
+            st.price,
+            a.aircraft_name
+        FROM
+            schedule_templates st
+        JOIN
+            aircrafts a
+            ON st.aircraft_id = a.aircraft_id
+        JOIN
+            schedules s
+            ON st.template_id = s.template_id
+        WHERE
+            s.departure_airport_id = #{departureAirportId}
+            AND s.arrival_airport_id = #{arrivalAirportId}
+            AND s.departure_datetime >= #{departureStartDatetime}
+            AND s.departure_datetime <![CDATA[ < ]]> #{departureEndDatetime}
+        ORDER BY
+            s.departure_datetime ASC
+    </select>
+</mapper>
