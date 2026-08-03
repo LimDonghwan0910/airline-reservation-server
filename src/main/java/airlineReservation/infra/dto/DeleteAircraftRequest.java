@@ -1,4 +1,4 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
@@ -15,19 +15,28 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * SearchAircraftRequest
+ * DeleteAircraftRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
-public class SearchAircraftRequest implements Serializable {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+public class DeleteAircraftRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   private String aircraftId;
 
-  private String aircraftName;
+  public DeleteAircraftRequest() {
+    super();
+  }
 
-  public SearchAircraftRequest aircraftId(String aircraftId) {
+  /**
+   * Constructor with only required parameters
+   */
+  public DeleteAircraftRequest(String aircraftId) {
+    this.aircraftId = aircraftId;
+  }
+
+  public DeleteAircraftRequest aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -36,8 +45,8 @@ public class SearchAircraftRequest implements Serializable {
    * Get aircraftId
    * @return aircraftId
   */
-  
-  @Schema(name = "aircraftId", example = "SEO123", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @NotNull 
+  @Schema(name = "aircraftId", example = "SEO123", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("aircraftId")
   public String getAircraftId() {
     return aircraftId;
@@ -45,26 +54,6 @@ public class SearchAircraftRequest implements Serializable {
 
   public void setAircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
-  }
-
-  public SearchAircraftRequest aircraftName(String aircraftName) {
-    this.aircraftName = aircraftName;
-    return this;
-  }
-
-  /**
-   * Get aircraftName
-   * @return aircraftName
-  */
-  
-  @Schema(name = "aircraftName", example = "Boeing-777", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("aircraftName")
-  public String getAircraftName() {
-    return aircraftName;
-  }
-
-  public void setAircraftName(String aircraftName) {
-    this.aircraftName = aircraftName;
   }
 
   @Override
@@ -75,22 +64,20 @@ public class SearchAircraftRequest implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SearchAircraftRequest searchAircraftRequest = (SearchAircraftRequest) o;
-    return Objects.equals(this.aircraftId, searchAircraftRequest.aircraftId) &&
-        Objects.equals(this.aircraftName, searchAircraftRequest.aircraftName);
+    DeleteAircraftRequest deleteAircraftRequest = (DeleteAircraftRequest) o;
+    return Objects.equals(this.aircraftId, deleteAircraftRequest.aircraftId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(aircraftId, aircraftName);
+    return Objects.hash(aircraftId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SearchAircraftRequest {\n");
+    sb.append("class DeleteAircraftRequest {\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
-    sb.append("    aircraftName: ").append(toIndentedString(aircraftName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

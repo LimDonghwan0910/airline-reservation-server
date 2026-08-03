@@ -1,4 +1,4 @@
-package airlineReservation.domain.api;
+package airlineReservation.infra.api;
 
 import org.springframework.web.context.request.NativeWebRequest;
 

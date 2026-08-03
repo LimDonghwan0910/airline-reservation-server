@@ -1,9 +1,10 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -15,11 +16,12 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * CreateAircraftRequest
+ * SearchAircraftResponseAircraftListInner
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
-public class CreateAircraftRequest implements Serializable {
+@JsonTypeName("SearchAircraftResponse_aircraftList_inner")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+public class SearchAircraftResponseAircraftListInner implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -31,21 +33,7 @@ public class CreateAircraftRequest implements Serializable {
 
   private Integer columnCount;
 
-  public CreateAircraftRequest() {
-    super();
-  }
-
-  /**
-   * Constructor with only required parameters
-   */
-  public CreateAircraftRequest(String aircraftId, String aircraftName, Integer rowCount, Integer columnCount) {
-    this.aircraftId = aircraftId;
-    this.aircraftName = aircraftName;
-    this.rowCount = rowCount;
-    this.columnCount = columnCount;
-  }
-
-  public CreateAircraftRequest aircraftId(String aircraftId) {
+  public SearchAircraftResponseAircraftListInner aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -54,8 +42,8 @@ public class CreateAircraftRequest implements Serializable {
    * Get aircraftId
    * @return aircraftId
   */
-  @NotNull 
-  @Schema(name = "aircraftId", example = "SEO123", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "aircraftId", example = "SEO123", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("aircraftId")
   public String getAircraftId() {
     return aircraftId;
@@ -65,7 +53,7 @@ public class CreateAircraftRequest implements Serializable {
     this.aircraftId = aircraftId;
   }
 
-  public CreateAircraftRequest aircraftName(String aircraftName) {
+  public SearchAircraftResponseAircraftListInner aircraftName(String aircraftName) {
     this.aircraftName = aircraftName;
     return this;
   }
@@ -74,8 +62,8 @@ public class CreateAircraftRequest implements Serializable {
    * Get aircraftName
    * @return aircraftName
   */
-  @NotNull 
-  @Schema(name = "aircraftName", example = "Boeing-777", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "aircraftName", example = "Boeing-777", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("aircraftName")
   public String getAircraftName() {
     return aircraftName;
@@ -85,7 +73,7 @@ public class CreateAircraftRequest implements Serializable {
     this.aircraftName = aircraftName;
   }
 
-  public CreateAircraftRequest rowCount(Integer rowCount) {
+  public SearchAircraftResponseAircraftListInner rowCount(Integer rowCount) {
     this.rowCount = rowCount;
     return this;
   }
@@ -94,8 +82,8 @@ public class CreateAircraftRequest implements Serializable {
    * Get rowCount
    * @return rowCount
   */
-  @NotNull 
-  @Schema(name = "rowCount", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "rowCount", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("rowCount")
   public Integer getRowCount() {
     return rowCount;
@@ -105,7 +93,7 @@ public class CreateAircraftRequest implements Serializable {
     this.rowCount = rowCount;
   }
 
-  public CreateAircraftRequest columnCount(Integer columnCount) {
+  public SearchAircraftResponseAircraftListInner columnCount(Integer columnCount) {
     this.columnCount = columnCount;
     return this;
   }
@@ -114,8 +102,8 @@ public class CreateAircraftRequest implements Serializable {
    * Get columnCount
    * @return columnCount
   */
-  @NotNull 
-  @Schema(name = "columnCount", requiredMode = Schema.RequiredMode.REQUIRED)
+  
+  @Schema(name = "columnCount", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("columnCount")
   public Integer getColumnCount() {
     return columnCount;
@@ -133,11 +121,11 @@ public class CreateAircraftRequest implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateAircraftRequest createAircraftRequest = (CreateAircraftRequest) o;
-    return Objects.equals(this.aircraftId, createAircraftRequest.aircraftId) &&
-        Objects.equals(this.aircraftName, createAircraftRequest.aircraftName) &&
-        Objects.equals(this.rowCount, createAircraftRequest.rowCount) &&
-        Objects.equals(this.columnCount, createAircraftRequest.columnCount);
+    SearchAircraftResponseAircraftListInner searchAircraftResponseAircraftListInner = (SearchAircraftResponseAircraftListInner) o;
+    return Objects.equals(this.aircraftId, searchAircraftResponseAircraftListInner.aircraftId) &&
+        Objects.equals(this.aircraftName, searchAircraftResponseAircraftListInner.aircraftName) &&
+        Objects.equals(this.rowCount, searchAircraftResponseAircraftListInner.rowCount) &&
+        Objects.equals(this.columnCount, searchAircraftResponseAircraftListInner.columnCount);
   }
 
   @Override
@@ -148,7 +136,7 @@ public class CreateAircraftRequest implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateAircraftRequest {\n");
+    sb.append("class SearchAircraftResponseAircraftListInner {\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
     sb.append("    aircraftName: ").append(toIndentedString(aircraftName)).append("\n");
     sb.append("    rowCount: ").append(toIndentedString(rowCount)).append("\n");

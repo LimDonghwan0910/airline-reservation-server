@@ -1,4 +1,4 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  * UpdateAircraftResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 public class UpdateAircraftResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;

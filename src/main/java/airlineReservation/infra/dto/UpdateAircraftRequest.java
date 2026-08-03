@@ -1,10 +1,9 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -16,12 +15,11 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * SearchAircraftResponseAircraftListInner
+ * UpdateAircraftRequest
  */
 
-@JsonTypeName("SearchAircraftResponse_aircraftList_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
-public class SearchAircraftResponseAircraftListInner implements Serializable {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+public class UpdateAircraftRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -33,7 +31,7 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
 
   private Integer columnCount;
 
-  public SearchAircraftResponseAircraftListInner aircraftId(String aircraftId) {
+  public UpdateAircraftRequest aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -53,7 +51,7 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
     this.aircraftId = aircraftId;
   }
 
-  public SearchAircraftResponseAircraftListInner aircraftName(String aircraftName) {
+  public UpdateAircraftRequest aircraftName(String aircraftName) {
     this.aircraftName = aircraftName;
     return this;
   }
@@ -73,7 +71,7 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
     this.aircraftName = aircraftName;
   }
 
-  public SearchAircraftResponseAircraftListInner rowCount(Integer rowCount) {
+  public UpdateAircraftRequest rowCount(Integer rowCount) {
     this.rowCount = rowCount;
     return this;
   }
@@ -93,7 +91,7 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
     this.rowCount = rowCount;
   }
 
-  public SearchAircraftResponseAircraftListInner columnCount(Integer columnCount) {
+  public UpdateAircraftRequest columnCount(Integer columnCount) {
     this.columnCount = columnCount;
     return this;
   }
@@ -121,11 +119,11 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SearchAircraftResponseAircraftListInner searchAircraftResponseAircraftListInner = (SearchAircraftResponseAircraftListInner) o;
-    return Objects.equals(this.aircraftId, searchAircraftResponseAircraftListInner.aircraftId) &&
-        Objects.equals(this.aircraftName, searchAircraftResponseAircraftListInner.aircraftName) &&
-        Objects.equals(this.rowCount, searchAircraftResponseAircraftListInner.rowCount) &&
-        Objects.equals(this.columnCount, searchAircraftResponseAircraftListInner.columnCount);
+    UpdateAircraftRequest updateAircraftRequest = (UpdateAircraftRequest) o;
+    return Objects.equals(this.aircraftId, updateAircraftRequest.aircraftId) &&
+        Objects.equals(this.aircraftName, updateAircraftRequest.aircraftName) &&
+        Objects.equals(this.rowCount, updateAircraftRequest.rowCount) &&
+        Objects.equals(this.columnCount, updateAircraftRequest.columnCount);
   }
 
   @Override
@@ -136,7 +134,7 @@ public class SearchAircraftResponseAircraftListInner implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SearchAircraftResponseAircraftListInner {\n");
+    sb.append("class UpdateAircraftRequest {\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
     sb.append("    aircraftName: ").append(toIndentedString(aircraftName)).append("\n");
     sb.append("    rowCount: ").append(toIndentedString(rowCount)).append("\n");

@@ -4,10 +4,10 @@ import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceInput.UpdateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.UpdateAircraftServiceOutput;
-import airlineReservation.domain.dto.CreateAircraftRequest;
-import airlineReservation.domain.dto.CreateAircraftResponse;
-import airlineReservation.domain.dto.UpdateAircraftRequest;
-import airlineReservation.domain.dto.UpdateAircraftResponse;
+import airlineReservation.infra.dto.CreateAircraftRequest;
+import airlineReservation.infra.dto.CreateAircraftResponse;
+import airlineReservation.infra.dto.UpdateAircraftRequest;
+import airlineReservation.infra.dto.UpdateAircraftResponse;
 import org.springframework.stereotype.Component;
 
 @Component

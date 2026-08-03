@@ -1,4 +1,4 @@
-package airlineReservation.domain.dto;
+package airlineReservation.infra.dto;
 
 import java.net.URI;
 import java.util.Objects;
@@ -15,11 +15,11 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * UpdateAircraftRequest
+ * SearchAircraftRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
-public class UpdateAircraftRequest implements Serializable {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+public class SearchAircraftRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -27,11 +27,7 @@ public class UpdateAircraftRequest implements Serializable {
 
   private String aircraftName;
 
-  private Integer rowCount;
-
-  private Integer columnCount;
-
-  public UpdateAircraftRequest aircraftId(String aircraftId) {
+  public SearchAircraftRequest aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -51,7 +47,7 @@ public class UpdateAircraftRequest implements Serializable {
     this.aircraftId = aircraftId;
   }
 
-  public UpdateAircraftRequest aircraftName(String aircraftName) {
+  public SearchAircraftRequest aircraftName(String aircraftName) {
     this.aircraftName = aircraftName;
     return this;
   }
@@ -71,46 +67,6 @@ public class UpdateAircraftRequest implements Serializable {
     this.aircraftName = aircraftName;
   }
 
-  public UpdateAircraftRequest rowCount(Integer rowCount) {
-    this.rowCount = rowCount;
-    return this;
-  }
-
-  /**
-   * Get rowCount
-   * @return rowCount
-  */
-  
-  @Schema(name = "rowCount", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("rowCount")
-  public Integer getRowCount() {
-    return rowCount;
-  }
-
-  public void setRowCount(Integer rowCount) {
-    this.rowCount = rowCount;
-  }
-
-  public UpdateAircraftRequest columnCount(Integer columnCount) {
-    this.columnCount = columnCount;
-    return this;
-  }
-
-  /**
-   * Get columnCount
-   * @return columnCount
-  */
-  
-  @Schema(name = "columnCount", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("columnCount")
-  public Integer getColumnCount() {
-    return columnCount;
-  }
-
-  public void setColumnCount(Integer columnCount) {
-    this.columnCount = columnCount;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -119,26 +75,22 @@ public class UpdateAircraftRequest implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UpdateAircraftRequest updateAircraftRequest = (UpdateAircraftRequest) o;
-    return Objects.equals(this.aircraftId, updateAircraftRequest.aircraftId) &&
-        Objects.equals(this.aircraftName, updateAircraftRequest.aircraftName) &&
-        Objects.equals(this.rowCount, updateAircraftRequest.rowCount) &&
-        Objects.equals(this.columnCount, updateAircraftRequest.columnCount);
+    SearchAircraftRequest searchAircraftRequest = (SearchAircraftRequest) o;
+    return Objects.equals(this.aircraftId, searchAircraftRequest.aircraftId) &&
+        Objects.equals(this.aircraftName, searchAircraftRequest.aircraftName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(aircraftId, aircraftName, rowCount, columnCount);
+    return Objects.hash(aircraftId, aircraftName);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UpdateAircraftRequest {\n");
+    sb.append("class SearchAircraftRequest {\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
     sb.append("    aircraftName: ").append(toIndentedString(aircraftName)).append("\n");
-    sb.append("    rowCount: ").append(toIndentedString(rowCount)).append("\n");
-    sb.append("    columnCount: ").append(toIndentedString(columnCount)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,6 +1,6 @@
 package airlineReservation.domain.admin.serviceOutput;
 
-import airlineReservation.domain.entity.Aircraft;
+import airlineReservation.infra.entity.Aircraft;
 import lombok.Builder;
 import lombok.Getter;
 

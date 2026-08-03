@@ -4,8 +4,8 @@ import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceInput.SearchAircraftServiceInput;
 import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.SearchAircraftServiceOutput;
-import airlineReservation.domain.dto.*;
-import airlineReservation.domain.entity.Aircraft;
+import airlineReservation.infra.dto.*;
+import airlineReservation.infra.entity.Aircraft;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

@@ -43,8 +43,8 @@ openApiGenerate {
 	generatorName.set("spring") // 스프링 부트용 코드를 구워라
 	inputSpec.set("$projectDir/src/main/resources/api-spec.yaml") // ◀ 읽어 들일 YML 위치
 	outputDir.set(file("src/main").absolutePath)// 코드가 떨어질 임시 폴더
-	apiPackage.set("airlineReservation.domain.api")
-	modelPackage.set("airlineReservation.domain.dto") // ◀ DTO(Request/Response)가 생성될 패키지 경로!
+	apiPackage.set("airlineReservation.infra.api")
+	modelPackage.set("airlineReservation.infra.dto") // ◀ DTO(Request/Response)가 생성될 패키지 경로!
 
 	configOptions.set([
 			interfaceOnly: "true", // 컨트롤러는 껍데기(인터페이스)만 만들고 로직은 내가 직접 구현하겠다
@@ -52,8 +52,20 @@ openApiGenerate {
 			useOptional: "false",
 			sourceFolder      : "java",
 			serializableModel : "true",
-			openApiNullable: "false"
+			openApiNullable: "false",
+			dateLibrary: "java8"
 	])
+	typeMappings = [
+			"Date": "LocalDate",
+			"DateTime": "LocalDateTime",
+			"time": "LocalTime",
+			"URI": "LocalTime"
+	]
+	importMappings = [
+			"LocalDate": "java.time.LocalDate",
+			"LocalDateTime": "java.time.LocalDateTime",
+			"LocalTime": "java.time.LocalTime"
+	]
 }
 
 tasks.register("mbGenerator", JavaExec) {

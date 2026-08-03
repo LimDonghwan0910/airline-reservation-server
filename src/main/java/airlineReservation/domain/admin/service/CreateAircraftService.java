@@ -2,7 +2,7 @@ package airlineReservation.domain.admin.service;
 
 import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
-import airlineReservation.domain.entity.Aircraft;
+import airlineReservation.infra.entity.Aircraft;
 import airlineReservation.infra.mapper.AircraftMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

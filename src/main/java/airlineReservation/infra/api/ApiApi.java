@@ -3,29 +3,46 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-package airlineReservation.domain.api;
+package airlineReservation.infra.api;
 
-import airlineReservation.domain.dto.CreateAircraftRequest;
-import airlineReservation.domain.dto.CreateAircraftResponse;
-import airlineReservation.domain.dto.CreateScheduleTemplateRequest;
-import airlineReservation.domain.dto.CreateScheduleTemplateResponse;
-import airlineReservation.domain.dto.DeleteAircraftRequest;
-import airlineReservation.domain.dto.DeleteAircraftResponse;
-import airlineReservation.domain.dto.DeleteScheduleRequest;
-import airlineReservation.domain.dto.DeleteScheduleResponse;
-import airlineReservation.domain.dto.DeleteScheduleTemplateRequest;
-import airlineReservation.domain.dto.DeleteScheduleTemplateResponse;
-import airlineReservation.domain.dto.ErrorResponse;
-import airlineReservation.domain.dto.GetAirportsRequest;
-import airlineReservation.domain.dto.GetAirportsResponse;
-import airlineReservation.domain.dto.SearchAircraftRequest;
-import airlineReservation.domain.dto.SearchAircraftResponse;
-import airlineReservation.domain.dto.SearchScheduleRequest;
-import airlineReservation.domain.dto.SearchScheduleResponse;
-import airlineReservation.domain.dto.SearchScheduleTemplateRequest;
-import airlineReservation.domain.dto.SearchScheduleTemplateResponse;
-import airlineReservation.domain.dto.UpdateAircraftRequest;
-import airlineReservation.domain.dto.UpdateAircraftResponse;
+import airlineReservation.infra.dto.CreateAccountRequest;
+import airlineReservation.infra.dto.CreateAccountResponse;
+import airlineReservation.infra.dto.CreateAircraftRequest;
+import airlineReservation.infra.dto.CreateAircraftResponse;
+import airlineReservation.infra.dto.CreateBookingRequest;
+import airlineReservation.infra.dto.CreateBookingResponse;
+import airlineReservation.infra.dto.CreateScheduleTemplateRequest;
+import airlineReservation.infra.dto.CreateScheduleTemplateResponse;
+import airlineReservation.infra.dto.DeleteAccountRequest;
+import airlineReservation.infra.dto.DeleteAccountResponse;
+import airlineReservation.infra.dto.DeleteAircraftRequest;
+import airlineReservation.infra.dto.DeleteAircraftResponse;
+import airlineReservation.infra.dto.DeleteBookingRequest;
+import airlineReservation.infra.dto.DeleteBookingResponse;
+import airlineReservation.infra.dto.DeleteScheduleRequest;
+import airlineReservation.infra.dto.DeleteScheduleResponse;
+import airlineReservation.infra.dto.DeleteScheduleTemplateRequest;
+import airlineReservation.infra.dto.DeleteScheduleTemplateResponse;
+import airlineReservation.infra.dto.ErrorResponse;
+import airlineReservation.infra.dto.GetAirportsRequest;
+import airlineReservation.infra.dto.GetAirportsResponse;
+import airlineReservation.infra.dto.GetFlightsRequest;
+import airlineReservation.infra.dto.GetFlightsResponse;
+import airlineReservation.infra.dto.GetSeatsRequest;
+import airlineReservation.infra.dto.GetSeatsResponse;
+import airlineReservation.infra.dto.LoginRequest;
+import airlineReservation.infra.dto.LoginResponse;
+import airlineReservation.infra.dto.SearchAircraftRequest;
+import airlineReservation.infra.dto.SearchAircraftResponse;
+import airlineReservation.infra.dto.SearchBookingByAdminRequest;
+import airlineReservation.infra.dto.SearchBookingRequest;
+import airlineReservation.infra.dto.SearchBookingResponse;
+import airlineReservation.infra.dto.SearchScheduleRequest;
+import airlineReservation.infra.dto.SearchScheduleResponse;
+import airlineReservation.infra.dto.SearchScheduleTemplateRequest;
+import airlineReservation.infra.dto.SearchScheduleTemplateResponse;
+import airlineReservation.infra.dto.UpdateAircraftRequest;
+import airlineReservation.infra.dto.UpdateAircraftResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,7 +69,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-22T20:57:56.947364+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "api", description = "the api API")
 public interface ApiApi {
@@ -60,6 +77,120 @@ public interface ApiApi {
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
     }
+
+    /**
+     * GET /api/v1/admin/searchBooking : 관리자 예약 검색 API
+     *
+     * @param searchBookingByAdminRequest  (required)
+     * @return 관리자 예약 검색 성공 (status code 200)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "adminSearchBooking",
+        summary = "관리자 예약 검색 API",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "관리자 예약 검색 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = SearchBookingResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v1/admin/searchBooking",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<SearchBookingResponse> adminSearchBooking(
+        @Parameter(name = "SearchBookingByAdminRequest", description = "", required = true) @Valid @RequestBody SearchBookingByAdminRequest searchBookingByAdminRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"bookingList\" : [ { \"totalPrice\" : 5, \"passengerCount\" : 5, \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"userName\" : \"userName\", \"userId\" : 6, \"seats\" : [ { \"seat\" : \"seat\", \"name\" : \"name\" }, { \"seat\" : \"seat\", \"name\" : \"name\" } ], \"bookingId\" : 0, \"aircraftId\" : \"aircraftId\", \"arrivalAirportId\" : \"arrivalAirportId\", \"bookedTime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 1, \"departureAirportId\" : \"departureAirportId\", \"status\" : \"status\" }, { \"totalPrice\" : 5, \"passengerCount\" : 5, \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"userName\" : \"userName\", \"userId\" : 6, \"seats\" : [ { \"seat\" : \"seat\", \"name\" : \"name\" }, { \"seat\" : \"seat\", \"name\" : \"name\" } ], \"bookingId\" : 0, \"aircraftId\" : \"aircraftId\", \"arrivalAirportId\" : \"arrivalAirportId\", \"bookedTime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 1, \"departureAirportId\" : \"departureAirportId\", \"status\" : \"status\" } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /api/v1/createAccount : 회원 가입 API
+     *
+     * @param createAccountRequest  (required)
+     * @return 회원 가입 성공 (status code 201)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "createAccount",
+        summary = "회원 가입 API",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "회원 가입 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAccountResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v1/createAccount",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<CreateAccountResponse> createAccount(
+        @Parameter(name = "CreateAccountRequest", description = "", required = true) @Valid @RequestBody CreateAccountRequest createAccountRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"success\" : true }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 
     /**
      * POST /api/v1/admin/createAircraft : 항공기 등록 API
@@ -98,6 +229,63 @@ public interface ApiApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"success\" : true }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /api/v1/createBooking : 예약 등록 API
+     *
+     * @param createBookingRequest  (required)
+     * @return 예약 등록 성공 (status code 201)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "createBooking",
+        summary = "예약 등록 API",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "예약 등록 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBookingResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v1/createBooking",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<CreateBookingResponse> createBooking(
+        @Parameter(name = "CreateBookingRequest", description = "", required = true) @Valid @RequestBody CreateBookingRequest createBookingRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"bookingId\" : 0 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -176,10 +364,67 @@ public interface ApiApi {
 
 
     /**
+     * POST /api/v1/deleteAccount : 회원 탈퇴 API
+     *
+     * @param deleteAccountRequest  (required)
+     * @return 회원 탈퇴 성공 (status code 201)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "deleteAccount",
+        summary = "회원 탈퇴 API",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "회원 탈퇴 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteAccountResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v1/deleteAccount",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<DeleteAccountResponse> deleteAccount(
+        @Parameter(name = "DeleteAccountRequest", description = "", required = true) @Valid @RequestBody DeleteAccountRequest deleteAccountRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"success\" : true }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * POST /api/v1/admin/deleteAircraft : 항공기 삭제 API
      *
      * @param deleteAircraftRequest  (required)
-     * @return 항공기 등록 성공 (status code 201)
+     * @return 항공기 삭제 성공 (status code 201)
      *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
      *         or 서버 내부 오류 (status code 500)
      */
@@ -187,7 +432,7 @@ public interface ApiApi {
         operationId = "deleteAircraft",
         summary = "항공기 삭제 API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "항공기 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "항공기 삭제 성공", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteAircraftResponse.class))
             }),
             @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
@@ -207,6 +452,63 @@ public interface ApiApi {
     
     default ResponseEntity<DeleteAircraftResponse> deleteAircraft(
         @Parameter(name = "DeleteAircraftRequest", description = "", required = true) @Valid @RequestBody DeleteAircraftRequest deleteAircraftRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"success\" : true }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /api/v1/admin/deleteBooking : 예약 취소 API
+     *
+     * @param deleteBookingRequest  (required)
+     * @return 예약 취소 성공 (status code 201)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "deleteBooking",
+        summary = "예약 취소 API",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "예약 취소 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteBookingResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v1/admin/deleteBooking",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<DeleteBookingResponse> deleteBooking(
+        @Parameter(name = "DeleteBookingRequest", description = "", required = true) @Valid @RequestBody DeleteBookingRequest deleteBookingRequest
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -347,7 +649,7 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/admin/getAirports : 공항 검색 API
+     * GET /api/v1/getAirports : 공항 검색 API
      *
      * @param getAirportsRequest  (required)
      * @return 항공기 검색 성공 (status code 200)
@@ -371,7 +673,7 @@ public interface ApiApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/api/v1/admin/getAirports",
+        value = "/api/v1/getAirports",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
@@ -383,6 +685,177 @@ public interface ApiApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"airportList\" : [ { \"country\" : \"country\", \"city\" : \"city\", \"airportId\" : \"airportId\", \"airportNameEn\" : \"airportNameEn\", \"airportNameKo\" : \"airportNameKo\" }, { \"country\" : \"country\", \"city\" : \"city\", \"airportId\" : \"airportId\", \"airportNameEn\" : \"airportNameEn\", \"airportNameKo\" : \"airportNameKo\" } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /api/v1/getFlights : 항공편 리스트 검색 API
+     *
+     * @param getFlightsRequest  (required)
+     * @return 항공편 리스트 검색 성공 (status code 200)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "getFlights",
+        summary = "항공편 리스트 검색 API",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "항공편 리스트 검색 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = GetFlightsResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v1/getFlights",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<GetFlightsResponse> getFlights(
+        @Parameter(name = "GetFlightsRequest", description = "", required = true) @Valid @RequestBody GetFlightsRequest getFlightsRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"FlightsList\" : [ { \"aircraftName\" : \"aircraftName\", \"aircraftId\" : \"aircraftId\", \"price\" : 6, \"arrivalAirportId\" : \"arrivalAirportId\", \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 0, \"departureAirportId\" : \"departureAirportId\" }, { \"aircraftName\" : \"aircraftName\", \"aircraftId\" : \"aircraftId\", \"price\" : 6, \"arrivalAirportId\" : \"arrivalAirportId\", \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 0, \"departureAirportId\" : \"departureAirportId\" } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /api/v1/getSeats : 좌석 검색 API
+     *
+     * @param getSeatsRequest  (required)
+     * @return 좌석 검색 성공 (status code 200)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "getSeats",
+        summary = "좌석 검색 API",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "좌석 검색 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = GetSeatsResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v1/getSeats",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<GetSeatsResponse> getSeats(
+        @Parameter(name = "GetSeatsRequest", description = "", required = true) @Valid @RequestBody GetSeatsRequest getSeatsRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"seatList\" : [ { \"scheduledSeatNo\" : 6, \"seatName\" : \"seatName\", \"status\" : \"status\" }, { \"scheduledSeatNo\" : 6, \"seatName\" : \"seatName\", \"status\" : \"status\" } ], \"scheduleId\" : 0 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /api/v1/login : 로그인 API
+     *
+     * @param loginRequest  (required)
+     * @return 로그인 성공 (status code 201)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "login",
+        summary = "로그인 API",
+        responses = {
+            @ApiResponse(responseCode = "201", description = "로그인 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/api/v1/login",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<LoginResponse> login(
+        @Parameter(name = "LoginRequest", description = "", required = true) @Valid @RequestBody LoginRequest loginRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"success\" : true }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -440,6 +913,63 @@ public interface ApiApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"aircraftList\" : [ { \"aircraftName\" : \"Boeing-777\", \"aircraftId\" : \"SEO123\", \"rowCount\" : 0, \"columnCount\" : 6 }, { \"aircraftName\" : \"Boeing-777\", \"aircraftId\" : \"SEO123\", \"rowCount\" : 0, \"columnCount\" : 6 } ] }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /api/v1/searchBooking : 예약 검색 API
+     *
+     * @param searchBookingRequest  (required)
+     * @return 예약 검색 성공 (status code 200)
+     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
+     *         or 서버 내부 오류 (status code 500)
+     */
+    @Operation(
+        operationId = "searchBooking",
+        summary = "예약 검색 API",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "예약 검색 성공", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = SearchBookingResponse.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            }),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/api/v1/searchBooking",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<SearchBookingResponse> searchBooking(
+        @Parameter(name = "SearchBookingRequest", description = "", required = true) @Valid @RequestBody SearchBookingRequest searchBookingRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"bookingList\" : [ { \"totalPrice\" : 5, \"passengerCount\" : 5, \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"userName\" : \"userName\", \"userId\" : 6, \"seats\" : [ { \"seat\" : \"seat\", \"name\" : \"name\" }, { \"seat\" : \"seat\", \"name\" : \"name\" } ], \"bookingId\" : 0, \"aircraftId\" : \"aircraftId\", \"arrivalAirportId\" : \"arrivalAirportId\", \"bookedTime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 1, \"departureAirportId\" : \"departureAirportId\", \"status\" : \"status\" }, { \"totalPrice\" : 5, \"passengerCount\" : 5, \"arrivalDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"departureDatetime\" : \"2000-01-23T04:56:07.000+00:00\", \"userName\" : \"userName\", \"userId\" : 6, \"seats\" : [ { \"seat\" : \"seat\", \"name\" : \"name\" }, { \"seat\" : \"seat\", \"name\" : \"name\" } ], \"bookingId\" : 0, \"aircraftId\" : \"aircraftId\", \"arrivalAirportId\" : \"arrivalAirportId\", \"bookedTime\" : \"2000-01-23T04:56:07.000+00:00\", \"scheduleId\" : 1, \"departureAirportId\" : \"departureAirportId\", \"status\" : \"status\" } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

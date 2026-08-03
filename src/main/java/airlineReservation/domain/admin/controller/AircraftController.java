@@ -16,7 +16,7 @@ import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput
 import airlineReservation.domain.admin.serviceOutput.DeleteAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.SearchAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.UpdateAircraftServiceOutput;
-import airlineReservation.domain.dto.*;
+import airlineReservation.infra.dto.*;
 import airlineReservation.global.constant.ApiEndpoints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

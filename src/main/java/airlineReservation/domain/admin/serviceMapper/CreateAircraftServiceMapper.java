@@ -2,8 +2,8 @@ package airlineReservation.domain.admin.serviceMapper;
 
 import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
-import airlineReservation.domain.dto.CreateAircraftRequest;
-import airlineReservation.domain.dto.CreateAircraftResponse;
+import airlineReservation.infra.dto.CreateAircraftRequest;
+import airlineReservation.infra.dto.CreateAircraftResponse;
 import org.springframework.stereotype.Component;
 
 @Component

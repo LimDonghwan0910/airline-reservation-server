@@ -19,12 +19,6 @@ public class ApiEndpoints {
         public static final String GET_SEATS = API_V1 + "/seats/get";
     }
 
-    // 일정
-    public static class Schedule {
-        public static final String BASE = ADMIN_V1 + "/schedules";
-        public static final String BY_ID = BASE + "/{scheduleId}";
-    }
-
     // 예약
     public static class Booking {
         public static final String CREATE_BOOKING = API_V1 + "/bookings/create";

@@ -3,6 +3,96 @@ info:
   title: 비행기 예약 시스템 API
   version: 1.0.0
 paths:
+  /api/v1/createAccount:
+    post:
+      summary: 회원 가입 API
+      operationId: createAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountRequest'
+      responses:
+        '201':
+          description: 회원 가입 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAccountResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/deleteAccount:
+    post:
+      summary: 회원 탈퇴 API
+      operationId: deleteAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAccountRequest'
+      responses:
+        '201':
+          description: 회원 탈퇴 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAccountResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/login:
+    post:
+      summary: 로그인 API
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '201':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /api/v1/admin/createAircraft:
     post:
       summary: 항공기 등록 API
@@ -105,7 +195,7 @@ paths:
               $ref: '#/components/schemas/DeleteAircraftRequest'
       responses:
         '201':
-          description: 항공기 등록 성공
+          description: 항공기 삭제 성공
           content:
             application/json:
               schema:
@@ -123,7 +213,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v1/admin/getAirports:
+  /api/v1/getAirports:
     get:
       summary: 공항 검색 API
       operationId: getAirports
@@ -303,8 +393,251 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /api/v1/createBooking:
+    post:
+      summary: 예약 등록 API
+      operationId: createBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+      responses:
+        '201':
+          description: 예약 등록 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBookingResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/searchBooking:
+    get:
+      summary: 예약 검색 API
+      operationId: searchBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchBookingRequest'
+      responses:
+        '200':
+          description: 예약 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchBookingResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/searchBooking:
+    get:
+      summary: 관리자 예약 검색 API
+      operationId: admin/searchBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchBookingByAdminRequest'
+      responses:
+        '200':
+          description: 관리자 예약 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchBookingResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/admin/deleteBooking:
+    post:
+      summary: 예약 취소 API
+      operationId: deleteBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteBookingRequest'
+      responses:
+        '201':
+          description: 예약 취소 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteBookingResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/getFlights:
+    get:
+      summary: 항공편 리스트 검색 API
+      operationId: getFlights
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFlightsRequest'
+      responses:
+        '200':
+          description: 항공편 리스트 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFlightsResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/getSeats:
+    get:
+      summary: 좌석 검색 API
+      operationId: getSeats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSeatsRequest'
+      responses:
+        '200':
+          description: 좌석 검색 성공
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSeatsResponse'
+        '400':
+          description: 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 서버 내부 오류
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 components:
   schemas:
+    CreateAccountRequest:
+      type: object
+      required:
+        - userName
+        - email
+        - password
+        - phoneNumber
+        - birthDate
+      properties:
+        userName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phoneNumber:
+          type: string
+        birthDate:
+          type: string
+          format: date
+
+    CreateAccountResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    DeleteAccountRequest:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+
+    DeleteAccountResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        userId:
+          type: integer
+        email:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        accessToken:
+          type: string
+
+
     CreateAircraftRequest:
       type: object
       required:
@@ -447,10 +780,10 @@ components:
           format: date
         departureTime:
           type: string
-          format: partial-time
+          format: time
         arrivalTime:
           type: string
-          format: partial-time
+          format: time
         price:
           type: integer
         daysOfWeek:
@@ -507,10 +840,10 @@ components:
                 format: date
               departureTime:
                 type: string
-                format: partial-time
+                format: time
               arrivalTime:
                 type: string
-                format: partial-time
+                format: time
               price:
                 type: integer
               daysOfWeek:
@@ -594,6 +927,181 @@ components:
       properties:
         success:
           type: boolean
+
+    CreateBookingRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        scheduleId:
+          type: integer
+        totalPrice:
+          type: integer
+        passengerList:
+          type: array
+          items:
+            type: object
+            properties:
+              seat:
+                type: string
+              name:
+                type: string
+
+    CreateBookingResponse:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+
+    SearchBookingRequest:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          format: date
+
+    SearchBookingByAdminRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+        aircraftId:
+          type: integer
+        departureDate:
+          type: string
+          format: date
+        arrivalDate:
+          type: string
+          format: date
+
+    SearchBookingResponse:
+      type: object
+      properties:
+        bookingList:
+          type: array
+          items:
+            type: object
+            properties:
+              bookingId:
+                type: integer
+              userId:
+                type: integer
+              scheduleId:
+                type: integer
+              userName:
+                type: string
+              aircraftId:
+                type: string
+              departureAirportId:
+                type: string
+              arrivalAirportId:
+                type: string
+              departureDatetime:
+                type: string
+                format: date-time
+              arrivalDatetime:
+                type: string
+                format: date-time
+              status:
+                type: string
+              totalPrice:
+                type: integer
+              passengerCount:
+                type: integer
+              seats:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    seat:
+                      type: string
+                    name:
+                      type: string
+              bookedTime:
+                type: string
+                format: date-time
+
+    DeleteBookingRequest:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+
+    DeleteBookingResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+
+    GetFlightsRequest:
+      type: object
+      required:
+        - departureAirportId
+        - arrivalAirportId
+        - departureDate
+        - passengerCount
+      properties:
+        departureAirportId:
+          type: string
+        arrivalAirportId:
+          type: string
+        departureDate:
+          type: string
+          format: date
+        passengerCount:
+          type: integer
+
+    GetFlightsResponse:
+      type: object
+      properties:
+        FlightsList:
+          type: array
+          items:
+            type: object
+            properties:
+              scheduleId:
+                type: integer
+              aircraftId:
+                type: string
+              departureAirportId:
+                type: string
+              arrivalAirportId:
+                type: string
+              departureDatetime:
+                type: string
+                format: date-time
+              arrivalDatetime:
+                type: string
+                format: date-time
+              price:
+                type: integer
+              aircraftName:
+                type: string
+
+    GetSeatsRequest:
+      type: object
+      required:
+        - scheduleId
+      properties:
+        scheduleId:
+          type: integer
+
+    GetSeatsResponse:
+      type: object
+      properties:
+        scheduleId:
+          type: integer
+        seatList:
+          type: array
+          items:
+            type: object
+            properties:
+              scheduledSeatNo:
+                type: integer
+              seatName:
+                type: string
+              status:
+                type: string
 
     # ⭕ [신규 추가] 공통 에러 응답 객체 (ErrorResponse)
     # openApiGenerate를 돌리면 이 구조 그대로 ErrorResponse.java 클래스가 자동 생성됩니다!
