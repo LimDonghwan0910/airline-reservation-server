@@ -7,9 +7,9 @@ public class ApiEndpoints {
 
     // 유저
     public static class Auth {
-        public static final String BASE = API_V1 + "/auth";
-        public static final String SIGNUP = "/signup";
-        public static final String LOGIN = "/login";
+        public static final String CREATE_ACCOUNT = API_V1 + "/account/create";
+        public static final String DELETE_ACCOUNT = API_V1 + "/account/delete";
+        public static final String LOGIN = API_V1 + "/login";
     }
 
     // 공통
@@ -23,6 +23,7 @@ public class ApiEndpoints {
     public static class Booking {
         public static final String CREATE_BOOKING = API_V1 + "/bookings/create";
         public static final String SEARCH_BOOKING = API_V1 + "/bookings/search";
+        public static final String UPDATE_BOOKING = API_V1 + "/bookings/update";
         public static final String DELETE_BOOKING = API_V1 + "/bookings/delete";
     }
 
