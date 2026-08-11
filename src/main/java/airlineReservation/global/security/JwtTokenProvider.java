@@ -15,6 +15,7 @@ public class JwtTokenProvider {
 
     private static final String CLAIM_USER_ID = "userId";
     private static final String CLAIM_ROLE = "role";
+    private static final String CLAIM_USER_NAME = "userName";
 
     private final JwtProperties jwtProperties;
     private final SecretKey secretKey;
@@ -30,7 +31,7 @@ public class JwtTokenProvider {
      * ログイン成功時に JWT を発行する。
      * subject = email（ログインIDと同じ。Spring Security の username として使用）
      */
-    public String createToken(String email, Integer userId, Integer roleCode) {
+    public String createToken(String email, Integer userId, Integer roleCode, String userName) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtProperties.expiration());
 
@@ -38,6 +39,7 @@ public class JwtTokenProvider {
                 .subject(email)
                 .claim(CLAIM_USER_ID, userId)
                 .claim(CLAIM_ROLE, roleCode)
+                .claim(CLAIM_USER_NAME, userName)
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(secretKey)

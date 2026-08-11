@@ -9,4 +9,5 @@ public class LoginServiceOutput {
 
     private Boolean success;
     private String accessToken;
+    private String userName;
 }

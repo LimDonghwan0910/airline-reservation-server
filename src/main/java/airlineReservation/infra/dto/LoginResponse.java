@@ -27,6 +27,8 @@ public class LoginResponse implements Serializable {
 
   private String accessToken;
 
+  private String userName;
+
   public LoginResponse success(Boolean success) {
     this.success = success;
     return this;
@@ -67,6 +69,26 @@ public class LoginResponse implements Serializable {
     this.accessToken = accessToken;
   }
 
+  public LoginResponse userName(String userName) {
+    this.userName = userName;
+    return this;
+  }
+
+  /**
+   * Get userName
+   * @return userName
+   */
+  
+  @Schema(name = "userName", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userName")
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -77,12 +99,13 @@ public class LoginResponse implements Serializable {
     }
     LoginResponse loginResponse = (LoginResponse) o;
     return Objects.equals(this.success, loginResponse.success) &&
-        Objects.equals(this.accessToken, loginResponse.accessToken);
+        Objects.equals(this.accessToken, loginResponse.accessToken) &&
+        Objects.equals(this.userName, loginResponse.userName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(success, accessToken);
+    return Objects.hash(success, accessToken, userName);
   }
 
   @Override
@@ -91,6 +114,7 @@ public class LoginResponse implements Serializable {
     sb.append("class LoginResponse {\n");
     sb.append("    success: ").append(toIndentedString(success)).append("\n");
     sb.append("    accessToken: ").append(toIndentedString(accessToken)).append("\n");
+    sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

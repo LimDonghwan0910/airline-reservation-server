@@ -65,7 +65,7 @@ class LoginServiceTest {
                 .isInstanceOf(InvalidInputValueException.class)
                 .hasMessage("メールアドレスを入力してください。");
         verify(userMapper, never()).selectByExample(any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any());
+        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
     }
 
     @Test
@@ -85,7 +85,7 @@ class LoginServiceTest {
                 .isInstanceOf(InvalidInputValueException.class)
                 .hasMessage("パスワードを入力してください。");
         verify(userMapper, never()).selectByExample(any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any());
+        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
     }
 
     @Test
@@ -107,7 +107,7 @@ class LoginServiceTest {
                 .extracting(ex -> ((UnauthorizedException) ex).getErrorCode())
                 .isEqualTo(ErrorCode.LOGIN_FAILED);
         verify(passwordEncoder, never()).matches(any(), any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any());
+        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
     }
 
     @Test
@@ -131,7 +131,7 @@ class LoginServiceTest {
                 .hasMessage(ErrorCode.LOGIN_FAILED.getMessage())
                 .extracting(ex -> ((UnauthorizedException) ex).getErrorCode())
                 .isEqualTo(ErrorCode.LOGIN_FAILED);
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any());
+        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
     }
 
     @Test
@@ -148,7 +148,8 @@ class LoginServiceTest {
         when(jwtTokenProvider.createToken(
                 "taro@example.com",
                 10,
-                Const.USER_ROLE.MEMBER
+                Const.USER_ROLE.MEMBER,
+                "山田太郎"
         )).thenReturn("jwt-access-token");
 
         // When: ログインを実行する
@@ -157,10 +158,12 @@ class LoginServiceTest {
         // Then: 成功レスポンスとアクセストークンが返却される
         assertThat(output.getSuccess()).isTrue();
         assertThat(output.getAccessToken()).isEqualTo("jwt-access-token");
+        assertThat(output.getUserName()).isEqualTo("山田太郎");
         verify(jwtTokenProvider).createToken(
                 "taro@example.com",
                 10,
-                Const.USER_ROLE.MEMBER
+                Const.USER_ROLE.MEMBER,
+                "山田太郎"
         );
     }
 
@@ -178,6 +181,7 @@ class LoginServiceTest {
         user.setUserId(10);
         user.setEmail("taro@example.com");
         user.setPassword("encodedPassword");
+        user.setUserName("山田太郎");
         user.setRoleCode(Const.USER_ROLE.MEMBER);
         user.setIsDeleted(false);
         return user;

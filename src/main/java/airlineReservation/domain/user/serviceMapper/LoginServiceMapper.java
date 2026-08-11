@@ -24,6 +24,7 @@ public class LoginServiceMapper {
         LoginResponse response = new LoginResponse();
         response.setSuccess(output.getSuccess());
         response.setAccessToken(output.getAccessToken());
+        response.setUserName(output.getUserName());
         return response;
     }
 }

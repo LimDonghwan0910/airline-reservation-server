@@ -58,13 +58,15 @@ public class LoginService {
         String accessToken = jwtTokenProvider.createToken(
                 user.getEmail(),
                 user.getUserId(),
-                user.getRoleCode()
+                user.getRoleCode(),
+                user.getUserName()
         );
 
         // レスポンス
         return LoginServiceOutput.builder()
                 .success(true)
                 .accessToken(accessToken)
+                .userName(user.getUserName())
                 .build();
     }
 
