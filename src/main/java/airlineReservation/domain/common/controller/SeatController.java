@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 座席 API（座席一覧取得） */
 @RestController
 @RequiredArgsConstructor
 public class SeatController {
@@ -20,6 +21,12 @@ public class SeatController {
     private final GetSeatService service;
     private final GetSeatServiceMapper mapper;
 
+    /**
+     * 指定スケジュールの座席一覧を取得する。
+     *
+     * @param request 座席検索リクエスト情報
+     * @return 座席一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Common.GET_SEATS)
     public ResponseEntity<GetSeatsResponse> getSeats(@ModelAttribute GetSeatsRequest request) {
 

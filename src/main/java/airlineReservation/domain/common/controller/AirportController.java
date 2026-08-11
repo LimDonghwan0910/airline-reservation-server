@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 空港 API（空港一覧取得） */
 @RestController
 @RequiredArgsConstructor
 public class AirportController {
@@ -17,6 +18,11 @@ public class AirportController {
     private final GetAirportService service;
     private final GetAirportServiceMapper mapper;
 
+    /**
+     * 空港一覧を取得する。
+     *
+     * @return 空港一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Common.GET_AIRPORTS)
     public ResponseEntity<GetAirportsResponse> getAirports() {
 

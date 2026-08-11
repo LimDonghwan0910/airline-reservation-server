@@ -13,6 +13,9 @@ public interface GetFlightCustomMapper {
             @Param("departureAirportId") String departureAirportId,
             @Param("arrivalAirportId") String arrivalAirportId,
             @Param("departureStartDatetime") LocalDateTime departureStartDatetime,
-            @Param("departureEndDatetime") LocalDateTime departureEndDatetime
+            @Param("departureEndDatetime") LocalDateTime departureEndDatetime,
+            @Param("passengerCount") Integer passengerCount,
+            @Param("cancelledStatus") String cancelledStatus,
+            @Param("availableStatus") String availableStatus
     );
 }

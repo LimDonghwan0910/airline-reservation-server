@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+/** フライト API（フライト一覧取得） */
 @RestController
 @RequiredArgsConstructor
 public class FlightController {
@@ -20,6 +21,12 @@ public class FlightController {
     private final GetFlightService service;
     private final GetFlightServiceMapper mapper;
 
+    /**
+     * 条件に合致するフライト一覧を取得する。
+     *
+     * @param request フライト検索リクエスト情報
+     * @return フライト一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Common.GET_FLIGHTS)
     public ResponseEntity<GetFlightsResponse> getFlights(@ModelAttribute GetFlightsRequest request) {
 

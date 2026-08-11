@@ -9,12 +9,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 空港一覧取得処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class GetAirportService {
 
     private final AirportMapper airportMapper;
 
+    /**
+     * 有効な空港一覧を取得する。
+     *
+     * @return serviceOutput
+     */
     public GetAirportServiceOutput getAirportList() {
         AirportExample example = new AirportExample();
         example.createCriteria().andIsDeletedEqualTo(false);

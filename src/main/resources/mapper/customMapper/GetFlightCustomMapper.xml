@@ -24,7 +24,15 @@
             s.departure_airport_id = #{departureAirportId}
             AND s.arrival_airport_id = #{arrivalAirportId}
             AND s.departure_datetime >= #{departureStartDatetime}
-            AND s.departure_datetime <![CDATA[ < ]]> #{departureEndDatetime}
+            AND s.departure_datetime &lt; #{departureEndDatetime}
+            AND s.status != #{cancelledStatus}
+            AND a.is_deleted = FALSE
+            AND (
+                SELECT COUNT(*)
+                FROM schedule_seats ss
+                WHERE ss.schedule_id = s.schedule_id
+                  AND ss.status = #{availableStatus}
+            ) >= #{passengerCount}
         ORDER BY
             s.departure_datetime ASC
     </select>
