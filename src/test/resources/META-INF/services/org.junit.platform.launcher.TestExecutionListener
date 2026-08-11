@@ -1,1 +1,2 @@
-airlineReservation.test.support.TestResultExcelExporter
+# Excel 出力を有効にする場合は、下の行のコメントを外す
+# airlineReservation.test.support.TestResultExcelExporter
