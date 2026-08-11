@@ -11,6 +11,7 @@ import airlineReservation.infra.entity.User;
 import airlineReservation.infra.mapper.BookingMapper;
 import airlineReservation.infra.mapper.UserMapper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -19,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -43,120 +44,122 @@ class DeleteAccountServiceTest {
     @InjectMocks
     private DeleteAccountService deleteAccountService;
 
-    @Test
-    @DisplayName("会員IDがない場合は例外が発生する")
-    void delete_failsWhenUserIdIsNull() {
-        // Given: 会員IDが null の入力
-        DeleteAccountServiceInput input = DeleteAccountServiceInput.builder()
-                .userId(null)
-                .build();
+    @Nested
+    @DisplayName("正常系")
+    class Success {
 
-        // When: 退会処理を実行する
-        Throwable thrown = catchThrowable(() -> deleteAccountService.delete(input));
+        @Test
+        @DisplayName("有効な入力で退会すると論理削除される")
+        void delete_succeedsWithValidInput() {
+            // Given: 未退会会員が存在し、有効予約もない
+            DeleteAccountServiceInput input = validInput();
+            User user = existingUser();
 
-        // Then: 入力値例外が発生し、照会・更新は行われない
-        assertThat(thrown)
-                .isInstanceOf(InvalidInputValueException.class)
-                .hasMessage("会員IDを入力してください。");
-        verify(userMapper, never()).selectByPrimaryKey(any());
-        verify(userMapper, never()).updateByPrimaryKeySelective(any());
+            when(userMapper.selectByPrimaryKey(10)).thenReturn(user);
+            when(bookingMapper.countByExample(any(BookingExample.class))).thenReturn(0L);
+
+            // When: 退会処理を実行する
+            DeleteAccountServiceOutput output = deleteAccountService.delete(input);
+
+            // Then: 論理削除され、UNIQUE制約回避のためメールがマスキングされる
+            assertThat(output).isNotNull();
+
+            ArgumentCaptor<User> updateCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userMapper).updateByPrimaryKeySelective(updateCaptor.capture());
+
+            User updated = updateCaptor.getValue();
+            assertThat(updated.getUserId()).isEqualTo(10);
+            assertThat(updated.getIsDeleted()).isTrue();
+            assertThat(updated.getUpdatedBy()).isEqualTo(10);
+            assertThat(updated.getUpdatedAt()).isNotNull();
+            // deleted_{yyyyMMddHHmmss}_{元メール} 形式
+            assertThat(updated.getEmail())
+                    .startsWith("deleted_")
+                    .endsWith("_taro@example.com")
+                    .matches("deleted_\\d{14}_taro@example\\.com");
+        }
     }
 
-    @Test
-    @DisplayName("存在しない会員の場合は例外が発生する")
-    void delete_failsWhenUserDoesNotExist() {
-        // Given: 指定IDの会員が存在しない
-        DeleteAccountServiceInput input = validInput();
+    @Nested
+    @DisplayName("例外系")
+    class Failure {
 
-        when(userMapper.selectByPrimaryKey(10)).thenReturn(null);
+        @Test
+        @DisplayName("会員IDがない場合は例外が発生する")
+        void delete_failsWhenUserIdIsNull() {
+            // Given: 会員IDが null の入力
+            DeleteAccountServiceInput input = DeleteAccountServiceInput.builder()
+                    .userId(null)
+                    .build();
 
-        // When: 退会処理を実行する
-        Throwable thrown = catchThrowable(() -> deleteAccountService.delete(input));
+            // When: 退会処理を実行する
+            // Then: 入力値例外が発生し、照会・更新は行われない
+            assertThatThrownBy(() -> deleteAccountService.delete(input))
+                    .isInstanceOf(InvalidInputValueException.class)
+                    .hasMessage("会員IDを入力してください。");
+            verify(userMapper, never()).selectByPrimaryKey(any());
+            verify(userMapper, never()).updateByPrimaryKeySelective(any());
+        }
 
-        // Then: NotFound 例外が発生し、予約確認・更新は行われない
-        assertThat(thrown)
-                .isInstanceOf(NotFoundException.class)
-                .hasMessage(ErrorCode.MEMBER_NOT_FOUND.getMessage())
-                .extracting(ex -> ((NotFoundException) ex).getErrorCode())
-                .isEqualTo(ErrorCode.MEMBER_NOT_FOUND);
-        verify(bookingMapper, never()).countByExample(any());
-        verify(userMapper, never()).updateByPrimaryKeySelective(any());
-    }
+        @Test
+        @DisplayName("存在しない会員の場合は例外が発生する")
+        void delete_failsWhenUserDoesNotExist() {
+            // Given: 指定IDの会員が存在しない
+            DeleteAccountServiceInput input = validInput();
 
-    @Test
-    @DisplayName("既に退会済みの会員の場合は例外が発生する")
-    void delete_failsWhenUserIsAlreadyDeleted() {
-        // Given: 既に論理削除済みの会員
-        DeleteAccountServiceInput input = validInput();
+            when(userMapper.selectByPrimaryKey(10)).thenReturn(null);
 
-        User deletedUser = existingUser();
-        deletedUser.setIsDeleted(true);
+            // When: 退会処理を実行する
+            // Then: NotFound 例外が発生し、予約確認・更新は行われない
+            assertThatThrownBy(() -> deleteAccountService.delete(input))
+                    .isInstanceOfSatisfying(NotFoundException.class, ex -> {
+                        assertThat(ex.getMessage()).isEqualTo(ErrorCode.MEMBER_NOT_FOUND.getMessage());
+                        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.MEMBER_NOT_FOUND);
+                    });
+            verify(bookingMapper, never()).countByExample(any());
+            verify(userMapper, never()).updateByPrimaryKeySelective(any());
+        }
 
-        when(userMapper.selectByPrimaryKey(10)).thenReturn(deletedUser);
+        @Test
+        @DisplayName("既に退会済みの会員の場合は例外が発生する")
+        void delete_failsWhenUserIsAlreadyDeleted() {
+            // Given: 既に論理削除済みの会員
+            DeleteAccountServiceInput input = validInput();
 
-        // When: 退会処理を実行する
-        Throwable thrown = catchThrowable(() -> deleteAccountService.delete(input));
+            User deletedUser = existingUser();
+            deletedUser.setIsDeleted(true);
 
-        // Then: NotFound 例外が発生し、予約確認・更新は行われない
-        assertThat(thrown)
-                .isInstanceOf(NotFoundException.class)
-                .hasMessage(ErrorCode.MEMBER_NOT_FOUND.getMessage())
-                .extracting(ex -> ((NotFoundException) ex).getErrorCode())
-                .isEqualTo(ErrorCode.MEMBER_NOT_FOUND);
-        verify(bookingMapper, never()).countByExample(any());
-        verify(userMapper, never()).updateByPrimaryKeySelective(any());
-    }
+            when(userMapper.selectByPrimaryKey(10)).thenReturn(deletedUser);
 
-    @Test
-    @DisplayName("有効な予約がある場合は例外が発生する")
-    void delete_failsWhenActiveBookingExists() {
-        // Given: 会員は存在するが、キャンセル以外の有効予約が残っている
-        DeleteAccountServiceInput input = validInput();
+            // When: 退会処理を実行する
+            // Then: NotFound 例外が発生し、予約確認・更新は行われない
+            assertThatThrownBy(() -> deleteAccountService.delete(input))
+                    .isInstanceOfSatisfying(NotFoundException.class, ex -> {
+                        assertThat(ex.getMessage()).isEqualTo(ErrorCode.MEMBER_NOT_FOUND.getMessage());
+                        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.MEMBER_NOT_FOUND);
+                    });
+            verify(bookingMapper, never()).countByExample(any());
+            verify(userMapper, never()).updateByPrimaryKeySelective(any());
+        }
 
-        when(userMapper.selectByPrimaryKey(10)).thenReturn(existingUser());
-        when(bookingMapper.countByExample(any(BookingExample.class))).thenReturn(1L);
+        @Test
+        @DisplayName("有効な予約がある場合は例外が発生する")
+        void delete_failsWhenActiveBookingExists() {
+            // Given: 会員は存在するが、キャンセル以外の有効予約が残っている
+            DeleteAccountServiceInput input = validInput();
 
-        // When: 退会処理を実行する
-        Throwable thrown = catchThrowable(() -> deleteAccountService.delete(input));
+            when(userMapper.selectByPrimaryKey(10)).thenReturn(existingUser());
+            when(bookingMapper.countByExample(any(BookingExample.class))).thenReturn(1L);
 
-        // Then: 競合例外が発生し、退会更新は行われない
-        assertThat(thrown)
-                .isInstanceOf(ConflictException.class)
-                .hasMessage(ErrorCode.ACTIVE_BOOKING_EXISTS.getMessage())
-                .extracting(ex -> ((ConflictException) ex).getErrorCode())
-                .isEqualTo(ErrorCode.ACTIVE_BOOKING_EXISTS);
-        verify(userMapper, never()).updateByPrimaryKeySelective(any());
-    }
-
-    @Test
-    @DisplayName("有効な入力で退会すると論理削除される")
-    void delete_succeedsWithValidInput() {
-        // Given: 未退会会員が存在し、有効予約もない
-        DeleteAccountServiceInput input = validInput();
-        User user = existingUser();
-
-        when(userMapper.selectByPrimaryKey(10)).thenReturn(user);
-        when(bookingMapper.countByExample(any(BookingExample.class))).thenReturn(0L);
-
-        // When: 退会処理を実行する
-        DeleteAccountServiceOutput output = deleteAccountService.delete(input);
-
-        // Then: 論理削除され、UNIQUE制約回避のためメールがマスキングされる
-        assertThat(output).isNotNull();
-
-        ArgumentCaptor<User> updateCaptor = ArgumentCaptor.forClass(User.class);
-        verify(userMapper).updateByPrimaryKeySelective(updateCaptor.capture());
-
-        User updated = updateCaptor.getValue();
-        assertThat(updated.getUserId()).isEqualTo(10);
-        assertThat(updated.getIsDeleted()).isTrue();
-        assertThat(updated.getUpdatedBy()).isEqualTo(10);
-        assertThat(updated.getUpdatedAt()).isNotNull();
-        // deleted_{yyyyMMddHHmmss}_{元メール} 形式
-        assertThat(updated.getEmail())
-                .startsWith("deleted_")
-                .endsWith("_taro@example.com")
-                .matches("deleted_\\d{14}_taro@example\\.com");
+            // When: 退会処理を実行する
+            // Then: 競合例外が発生し、退会更新は行われない
+            assertThatThrownBy(() -> deleteAccountService.delete(input))
+                    .isInstanceOfSatisfying(ConflictException.class, ex -> {
+                        assertThat(ex.getMessage()).isEqualTo(ErrorCode.ACTIVE_BOOKING_EXISTS.getMessage());
+                        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.ACTIVE_BOOKING_EXISTS);
+                    });
+            verify(userMapper, never()).updateByPrimaryKeySelective(any());
+        }
     }
 
     /** 正常系で共通利用する有効な退会入力を返す。 */

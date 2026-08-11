@@ -11,6 +11,7 @@ import airlineReservation.infra.entity.User;
 import airlineReservation.infra.entity.UserExample;
 import airlineReservation.infra.mapper.UserMapper;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -48,123 +49,125 @@ class LoginServiceTest {
     @InjectMocks
     private LoginService loginService;
 
-    @Test
-    @DisplayName("メールアドレスがない場合は例外が発生する")
-    void login_failsWhenEmailIsBlank() {
-        // Given: メールアドレスが空白のみの入力
-        LoginServiceInput input = LoginServiceInput.builder()
-                .email(" ")
-                .password("password123")
-                .build();
+    @Nested
+    @DisplayName("正常系")
+    class Success {
 
-        // When: ログインを実行する
-        Throwable thrown = catchThrowable(() -> loginService.login(input));
+        @Test
+        @DisplayName("有効な認証情報でログインするとアクセストークンを返す")
+        void login_succeedsWithValidCredentials() {
+            // Given: 会員が存在し、パスワード照合・トークン発行が成功する
+            LoginServiceInput input = validInput();
+            User user = existingUser();
 
-        // Then: 入力値例外が発生し、認証・トークン発行は行われない
-        assertThat(thrown)
-                .isInstanceOf(InvalidInputValueException.class)
-                .hasMessage("メールアドレスを入力してください。");
-        verify(userMapper, never()).selectByExample(any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
+            when(userMapper.selectByExample(any(UserExample.class)))
+                    .thenReturn(List.of(user));
+            when(passwordEncoder.matches("password123", "encodedPassword"))
+                    .thenReturn(true);
+            when(jwtTokenProvider.createToken(
+                    "taro@example.com",
+                    10,
+                    Const.USER_ROLE.MEMBER,
+                    "山田太郎"
+            )).thenReturn("jwt-access-token");
+
+            // When: ログインを実行する
+            LoginServiceOutput output = loginService.login(input);
+
+            // Then: 成功レスポンスとアクセストークンが返却される
+            assertThat(output.getSuccess()).isTrue();
+            assertThat(output.getAccessToken()).isEqualTo("jwt-access-token");
+            assertThat(output.getUserName()).isEqualTo("山田太郎");
+            verify(jwtTokenProvider).createToken(
+                    "taro@example.com",
+                    10,
+                    Const.USER_ROLE.MEMBER,
+                    "山田太郎"
+            );
+        }
     }
 
-    @Test
-    @DisplayName("パスワードがない場合は例外が発生する")
-    void login_failsWhenPasswordIsBlank() {
-        // Given: パスワードが空文字の入力
-        LoginServiceInput input = LoginServiceInput.builder()
-                .email("taro@example.com")
-                .password("")
-                .build();
+    @Nested
+    @DisplayName("例外系")
+    class Failure {
 
-        // When: ログインを実行する
-        Throwable thrown = catchThrowable(() -> loginService.login(input));
+        @Test
+        @DisplayName("メールアドレスがない場合は例外が発生する")
+        void login_failsWhenEmailIsBlank() {
+            // Given: メールアドレスが空白のみの入力
+            LoginServiceInput input = LoginServiceInput.builder()
+                    .email(" ")
+                    .password("password123")
+                    .build();
 
-        // Then: 入力値例外が発生し、認証・トークン発行は行われない
-        assertThat(thrown)
-                .isInstanceOf(InvalidInputValueException.class)
-                .hasMessage("パスワードを入力してください。");
-        verify(userMapper, never()).selectByExample(any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
-    }
+            // When: ログインを実行する
+            // Then: 入力値例外が発生し、認証・トークン発行は行われない
+            assertThatThrownBy(() -> loginService.login(input))
+                    .isInstanceOf(InvalidInputValueException.class)
+                    .hasMessage("メールアドレスを入力してください。");
+            verify(userMapper, never()).selectByExample(any());
+            verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
+        }
 
-    @Test
-    @DisplayName("存在しないメールアドレスの場合は例外が発生する")
-    void login_failsWhenUserNotFound() {
-        // Given: 該当する未退会会員が存在しない
-        LoginServiceInput input = validInput();
+        @Test
+        @DisplayName("パスワードがない場合は例外が発生する")
+        void login_failsWhenPasswordIsBlank() {
+            // Given: パスワードが空文字の入力
+            LoginServiceInput input = LoginServiceInput.builder()
+                    .email("taro@example.com")
+                    .password("")
+                    .build();
 
-        when(userMapper.selectByExample(any(UserExample.class)))
-                .thenReturn(List.of());
+            // When: ログインを実行する
+            // Then: 入力値例外が発生し、認証・トークン発行は行われない
+            assertThatThrownBy(() -> loginService.login(input))
+                    .isInstanceOf(InvalidInputValueException.class)
+                    .hasMessage("パスワードを入力してください。");
+            verify(userMapper, never()).selectByExample(any());
+            verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
+        }
 
-        // When: ログインを実行する
-        Throwable thrown = catchThrowable(() -> loginService.login(input));
+        @Test
+        @DisplayName("存在しないメールアドレスの場合は例外が発生する")
+        void login_failsWhenUserNotFound() {
+            // Given: 該当する未退会会員が存在しない
+            LoginServiceInput input = validInput();
 
-        // Then: 認証失敗例外が発生し、パスワード照合・トークン発行は行われない
-        assertThat(thrown)
-                .isInstanceOf(UnauthorizedException.class)
-                .hasMessage(ErrorCode.LOGIN_FAILED.getMessage())
-                .extracting(ex -> ((UnauthorizedException) ex).getErrorCode())
-                .isEqualTo(ErrorCode.LOGIN_FAILED);
-        verify(passwordEncoder, never()).matches(any(), any());
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
-    }
+            when(userMapper.selectByExample(any(UserExample.class)))
+                    .thenReturn(List.of());
 
-    @Test
-    @DisplayName("パスワードが一致しない場合は例外が発生する")
-    void login_failsWhenPasswordDoesNotMatch() {
-        // Given: 会員は存在するがパスワードが一致しない
-        LoginServiceInput input = validInput();
-        User user = existingUser();
+            // When: ログインを実行する
+            // Then: 認証失敗例外が発生し、パスワード照合・トークン発行は行われない
+            assertThatThrownBy(() -> loginService.login(input))
+                    .isInstanceOfSatisfying(UnauthorizedException.class, ex -> {
+                        assertThat(ex.getMessage()).isEqualTo(ErrorCode.LOGIN_FAILED.getMessage());
+                        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.LOGIN_FAILED);
+                    });
+            verify(passwordEncoder, never()).matches(any(), any());
+            verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
+        }
 
-        when(userMapper.selectByExample(any(UserExample.class)))
-                .thenReturn(List.of(user));
-        when(passwordEncoder.matches("password123", "encodedPassword"))
-                .thenReturn(false);
+        @Test
+        @DisplayName("パスワードが一致しない場合は例外が発生する")
+        void login_failsWhenPasswordDoesNotMatch() {
+            // Given: 会員は存在するがパスワードが一致しない
+            LoginServiceInput input = validInput();
+            User user = existingUser();
 
-        // When: ログインを実行する
-        Throwable thrown = catchThrowable(() -> loginService.login(input));
+            when(userMapper.selectByExample(any(UserExample.class)))
+                    .thenReturn(List.of(user));
+            when(passwordEncoder.matches("password123", "encodedPassword"))
+                    .thenReturn(false);
 
-        // Then: 認証失敗例外が発生し、トークンは発行されない
-        assertThat(thrown)
-                .isInstanceOf(UnauthorizedException.class)
-                .hasMessage(ErrorCode.LOGIN_FAILED.getMessage())
-                .extracting(ex -> ((UnauthorizedException) ex).getErrorCode())
-                .isEqualTo(ErrorCode.LOGIN_FAILED);
-        verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
-    }
-
-    @Test
-    @DisplayName("有効な認証情報でログインするとアクセストークンを返す")
-    void login_succeedsWithValidCredentials() {
-        // Given: 会員が存在し、パスワード照合・トークン発行が成功する
-        LoginServiceInput input = validInput();
-        User user = existingUser();
-
-        when(userMapper.selectByExample(any(UserExample.class)))
-                .thenReturn(List.of(user));
-        when(passwordEncoder.matches("password123", "encodedPassword"))
-                .thenReturn(true);
-        when(jwtTokenProvider.createToken(
-                "taro@example.com",
-                10,
-                Const.USER_ROLE.MEMBER,
-                "山田太郎"
-        )).thenReturn("jwt-access-token");
-
-        // When: ログインを実行する
-        LoginServiceOutput output = loginService.login(input);
-
-        // Then: 成功レスポンスとアクセストークンが返却される
-        assertThat(output.getSuccess()).isTrue();
-        assertThat(output.getAccessToken()).isEqualTo("jwt-access-token");
-        assertThat(output.getUserName()).isEqualTo("山田太郎");
-        verify(jwtTokenProvider).createToken(
-                "taro@example.com",
-                10,
-                Const.USER_ROLE.MEMBER,
-                "山田太郎"
-        );
+            // When: ログインを実行する
+            // Then: 認証失敗例外が発生し、トークンは発行されない
+            assertThatThrownBy(() -> loginService.login(input))
+                    .isInstanceOfSatisfying(UnauthorizedException.class, ex -> {
+                        assertThat(ex.getMessage()).isEqualTo(ErrorCode.LOGIN_FAILED.getMessage());
+                        assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.LOGIN_FAILED);
+                    });
+            verify(jwtTokenProvider, never()).createToken(any(), any(), any(), any());
+        }
     }
 
     /** 正常系で共通利用する有効なログイン入力を返す。 */
