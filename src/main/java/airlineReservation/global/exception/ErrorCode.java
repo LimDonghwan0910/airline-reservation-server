@@ -24,6 +24,7 @@ public enum ErrorCode {
     LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "SE0013", "メールアドレスまたはパスワードが正しくありません。"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "SE0014", "会員が見つかりません。"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "SE0015", "認証が必要です。"),
+    ACTIVE_BOOKING_EXISTS(HttpStatus.CONFLICT, "SE0016", "有効な予約があるため退会できません。"),
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SE9999", "サーバー内部エラーが発生しました。");
 

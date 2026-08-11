@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 会員登録処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class CreateAccountService {
@@ -24,6 +27,14 @@ public class CreateAccountService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 新規会員情報を登録する。
+     *
+     * @param input
+     * @return serviceOutput
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws DuplicateException メールアドレスが既に登録されている場合
+     */
     @Transactional
     public CreateAccountServiceOutput create(CreateAccountServiceInput input) {
         validateInput(input);
@@ -42,9 +53,22 @@ public class CreateAccountService {
         user.setUpdatedAt(now);
         userMapper.insertSelective(user);
 
+        // user_id 採番後に created_by / updated_by を自分自身で更新
+        User audit = new User();
+        audit.setUserId(user.getUserId());
+        audit.setCreatedBy(user.getUserId());
+        audit.setUpdatedBy(user.getUserId());
+        userMapper.updateByPrimaryKeySelective(audit);
+
         return CreateAccountServiceOutput.builder().build();
     }
 
+    /**
+     * 入力値チェックを行う。
+     *
+     * @param input
+     * @throws InvalidInputValueException
+     */
     private void validateInput(CreateAccountServiceInput input) {
         if (input.getUserName() == null || input.getUserName().isBlank()) {
             throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "名前を入力してください。");
@@ -63,6 +87,12 @@ public class CreateAccountService {
         }
     }
 
+    /**
+     * メールアドレスの重複チェックを行う。（退会済みユーザーは除く）
+     *え
+     * @param email チェック対象のメールアドレス
+     * @throws DuplicateException
+     */
     private void ensureEmailAvailable(String email) {
         UserExample example = new UserExample();
         example.createCriteria()

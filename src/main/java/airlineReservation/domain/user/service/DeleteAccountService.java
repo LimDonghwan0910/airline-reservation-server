@@ -1,14 +1,12 @@
 package airlineReservation.domain.user.service;
 
-import airlineReservation.domain.booking.service.DeleteBookingService;
-import airlineReservation.domain.booking.serviceInput.DeleteBookingServiceInput;
 import airlineReservation.domain.user.serviceInput.DeleteAccountServiceInput;
 import airlineReservation.domain.user.serviceOutput.DeleteAccountServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.ConflictException;
 import airlineReservation.global.exception.ErrorCode;
 import airlineReservation.global.exception.InvalidInputValueException;
 import airlineReservation.global.exception.NotFoundException;
-import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.BookingExample;
 import airlineReservation.infra.entity.User;
 import airlineReservation.infra.mapper.BookingMapper;
@@ -18,16 +16,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
+/**
+ * 会員退会処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class DeleteAccountService {
 
     private final UserMapper userMapper;
     private final BookingMapper bookingMapper;
-    private final DeleteBookingService deleteBookingService;
 
+    /**
+     * 会員を退会（論理削除）する。
+     * メールアドレスはUNIQUE制約回避のためマスキングする。
+     *
+     * @param input
+     * @return serviceOutput
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 対象会員が存在しない、または既に退会済みの場合
+     * @throws ConflictException 有効な予約が存在する場合
+     */
     @Transactional
     public DeleteAccountServiceOutput delete(DeleteAccountServiceInput input) {
         if (input.getUserId() == null) {
@@ -39,11 +49,18 @@ public class DeleteAccountService {
             throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        cancelActiveBookings(input.getUserId());
+        // 有効予約存在チェック
+        ensureNoActiveBookings(input.getUserId());
 
         LocalDateTime now = LocalDateTime.now();
+
+        // UNIQUE制約回避のためメールアドレスをマスキング
+        String timeStamp = now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String maskedEmail = "deleted_" + timeStamp + "_" + user.getEmail();
+
         User update = new User();
         update.setUserId(input.getUserId());
+        update.setEmail(maskedEmail);
         update.setIsDeleted(true);
         update.setUpdatedBy(input.getUserId());
         update.setUpdatedAt(now);
@@ -52,22 +69,21 @@ public class DeleteAccountService {
         return DeleteAccountServiceOutput.builder().build();
     }
 
-    private void cancelActiveBookings(Integer userId) {
+    /**
+     * 有効な予約が残っていないことを確認する。
+     *
+     * @param userId チェック対象の会員ID
+     * @throws ConflictException 有効な予約が存在する場合
+     */
+    private void ensureNoActiveBookings(Integer userId) {
         BookingExample example = new BookingExample();
         example.createCriteria()
                 .andUserIdEqualTo(userId)
-                .andIsDeletedEqualTo(false);
+                .andIsDeletedEqualTo(false)
+                .andStatusNotEqualTo(Const.BOOKING_STATUS.CANCELLED);
 
-        List<Booking> bookings = bookingMapper.selectByExample(example);
-        for (Booking booking : bookings) {
-            if (Const.BOOKING_STATUS.CANCELLED.equals(booking.getStatus())) {
-                continue;
-            }
-
-            deleteBookingService.delete(DeleteBookingServiceInput.builder()
-                    .bookingId(booking.getBookingId())
-                    .updatedBy(userId)
-                    .build());
+        if (bookingMapper.countByExample(example) > 0) {
+            throw new ConflictException(ErrorCode.ACTIVE_BOOKING_EXISTS);
         }
     }
 }
