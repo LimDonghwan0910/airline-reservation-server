@@ -18,7 +18,7 @@ import jakarta.annotation.Generated;
  * CreateScheduleTemplateResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:00:28.871973+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-11T10:31:14.711529+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 public class CreateScheduleTemplateResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;

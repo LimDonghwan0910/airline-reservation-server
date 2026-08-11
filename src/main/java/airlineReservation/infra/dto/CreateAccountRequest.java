@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -18,7 +20,7 @@ import jakarta.annotation.Generated;
  * CreateAccountRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-11T10:31:14.711529+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 public class CreateAccountRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -29,22 +31,24 @@ public class CreateAccountRequest implements Serializable {
 
   private String password;
 
-    private String phoneNumber;
+  private String phoneNumber;
 
-    private java.time.LocalDate birthDate;
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+  private LocalDate birthDate;
 
-    public CreateAccountRequest() {
+  public CreateAccountRequest() {
     super();
   }
 
   /**
    * Constructor with only required parameters
    */
-  public CreateAccountRequest(String userName, String email, String password, String phoneNumber) {
+  public CreateAccountRequest(String userName, String email, String password, String phoneNumber, LocalDate birthDate) {
     this.userName = userName;
     this.email = email;
     this.password = password;
     this.phoneNumber = phoneNumber;
+    this.birthDate = birthDate;
   }
 
   public CreateAccountRequest userName(String userName) {
@@ -127,7 +131,7 @@ public class CreateAccountRequest implements Serializable {
     this.phoneNumber = phoneNumber;
   }
 
-  public CreateAccountRequest birthDate(java.time.LocalDate birthDate) {
+  public CreateAccountRequest birthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
     return this;
   }
@@ -136,14 +140,14 @@ public class CreateAccountRequest implements Serializable {
    * Get birthDate
    * @return birthDate
   */
-  @NotNull
+  @NotNull @Valid 
   @Schema(name = "birthDate", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("birthDate")
-  public java.time.LocalDate getBirthDate() {
+  public LocalDate getBirthDate() {
     return birthDate;
   }
 
-  public void setBirthDate(java.time.LocalDate birthDate) {
+  public void setBirthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
   }
 

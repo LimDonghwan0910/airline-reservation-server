@@ -69,7 +69,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-11T10:31:14.711529+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "api", description = "the api API")
 public interface ApiApi {
@@ -79,24 +79,24 @@ public interface ApiApi {
     }
 
     /**
-     * GET /api/v1/admin/searchBooking : 관리자 예약 검색 API
+     * GET /api/v1/admin/searchBooking : 管理者予約検索API
      *
      * @param searchBookingByAdminRequest  (required)
-     * @return 관리자 예약 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 管理者予約検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "adminSearchBooking",
-        summary = "관리자 예약 검색 API",
+        summary = "管理者予約検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "관리자 예약 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "管理者予約検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = SearchBookingResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -119,12 +119,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -136,24 +136,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/createAccount : 회원 가입 API
+     * POST /api/v1/createAccount : 会員登録API
      *
      * @param createAccountRequest  (required)
-     * @return 회원 가입 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 会員登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "createAccount",
-        summary = "회원 가입 API",
+        summary = "会員登録API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "회원 가입 성공", content = {
+            @ApiResponse(responseCode = "201", description = "会員登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAccountResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -176,12 +176,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -193,24 +193,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/createAircraft : 항공기 등록 API
+     * POST /api/v1/admin/createAircraft : 航空機登録API
      *
      * @param createAircraftRequest  (required)
-     * @return 항공기 등록 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 航空機登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "createAircraft",
-        summary = "항공기 등록 API",
+        summary = "航空機登録API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "항공기 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "航空機登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = CreateAircraftResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -233,12 +233,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -250,24 +250,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/createBooking : 예약 등록 API
+     * POST /api/v1/createBooking : 予約登録API
      *
      * @param createBookingRequest  (required)
-     * @return 예약 등록 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 予約登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "createBooking",
-        summary = "예약 등록 API",
+        summary = "予約登録API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "예약 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "予約登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBookingResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -290,12 +290,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -307,24 +307,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/createScheduleTemplate : 스케줄 등록 API
+     * POST /api/v1/admin/createScheduleTemplate : スケジュール登録API
      *
      * @param createScheduleTemplateRequest  (required)
-     * @return 스케줄 등록 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return スケジュール登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "createSchedule",
-        summary = "스케줄 등록 API",
+        summary = "スケジュール登録API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "스케줄 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "スケジュール登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = CreateScheduleTemplateResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -347,12 +347,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -364,24 +364,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/deleteAccount : 회원 탈퇴 API
+     * POST /api/v1/deleteAccount : 会員退会API
      *
      * @param deleteAccountRequest  (required)
-     * @return 회원 탈퇴 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 会員退会成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "deleteAccount",
-        summary = "회원 탈퇴 API",
+        summary = "会員退会API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "회원 탈퇴 성공", content = {
+            @ApiResponse(responseCode = "201", description = "会員退会成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteAccountResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -404,12 +404,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -421,24 +421,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/deleteAircraft : 항공기 삭제 API
+     * POST /api/v1/admin/deleteAircraft : 航空機削除API
      *
      * @param deleteAircraftRequest  (required)
-     * @return 항공기 삭제 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 航空機削除成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "deleteAircraft",
-        summary = "항공기 삭제 API",
+        summary = "航空機削除API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "항공기 삭제 성공", content = {
+            @ApiResponse(responseCode = "201", description = "航空機削除成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteAircraftResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -461,12 +461,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -478,24 +478,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/deleteBooking : 예약 취소 API
+     * POST /api/v1/admin/deleteBooking : 予約キャンセルAPI
      *
      * @param deleteBookingRequest  (required)
-     * @return 예약 취소 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 予約キャンセル成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "deleteBooking",
-        summary = "예약 취소 API",
+        summary = "予約キャンセルAPI",
         responses = {
-            @ApiResponse(responseCode = "201", description = "예약 취소 성공", content = {
+            @ApiResponse(responseCode = "201", description = "予約キャンセル成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteBookingResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -518,12 +518,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -535,24 +535,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/deleteSchedule : 스케줄 삭제 API
+     * POST /api/v1/admin/deleteSchedule : スケジュール削除API
      *
      * @param deleteScheduleRequest  (required)
-     * @return 스케줄 등록 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return スケジュール登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "deleteSchedule",
-        summary = "스케줄 삭제 API",
+        summary = "スケジュール削除API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "스케줄 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "スケジュール登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteScheduleResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -575,12 +575,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -592,24 +592,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/deleteScheduleTemplate : 정기 스케줄 삭제 API
+     * POST /api/v1/admin/deleteScheduleTemplate : 定期スケジュール削除API
      *
      * @param deleteScheduleTemplateRequest  (required)
-     * @return 정기 스케줄 등록 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 定期スケジュール登録成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "deleteScheduleTemplate",
-        summary = "정기 스케줄 삭제 API",
+        summary = "定期スケジュール削除API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "정기 스케줄 등록 성공", content = {
+            @ApiResponse(responseCode = "201", description = "定期スケジュール登録成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteScheduleTemplateResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -632,12 +632,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -649,24 +649,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/getAirports : 공항 검색 API
+     * GET /api/v1/getAirports : 空港検索API
      *
      * @param getAirportsRequest  (required)
-     * @return 항공기 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 航空機検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "getAirports",
-        summary = "공항 검색 API",
+        summary = "空港検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "항공기 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "航空機検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = GetAirportsResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -689,12 +689,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -706,24 +706,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/getFlights : 항공편 리스트 검색 API
+     * GET /api/v1/getFlights : 便一覧検索API
      *
      * @param getFlightsRequest  (required)
-     * @return 항공편 리스트 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 便一覧検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "getFlights",
-        summary = "항공편 리스트 검색 API",
+        summary = "便一覧検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "항공편 리스트 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "便一覧検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = GetFlightsResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -746,12 +746,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -763,24 +763,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/getSeats : 좌석 검색 API
+     * GET /api/v1/getSeats : 座席検索API
      *
      * @param getSeatsRequest  (required)
-     * @return 좌석 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 座席検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "getSeats",
-        summary = "좌석 검색 API",
+        summary = "座席検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "좌석 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "座席検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = GetSeatsResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -803,12 +803,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -820,24 +820,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/login : 로그인 API
+     * POST /api/v1/login : ログインAPI
      *
      * @param loginRequest  (required)
-     * @return 로그인 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return ログイン成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "login",
-        summary = "로그인 API",
+        summary = "ログインAPI",
         responses = {
-            @ApiResponse(responseCode = "201", description = "로그인 성공", content = {
+            @ApiResponse(responseCode = "201", description = "ログイン成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -855,17 +855,17 @@ public interface ApiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"success\" : true }";
+                    String exampleString = "{ \"success\" : true, \"accessToken\" : \"accessToken\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -877,24 +877,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/admin/searchAircraft : 항공기 검색 API
+     * GET /api/v1/admin/searchAircraft : 航空機検索API
      *
      * @param searchAircraftRequest  (required)
-     * @return 항공기 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 航空機検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "searchAircraft",
-        summary = "항공기 검색 API",
+        summary = "航空機検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "항공기 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "航空機検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = SearchAircraftResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -917,12 +917,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -934,24 +934,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/searchBooking : 예약 검색 API
+     * GET /api/v1/searchBooking : 予約検索API
      *
      * @param searchBookingRequest  (required)
-     * @return 예약 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 予約検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "searchBooking",
-        summary = "예약 검색 API",
+        summary = "予約検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "예약 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "予約検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = SearchBookingResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -974,12 +974,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -991,24 +991,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/admin/searchSchedule : 스케줄 검색 API
+     * GET /api/v1/admin/searchSchedule : スケジュール検索API
      *
      * @param searchScheduleRequest  (required)
-     * @return 스케줄 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return スケジュール検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "searchSchedule",
-        summary = "스케줄 검색 API",
+        summary = "スケジュール検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "스케줄 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "スケジュール検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = SearchScheduleResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -1031,12 +1031,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -1048,24 +1048,24 @@ public interface ApiApi {
 
 
     /**
-     * GET /api/v1/admin/searchScheduleTemplate : 정기 스케줄 검색 API
+     * GET /api/v1/admin/searchScheduleTemplate : 定期スケジュール検索API
      *
      * @param searchScheduleTemplateRequest  (required)
-     * @return 정기 스케줄 검색 성공 (status code 200)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 定期スケジュール検索成功 (status code 200)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "searchScheduleTemplate",
-        summary = "정기 스케줄 검색 API",
+        summary = "定期スケジュール検索API",
         responses = {
-            @ApiResponse(responseCode = "200", description = "정기 스케줄 검색 성공", content = {
+            @ApiResponse(responseCode = "200", description = "定期スケジュール検索成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = SearchScheduleTemplateResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -1088,12 +1088,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -1105,24 +1105,24 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/admin/updateAircraft : 항공기 수정 API
+     * POST /api/v1/admin/updateAircraft : 航空機更新API
      *
      * @param updateAircraftRequest  (required)
-     * @return 항공기 수정 성공 (status code 201)
-     *         or 잘못된 요청 (파라미터 누락, 유효성 검증 실패 등) (status code 400)
-     *         or 서버 내부 오류 (status code 500)
+     * @return 航空機更新成功 (status code 201)
+     *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
+     *         or サーバー内部エラー (status code 500)
      */
     @Operation(
         operationId = "updateAircraft",
-        summary = "항공기 수정 API",
+        summary = "航空機更新API",
         responses = {
-            @ApiResponse(responseCode = "201", description = "항공기 수정 성공", content = {
+            @ApiResponse(responseCode = "201", description = "航空機更新成功", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = UpdateAircraftResponse.class))
             }),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 (파라미터 누락, 유효성 검증 실패 등)", content = {
+            @ApiResponse(responseCode = "400", description = "不正なリクエスト（パラメータ欠落、バリデーション失敗など）", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             }),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류", content = {
+            @ApiResponse(responseCode = "500", description = "サーバー内部エラー", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))
             })
         }
@@ -1145,12 +1145,12 @@ public interface ApiApi {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"INVALID_INPUT_VALUE\", \"message\" : \"이메일 형식이 올바르지 않습니다.\", \"status\" : 400 }";
+                    String exampleString = "{ \"code\" : \"code\", \"message\" : \"message\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
