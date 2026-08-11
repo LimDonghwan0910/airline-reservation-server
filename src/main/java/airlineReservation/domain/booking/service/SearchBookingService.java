@@ -4,6 +4,8 @@ import airlineReservation.domain.admin.serviceInput.SearchBookingByAdminServiceI
 import airlineReservation.domain.booking.serviceInput.SearchBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.SearchBookingServiceOutput;
 import airlineReservation.domain.booking.vo.SearchBookingVo;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
 import airlineReservation.infra.mapper.customMapper.SearchBookingCustomMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 예약 조회 서비스.
+ * 予約検索サービス。
  *
- * DB 조회 결과는 탑승객(좌석) 수만큼 row가 반복되므로(flat),
- * buildOutput()에서 bookingId 기준으로 묶어 API 응답 형태(nested)로 변환한다.
+ * DB検索結果は搭乗者（座席）数分だけ行が繰り返されるため（flat）、
+ * buildOutput() で bookingId 単位にまとめて API レスポンス形式（nested）へ変換する。
  *
- * 일반회원(searchByMember)과 관리자(searchByAdmin) 모두 같은 buildOutput()을 사용한다.
+ * 一般会員（searchByMember）と管理者（searchByAdmin）はいずれも同じ buildOutput() を使用する。
  */
 @Service
 @RequiredArgsConstructor
@@ -28,9 +30,9 @@ public class SearchBookingService {
     private final SearchBookingCustomMapper searchBookingCustomMapper;
 
     /**
-     * 일반회원 예약 조회.
-     * - 본인 userId의 예약만 조회
-     * - fromDate가 있으면 해당 날짜 이후 출발 예약만 조회
+     * 一般会員の予約検索。
+     * - 本人の userId の予約のみ検索
+     * - fromDate がある場合、その日付以降の出発予約のみ検索
      */
     public SearchBookingServiceOutput searchByMember(SearchBookingServiceInput input) {
         validateMemberInput(input);
@@ -44,8 +46,8 @@ public class SearchBookingService {
     }
 
     /**
-     * 관리자 예약 조회.
-     * - userId, aircraftId, 출발일, 도착일 조건은 모두 선택(없으면 필터 안 함)
+     * 管理者の予約検索。
+     * - userId、aircraftId、出発日、到着日の条件はすべて任意（未指定ならフィルタしない）
      */
     public SearchBookingServiceOutput searchByAdmin(SearchBookingByAdminServiceInput input) {
         List<SearchBookingVo> rows = searchBookingCustomMapper.selectBookingListForAdmin(
@@ -58,37 +60,37 @@ public class SearchBookingService {
         return buildOutput(rows);
     }
 
-    /** 일반회원 조회 시 userId는 필수 */
+    /** 一般会員検索時、userId は必須 */
     private void validateMemberInput(SearchBookingServiceInput input) {
         if (input.getUserId() == null) {
-            throw new IllegalArgumentException("회원 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "会員IDを入力してください。");
         }
     }
 
     /**
-     * DB flat 결과 → 예약별 그룹 변환.
+     * DB の flat 結果 → 予約単位のグループ変換。
      *
-     * 예) 예약 1건에 3명 탑승 → DB row 3개
-     *     → bookingList 1건 + seats 3개로 변환
+     * 例) 予約1件に搭乗者3名 → DB row 3件
+     *     → bookingList 1件 + seats 3件へ変換
      *
-     * 1차 for: bookingId별로 예약 기본정보 + 좌석 리스트 수집
-     * 2차 for: 수집한 데이터로 BookingItem 완성
+     * 1回目の for: bookingId ごとに予約基本情報 + 座席リストを収集
+     * 2回目の for: 収集したデータで BookingItem を組み立て
      */
     private SearchBookingServiceOutput buildOutput(List<SearchBookingVo> rows) {
-        // LinkedHashMap: DB ORDER BY 순서 유지
+        // LinkedHashMap: DB ORDER BY の順序を保持
         Map<Integer, SearchBookingVo> bookingRowById = new LinkedHashMap<>();
         Map<Integer, List<SearchBookingServiceOutput.SeatItem>> seatsByBookingId = new LinkedHashMap<>();
 
         for (SearchBookingVo row : rows) {
             Integer bookingId = row.getBookingId();
 
-            // bookingId 처음 등장 시 예약 기본정보 + 빈 좌석 리스트 생성
+            // bookingId が初めて登場したとき、予約基本情報 + 空の座席リストを作成
             if (!bookingRowById.containsKey(bookingId)) {
                 bookingRowById.put(bookingId, row);
                 seatsByBookingId.put(bookingId, new ArrayList<>());
             }
 
-            // LEFT JOIN이라 탑승객/좌석 없으면 seatName이 null일 수 있음
+            // LEFT JOIN のため、搭乗者/座席が無い場合 seatName が null になり得る
             if (row.getSeatName() != null) {
                 seatsByBookingId.get(bookingId).add(toSeatItem(row));
             }
@@ -106,7 +108,7 @@ public class SearchBookingService {
                 .build();
     }
 
-    /** SearchBookingVo + 좌석 리스트 → BookingItem 변환. passengerCount = 좌석 수 */
+    /** SearchBookingVo + 座席リスト → BookingItem 変換。passengerCount = 座席数 */
     private SearchBookingServiceOutput.BookingItem toBookingItem(
             SearchBookingVo row,
             List<SearchBookingServiceOutput.SeatItem> seats
@@ -129,7 +131,7 @@ public class SearchBookingService {
                 .build();
     }
 
-    /** DB row 1건에서 좌석/탑승객 정보만 추출 */
+    /** DB row 1件から座席/搭乗者情報のみを抽出 */
     private SearchBookingServiceOutput.SeatItem toSeatItem(SearchBookingVo row) {
         return SearchBookingServiceOutput.SeatItem.builder()
                 .seat(row.getSeatName())

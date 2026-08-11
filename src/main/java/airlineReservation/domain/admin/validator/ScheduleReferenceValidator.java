@@ -1,5 +1,8 @@
 package airlineReservation.domain.admin.validator;
 
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Aircraft;
 import airlineReservation.infra.entity.AircraftExample;
 import airlineReservation.infra.entity.Airport;
@@ -19,7 +22,7 @@ public class ScheduleReferenceValidator {
 
     public void validateAircraft(String aircraftId) {
         if (!StringUtils.hasText(aircraftId)) {
-            throw new IllegalArgumentException("편명(항공기)을 선택해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "便名（航空機）を選択してください。");
         }
 
         AircraftExample example = new AircraftExample();
@@ -32,13 +35,13 @@ public class ScheduleReferenceValidator {
                 .orElse(null);
 
         if (aircraft == null) {
-            throw new IllegalArgumentException("등록되지 않은 항공기입니다: " + aircraftId);
+            throw new NotFoundException(ErrorCode.AIRCRAFT_NOT_FOUND, "登録されていない航空機です: " + aircraftId);
         }
     }
 
     public void validateAirport(String airportId) {
         if (!StringUtils.hasText(airportId)) {
-            throw new IllegalArgumentException("공항을 선택해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "空港を選択してください。");
         }
 
         AirportExample example = new AirportExample();
@@ -51,7 +54,7 @@ public class ScheduleReferenceValidator {
                 .orElse(null);
 
         if (airport == null) {
-            throw new IllegalArgumentException("등록되지 않은 공항입니다: " + airportId);
+            throw new NotFoundException(ErrorCode.AIRPORT_NOT_FOUND, "登録されていない空港です: " + airportId);
         }
     }
 }

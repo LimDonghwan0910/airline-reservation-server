@@ -18,12 +18,10 @@ import jakarta.annotation.Generated;
  * ErrorResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-26T22:46:28.426248+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-11T10:31:14.711529+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 public class ErrorResponse implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  private Integer status;
 
   private String code;
 
@@ -36,30 +34,9 @@ public class ErrorResponse implements Serializable {
   /**
    * Constructor with only required parameters
    */
-  public ErrorResponse(Integer status, String code, String message) {
-    this.status = status;
+  public ErrorResponse(String code, String message) {
     this.code = code;
     this.message = message;
-  }
-
-  public ErrorResponse status(Integer status) {
-    this.status = status;
-    return this;
-  }
-
-  /**
-   * HTTP 상태 코드
-   * @return status
-  */
-  @NotNull 
-  @Schema(name = "status", example = "400", description = "HTTP 상태 코드", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("status")
-  public Integer getStatus() {
-    return status;
-  }
-
-  public void setStatus(Integer status) {
-    this.status = status;
   }
 
   public ErrorResponse code(String code) {
@@ -68,11 +45,11 @@ public class ErrorResponse implements Serializable {
   }
 
   /**
-   * 비즈니스 에러 식별 코드
+   * Get code
    * @return code
   */
   @NotNull 
-  @Schema(name = "code", example = "INVALID_INPUT_VALUE", description = "비즈니스 에러 식별 코드", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "code", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("code")
   public String getCode() {
     return code;
@@ -88,11 +65,11 @@ public class ErrorResponse implements Serializable {
   }
 
   /**
-   * 에러 상세 메시지
+   * Get message
    * @return message
   */
   @NotNull 
-  @Schema(name = "message", example = "이메일 형식이 올바르지 않습니다.", description = "에러 상세 메시지", requiredMode = Schema.RequiredMode.REQUIRED)
+  @Schema(name = "message", requiredMode = Schema.RequiredMode.REQUIRED)
   @JsonProperty("message")
   public String getMessage() {
     return message;
@@ -111,21 +88,19 @@ public class ErrorResponse implements Serializable {
       return false;
     }
     ErrorResponse errorResponse = (ErrorResponse) o;
-    return Objects.equals(this.status, errorResponse.status) &&
-        Objects.equals(this.code, errorResponse.code) &&
+    return Objects.equals(this.code, errorResponse.code) &&
         Objects.equals(this.message, errorResponse.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(status, code, message);
+    return Objects.hash(code, message);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ErrorResponse {\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");

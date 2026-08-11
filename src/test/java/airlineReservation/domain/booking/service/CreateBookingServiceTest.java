@@ -3,6 +3,9 @@ package airlineReservation.domain.booking.service;
 import airlineReservation.domain.booking.serviceInput.CreateBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.CreateBookingServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.DuplicateException;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.dto.CreateBookingRequestPassengerListInner;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.ScheduleSeat;
@@ -29,7 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("항공권 예약 생성 서비스")
+@DisplayName("航空券予約作成サービス")
 class CreateBookingServiceTest {
 
     @Mock
@@ -50,11 +53,11 @@ class CreateBookingServiceTest {
     void setUp() {
         passenger = new CreateBookingRequestPassengerListInner()
                 .seat("1A")
-                .name("홍길동");
+                .name("山田太郎");
     }
 
     @Test
-    @DisplayName("회원 ID가 없으면 예외가 발생한다")
+    @DisplayName("会員IDがない場合は例外が発生する")
     void create_failsWhenUserIdIsNull() {
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .scheduleId(1)
@@ -63,12 +66,12 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("회원 ID를 입력해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("会員IDを入力してください。");
     }
 
     @Test
-    @DisplayName("운항 일정 ID가 없으면 예외가 발생한다")
+    @DisplayName("運航スケジュールIDがない場合は例外が発生する")
     void create_failsWhenScheduleIdIsNull() {
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .userId(1)
@@ -77,12 +80,12 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("운항 일정 ID를 입력해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("運航スケジュールIDを入力してください。");
     }
 
     @Test
-    @DisplayName("결제 금액이 0 이하면 예외가 발생한다")
+    @DisplayName("支払金額が0以下の場合は例外が発生する")
     void create_failsWhenTotalPriceIsInvalid() {
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .userId(1)
@@ -92,12 +95,12 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("결제 금액을 확인해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("支払金額を確認してください。");
     }
 
     @Test
-    @DisplayName("탑승객 정보가 없으면 예외가 발생한다")
+    @DisplayName("搭乗者情報がない場合は例外が発生する")
     void create_failsWhenPassengerListIsEmpty() {
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .userId(1)
@@ -107,15 +110,15 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("탑승객 정보를 입력해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("搭乗者情報を入力してください。");
     }
 
     @Test
-    @DisplayName("좌석이 선택되지 않으면 예외가 발생한다")
+    @DisplayName("座席が選択されていない場合は例外が発生する")
     void create_failsWhenSeatIsBlank() {
         CreateBookingRequestPassengerListInner noSeatPassenger = new CreateBookingRequestPassengerListInner()
-                .name("홍길동");
+                .name("山田太郎");
 
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .userId(1)
@@ -125,12 +128,12 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("좌석을 선택해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("座席を選択してください。");
     }
 
     @Test
-    @DisplayName("탑승객 이름이 없으면 예외가 발생한다")
+    @DisplayName("搭乗者名がない場合は例外が発生する")
     void create_failsWhenPassengerNameIsBlank() {
         CreateBookingRequestPassengerListInner noNamePassenger = new CreateBookingRequestPassengerListInner()
                 .seat("1A");
@@ -143,12 +146,12 @@ class CreateBookingServiceTest {
                 .build();
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("탑승객 이름을 입력해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("搭乗者名を入力してください。");
     }
 
     @Test
-    @DisplayName("존재하지 않는 좌석이면 예외가 발생한다")
+    @DisplayName("存在しない座席の場合は例外が発生する")
     void create_failsWhenSeatDoesNotExist() {
         CreateBookingServiceInput input = validInput();
 
@@ -156,12 +159,12 @@ class CreateBookingServiceTest {
                 .thenReturn(List.of());
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 좌석입니다: 1A");
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("存在しない座席です: 1A");
     }
 
     @Test
-    @DisplayName("이미 예약된 좌석이면 예외가 발생한다")
+    @DisplayName("既に予約済みの座席の場合は例外が発生する")
     void create_failsWhenSeatIsAlreadyOccupied() {
         CreateBookingServiceInput input = validInput();
 
@@ -172,12 +175,12 @@ class CreateBookingServiceTest {
                 .thenReturn(List.of(occupiedSeat));
 
         assertThatThrownBy(() -> createBookingService.create(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("선택한 좌석이 이미 예약되었습니다: 1A");
+                .isInstanceOf(DuplicateException.class)
+                .hasMessage("選択した座席は既に予約されています: 1A");
     }
 
     @Test
-    @DisplayName("유효한 입력으로 예약을 생성하면 bookingId를 반환한다")
+    @DisplayName("有効な入力で予約を作成すると bookingId を返す")
     void create_succeedsWithValidInput() {
         CreateBookingServiceInput input = validInput();
 
@@ -208,11 +211,11 @@ class CreateBookingServiceTest {
     }
 
     @Test
-    @DisplayName("복수 탑승객 예약 시 탑승객 수만큼 좌석과 상세 정보를 저장한다")
+    @DisplayName("複数搭乗者の予約時、搭乗者数分の座席と詳細情報を保存する")
     void create_succeedsWithMultiplePassengers() {
         CreateBookingRequestPassengerListInner secondPassenger = new CreateBookingRequestPassengerListInner()
                 .seat("1B")
-                .name("김철수");
+                .name("佐藤花子");
 
         CreateBookingServiceInput input = CreateBookingServiceInput.builder()
                 .userId(1)

@@ -2,6 +2,9 @@ package airlineReservation.domain.admin.service;
 
 import airlineReservation.domain.admin.serviceInput.DeleteScheduleServiceInput;
 import airlineReservation.domain.admin.serviceOutput.DeleteScheduleServiceOutput;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Schedule;
 import airlineReservation.infra.mapper.ScheduleMapper;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +23,15 @@ public class DeleteScheduleService {
     @Transactional
     public DeleteScheduleServiceOutput delete(DeleteScheduleServiceInput input) {
         if (input.getScheduleId() == null) {
-            throw new IllegalArgumentException("스케줄 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "スケジュールIDを入力してください。");
         }
 
         Schedule schedule = scheduleMapper.selectByPrimaryKey(input.getScheduleId());
         if (schedule == null) {
-            throw new IllegalArgumentException("존재하지 않는 운항 일정입니다: " + input.getScheduleId());
+            throw new NotFoundException(
+                    ErrorCode.SCHEDULE_NOT_FOUND,
+                    "存在しない運航スケジュールです: " + input.getScheduleId()
+            );
         }
 
         Schedule update = new Schedule();

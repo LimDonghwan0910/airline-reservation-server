@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         List<User> users = userMapper.selectByExample(example);
         if (users.isEmpty()) {
-            throw new UsernameNotFoundException("존재하지 않는 회원입니다.");
+            throw new UsernameNotFoundException("存在しない会員です。");
         }
 
         return new CustomUserDetails(users.get(0));

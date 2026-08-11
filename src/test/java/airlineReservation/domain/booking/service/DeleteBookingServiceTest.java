@@ -3,6 +3,8 @@ package airlineReservation.domain.booking.service;
 import airlineReservation.domain.booking.serviceInput.DeleteBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.DeleteBookingServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.PassengerDetail;
 import airlineReservation.infra.entity.PassengerDetailExample;
@@ -28,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("항공권 예약 취소 서비스")
+@DisplayName("航空券予約キャンセルサービス")
 class DeleteBookingServiceTest {
 
     @Mock
@@ -44,19 +46,19 @@ class DeleteBookingServiceTest {
     private DeleteBookingService deleteBookingService;
 
     @Test
-    @DisplayName("예약 ID가 없으면 예외가 발생한다")
+    @DisplayName("予約IDがない場合は例外が発生する")
     void delete_failsWhenBookingIdIsNull() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .updatedBy(1)
                 .build();
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("예약 ID를 입력해 주세요.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("予約IDを入力してください。");
     }
 
     @Test
-    @DisplayName("존재하지 않는 예약이면 예외가 발생한다")
+    @DisplayName("存在しない予約の場合は例外が発生する")
     void delete_failsWhenBookingNotFound() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .bookingId(999)
@@ -66,12 +68,12 @@ class DeleteBookingServiceTest {
         when(bookingMapper.selectByPrimaryKey(999)).thenReturn(null);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("予約が見つかりません。");
     }
 
     @Test
-    @DisplayName("이미 삭제된 예약이면 예외가 발생한다")
+    @DisplayName("既に削除された予約の場合は例外が発生する")
     void delete_failsWhenBookingIsDeleted() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .bookingId(1)
@@ -84,12 +86,12 @@ class DeleteBookingServiceTest {
         when(bookingMapper.selectByPrimaryKey(1)).thenReturn(deletedBooking);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 예약입니다.");
+                .isInstanceOf(NotFoundException.class)
+                .hasMessage("予約が見つかりません。");
     }
 
     @Test
-    @DisplayName("이미 취소된 예약이면 예외가 발생한다")
+    @DisplayName("既にキャンセルされた予約の場合は例外が発生する")
     void delete_failsWhenBookingIsAlreadyCancelled() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .bookingId(1)
@@ -102,12 +104,12 @@ class DeleteBookingServiceTest {
         when(bookingMapper.selectByPrimaryKey(1)).thenReturn(cancelledBooking);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 취소된 예약입니다.");
+                .isInstanceOf(InvalidInputValueException.class)
+                .hasMessage("既にキャンセルされた予約です。");
     }
 
     @Test
-    @DisplayName("유효한 예약을 취소하면 좌석을 AVAILABLE로 되돌린다")
+    @DisplayName("有効な予約をキャンセルすると座席を AVAILABLE に戻す")
     void delete_succeedsAndReleasesSeats() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .bookingId(1)
@@ -139,7 +141,7 @@ class DeleteBookingServiceTest {
     }
 
     @Test
-    @DisplayName("탑승객이 없는 예약도 취소 처리는 완료된다")
+    @DisplayName("搭乗者がいない予約でもキャンセル処理は完了する")
     void delete_succeedsWhenNoPassengers() {
         DeleteBookingServiceInput input = DeleteBookingServiceInput.builder()
                 .bookingId(1)

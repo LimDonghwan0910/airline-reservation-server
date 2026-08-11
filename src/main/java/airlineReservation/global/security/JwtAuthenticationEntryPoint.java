@@ -1,5 +1,6 @@
 package airlineReservation.global.security;
 
+import airlineReservation.global.exception.ErrorCode;
 import tools.jackson.databind.json.JsonMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     ) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        jsonMapper.writeValue(response.getOutputStream(), Map.of("message", "인증이 필요합니다."));
+        jsonMapper.writeValue(
+                response.getOutputStream(),
+                Map.of(
+                        "code", ErrorCode.UNAUTHORIZED.getCode(),
+                        "message", ErrorCode.UNAUTHORIZED.getMessage()
+                )
+        );
     }
 }

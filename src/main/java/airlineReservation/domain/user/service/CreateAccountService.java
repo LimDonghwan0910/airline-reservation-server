@@ -3,6 +3,9 @@ package airlineReservation.domain.user.service;
 import airlineReservation.domain.user.serviceInput.CreateAccountServiceInput;
 import airlineReservation.domain.user.serviceOutput.CreateAccountServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.DuplicateException;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
 import airlineReservation.infra.entity.User;
 import airlineReservation.infra.entity.UserExample;
 import airlineReservation.infra.mapper.UserMapper;
@@ -44,19 +47,19 @@ public class CreateAccountService {
 
     private void validateInput(CreateAccountServiceInput input) {
         if (input.getUserName() == null || input.getUserName().isBlank()) {
-            throw new IllegalArgumentException("이름을 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "名前を入力してください。");
         }
         if (input.getEmail() == null || input.getEmail().isBlank()) {
-            throw new IllegalArgumentException("이메일을 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "メールアドレスを入力してください。");
         }
         if (input.getPassword() == null || input.getPassword().isBlank()) {
-            throw new IllegalArgumentException("비밀번호를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "パスワードを入力してください。");
         }
         if (input.getPhoneNumber() == null || input.getPhoneNumber().isBlank()) {
-            throw new IllegalArgumentException("전화번호를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "電話番号を入力してください。");
         }
         if (input.getBirthDate() == null) {
-            throw new IllegalArgumentException("생년월일을 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "生年月日を入力してください。");
         }
     }
 
@@ -68,7 +71,7 @@ public class CreateAccountService {
 
         List<User> existingUsers = userMapper.selectByExample(example);
         if (!existingUsers.isEmpty()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new DuplicateException(ErrorCode.DUPLICATE_EMAIL);
         }
     }
 }

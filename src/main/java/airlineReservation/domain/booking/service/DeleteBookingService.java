@@ -3,6 +3,9 @@ package airlineReservation.domain.booking.service;
 import airlineReservation.domain.booking.serviceInput.DeleteBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.DeleteBookingServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.PassengerDetail;
 import airlineReservation.infra.entity.PassengerDetailExample;
@@ -28,15 +31,15 @@ public class DeleteBookingService {
     @Transactional
     public DeleteBookingServiceOutput delete(DeleteBookingServiceInput input) {
         if (input.getBookingId() == null) {
-            throw new IllegalArgumentException("예약 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "予約IDを入力してください。");
         }
 
         Booking booking = bookingMapper.selectByPrimaryKey(input.getBookingId());
         if (booking == null || Boolean.TRUE.equals(booking.getIsDeleted())) {
-            throw new IllegalArgumentException("존재하지 않는 예약입니다.");
+            throw new NotFoundException(ErrorCode.BOOKING_NOT_FOUND);
         }
         if (Const.BOOKING_STATUS.CANCELLED.equals(booking.getStatus())) {
-            throw new IllegalArgumentException("이미 취소된 예약입니다.");
+            throw new InvalidInputValueException(ErrorCode.BOOKING_ALREADY_CANCELLED);
         }
 
         releaseSeatsForBooking(input.getBookingId(), input.getUpdatedBy());

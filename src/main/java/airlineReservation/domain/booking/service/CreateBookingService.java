@@ -3,6 +3,10 @@ package airlineReservation.domain.booking.service;
 import airlineReservation.domain.booking.serviceInput.CreateBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.CreateBookingServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.DuplicateException;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.dto.CreateBookingRequestPassengerListInner;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.PassengerDetail;
@@ -77,24 +81,24 @@ public class CreateBookingService {
 
     private void validateInput(CreateBookingServiceInput input) {
         if (input.getUserId() == null) {
-            throw new IllegalArgumentException("회원 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "会員IDを入力してください。");
         }
         if (input.getScheduleId() == null) {
-            throw new IllegalArgumentException("운항 일정 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "運航スケジュールIDを入力してください。");
         }
         if (input.getTotalPrice() == null || input.getTotalPrice() <= 0) {
-            throw new IllegalArgumentException("결제 금액을 확인해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INVALID_INPUT_VALUE, "支払金額を確認してください。");
         }
         if (input.getPassengerList() == null || input.getPassengerList().isEmpty()) {
-            throw new IllegalArgumentException("탑승객 정보를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "搭乗者情報を入力してください。");
         }
 
         for (CreateBookingRequestPassengerListInner passenger : input.getPassengerList()) {
             if (passenger.getSeat() == null || passenger.getSeat().isBlank()) {
-                throw new IllegalArgumentException("좌석을 선택해 주세요.");
+                throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "座席を選択してください。");
             }
             if (passenger.getName() == null || passenger.getName().isBlank()) {
-                throw new IllegalArgumentException("탑승객 이름을 입력해 주세요.");
+                throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "搭乗者名を入力してください。");
             }
         }
     }
@@ -113,12 +117,15 @@ public class CreateBookingService {
 
             List<ScheduleSeat> seats = scheduleSeatMapper.selectByExample(example);
             if (seats.isEmpty()) {
-                throw new IllegalArgumentException("존재하지 않는 좌석입니다: " + passenger.getSeat());
+                throw new NotFoundException(ErrorCode.SEAT_NOT_FOUND, "存在しない座席です: " + passenger.getSeat());
             }
 
             ScheduleSeat scheduleSeat = seats.get(0);
             if (!Const.BOOKING_STATUS.AVAILABLE.equals(scheduleSeat.getStatus())) {
-                throw new IllegalArgumentException("선택한 좌석이 이미 예약되었습니다: " + passenger.getSeat());
+                throw new DuplicateException(
+                        ErrorCode.DUPLICATE_SEAT,
+                        "選択した座席は既に予約されています: " + passenger.getSeat()
+                );
             }
 
             reservedSeats.add(scheduleSeat);

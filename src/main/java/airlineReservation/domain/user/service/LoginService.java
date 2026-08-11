@@ -2,6 +2,9 @@ package airlineReservation.domain.user.service;
 
 import airlineReservation.domain.user.serviceInput.LoginServiceInput;
 import airlineReservation.domain.user.serviceOutput.LoginServiceOutput;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.UnauthorizedException;
 import airlineReservation.global.security.JwtTokenProvider;
 import airlineReservation.infra.entity.User;
 import airlineReservation.infra.entity.UserExample;
@@ -30,12 +33,12 @@ public class LoginService {
 
         List<User> users = userMapper.selectByExample(example);
         if (users.isEmpty()) {
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
+            throw new UnauthorizedException(ErrorCode.LOGIN_FAILED);
         }
 
         User user = users.get(0);
         if (!passwordEncoder.matches(input.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
+            throw new UnauthorizedException(ErrorCode.LOGIN_FAILED);
         }
 
         String accessToken = jwtTokenProvider.createToken(
@@ -52,10 +55,10 @@ public class LoginService {
 
     private void validateInput(LoginServiceInput input) {
         if (input.getEmail() == null || input.getEmail().isBlank()) {
-            throw new IllegalArgumentException("이메일을 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "メールアドレスを入力してください。");
         }
         if (input.getPassword() == null || input.getPassword().isBlank()) {
-            throw new IllegalArgumentException("비밀번호를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "パスワードを入力してください。");
         }
     }
 }

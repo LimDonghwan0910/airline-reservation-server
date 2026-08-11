@@ -2,6 +2,9 @@ package airlineReservation.domain.admin.service;
 
 import airlineReservation.domain.admin.serviceInput.DeleteScheduleTemplateServiceInput;
 import airlineReservation.domain.admin.serviceOutput.DeleteScheduleTemplateServiceOutput;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Schedule;
 import airlineReservation.infra.entity.ScheduleExample;
 import airlineReservation.infra.entity.ScheduleTemplates;
@@ -26,12 +29,15 @@ public class DeleteScheduleTemplateService {
     @Transactional
     public DeleteScheduleTemplateServiceOutput delete(DeleteScheduleTemplateServiceInput input) {
         if (input.getTemplateId() == null) {
-            throw new IllegalArgumentException("템플릿 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "テンプレートIDを入力してください。");
         }
 
         ScheduleTemplates template = scheduleTemplatesMapper.selectByPrimaryKey(input.getTemplateId());
         if (template == null) {
-            throw new IllegalArgumentException("존재하지 않는 정기 운항 템플릿입니다: " + input.getTemplateId());
+            throw new NotFoundException(
+                    ErrorCode.TEMPLATE_NOT_FOUND,
+                    "存在しない定期運航テンプレートです: " + input.getTemplateId()
+            );
         }
 
         cancelLinkedSchedules(input.getTemplateId());

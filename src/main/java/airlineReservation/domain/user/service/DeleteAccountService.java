@@ -5,6 +5,9 @@ import airlineReservation.domain.booking.serviceInput.DeleteBookingServiceInput;
 import airlineReservation.domain.user.serviceInput.DeleteAccountServiceInput;
 import airlineReservation.domain.user.serviceOutput.DeleteAccountServiceOutput;
 import airlineReservation.global.constant.Const;
+import airlineReservation.global.exception.ErrorCode;
+import airlineReservation.global.exception.InvalidInputValueException;
+import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.BookingExample;
 import airlineReservation.infra.entity.User;
@@ -28,12 +31,12 @@ public class DeleteAccountService {
     @Transactional
     public DeleteAccountServiceOutput delete(DeleteAccountServiceInput input) {
         if (input.getUserId() == null) {
-            throw new IllegalArgumentException("회원 ID를 입력해 주세요.");
+            throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "会員IDを入力してください。");
         }
 
         User user = userMapper.selectByPrimaryKey(input.getUserId());
         if (user == null || Boolean.TRUE.equals(user.getIsDeleted())) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+            throw new NotFoundException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         cancelActiveBookings(input.getUserId());
