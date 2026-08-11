@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 예약 조회 MyBatis 조회 결과 1행.
+ * 予約検索 MyBatis 検索結果の1行。
  *
- * passenger_details LEFT JOIN 때문에 탑승객 1명 = row 1개.
- * 예) 3명 예약 → 동일 bookingId로 row 3개 반환 → Service에서 묶어야 함.
+ * passenger_details の LEFT JOIN により搭乗者1名 = row 1件。
+ * 例) 3名予約 → 同一 bookingId で row 3件返却 → Service でまとめる必要がある。
  */
 @Getter
 @Builder
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class SearchBookingVo {
 
-    // --- 예약 + 항공편 + 회원 정보 (bookingId당 동일 값 반복) ---
+    // --- 予約 + 航空便 + 会員情報（bookingId ごとに同じ値が繰り返される） ---
     private Integer bookingId;
     private Integer userId;
     private Integer scheduleId;
@@ -33,7 +33,7 @@ public class SearchBookingVo {
     private Integer totalPrice;
     private LocalDateTime bookedTime;
 
-    // --- 탑승객/좌석 정보 (row마다 다름, 없으면 null) ---
+    // --- 搭乗者/座席情報（row ごとに異なる。無い場合は null） ---
     private String passengerName;
     private String seatName;
 

@@ -8,16 +8,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service // ① 스프링의 비즈니스 로직 레이어 컴포넌트로 등록합니다.
-@RequiredArgsConstructor // ② final이 붙은 리포지토리를 스프링이 자동으로 주입(DI)해 줍니다.
+@Service // ① Spring のビジネスロジック層コンポーネントとして登録する
+@RequiredArgsConstructor // ② final のリポジトリを Spring が自動注入（DI）する
 public class CreateAircraftService {
 
     private final AircraftMapper aircraftMapper;
 
     /**
-     * 항공기 생성 비즈니스 로직
+     * 航空機作成のビジネスロジック
      */
-    @Transactional // ③ 데이터가 안전하게 DB에 저장되거나 오류 시 롤백되도록 트랜잭션을 걸어줍니다.
+    @Transactional // ③ データを安全に DB へ保存し、エラー時はロールバックする
     public CreateAircraftServiceOutput create(CreateAircraftServiceInput input) {
 
         Aircraft entity = new Aircraft();
@@ -29,7 +29,7 @@ public class CreateAircraftService {
 
         aircraftMapper.insertSelective(entity);
 
-        // 4. 컨트롤러로 돌려줄 성공 결과(Output DTO) 조립
+        // 4. コントローラへ返す成功結果（Output DTO）を組み立てる
         return CreateAircraftServiceOutput.builder()
                 .build();
     }

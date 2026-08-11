@@ -1,15 +1,15 @@
 spring:
   datasource:
-    # db설정
+    # DB設定
     url: jdbc:postgresql://localhost:5433/airline_reservation
     username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}  # 도커 컨테이너 생성 시 설정한 비밀번호 입력
+    password: ${DB_PASSWORD}  # Docker コンテナ作成時に設定したパスワードを入力
     driver-class-name: org.postgresql.Driver
 
 mybatis:
-  # XML 매퍼 파일들의 위치 지정(resources/mapper/ 폴더 안의 모든 XML)
+  # XML マッパーファイルの位置指定（resources/mapper/ 配下の全 XML）
   mapper-locations: classpath:mapper/**/*.xml
-  # 패키지명을 생략할 수 있도록 기본 패키지를 지정
+  # パッケージ名を省略できるようデフォルトパッケージを指定
   type-aliases-package: airlineReservation.infra.entity
   configuration:
     map-underscore-to-camel-case: true

@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 관리자 예약 조회 DTO 변환.
- * SearchBookingServiceMapper와 toResponse 로직은 동일, 입력 조건만 다름.
+ * 管理者の予約検索 DTO 変換。
+ * SearchBookingServiceMapper と toResponse ロジックは同じで、入力条件のみ異なる。
  */
 @Component
 public class SearchBookingByAdminServiceMapper {
 
-    /** API 요청 → 서비스 입력값 (aircraftId는 API에서 Integer → String 변환) */
+    /** API リクエスト → サービス入力値（aircraftId は API で Integer → String 変換） */
     public SearchBookingByAdminServiceInput toServiceInput(SearchBookingByAdminRequest request) {
         if (request == null) {
             return SearchBookingByAdminServiceInput.builder().build();
@@ -36,7 +36,7 @@ public class SearchBookingByAdminServiceMapper {
                 .build();
     }
 
-    /** 서비스 결과 → API 응답 (일반회원 조회와 동일한 Response 구조) */
+    /** サービス結果 → API レスポンス（一般会員検索と同じ Response 構造） */
     public SearchBookingResponse toResponse(SearchBookingServiceOutput output) {
         SearchBookingResponse response = new SearchBookingResponse();
         List<SearchBookingResponseBookingListInner> bookingList = new ArrayList<>();

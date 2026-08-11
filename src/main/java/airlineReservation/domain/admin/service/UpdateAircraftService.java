@@ -1,8 +1,6 @@
 package airlineReservation.domain.admin.service;
 
-import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceInput.UpdateAircraftServiceInput;
-import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.UpdateAircraftServiceOutput;
 import airlineReservation.infra.entity.Aircraft;
 import airlineReservation.infra.mapper.AircraftMapper;
@@ -17,7 +15,7 @@ public class UpdateAircraftService {
     private final AircraftMapper aircraftMapper;
 
     /**
-     * 항공기 수정 비즈니스 로직
+     * 航空機更新のビジネスロジック
      */
     @Transactional
     public UpdateAircraftServiceOutput update(UpdateAircraftServiceInput input) {

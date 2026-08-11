@@ -6,23 +6,23 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 /**
- * 관리자 예약 조회 서비스 입력값.
- * 모든 필드 선택 — null이면 SQL에서 해당 조건을 적용하지 않음.
+ * 管理者の予約検索サービス入力値。
+ * 全フィールド任意 — null の場合、SQL で該当条件を適用しない。
  */
 @Getter
 @Builder
 public class SearchBookingByAdminServiceInput {
 
-    /** 회원 ID 필터 (선택) */
+    /** 会員IDフィルタ（任意） */
     private final Integer userId;
 
-    /** 항공기 ID 필터 (선택) */
+    /** 航空機IDフィルタ（任意） */
     private final String aircraftId;
 
-    /** 출발일 필터 — 해당 날짜와 정확히 일치 (선택) */
+    /** 出発日フィルタ — 該当日付と完全一致（任意） */
     private final LocalDate departureDate;
 
-    /** 도착일 필터 — 해당 날짜와 정확히 일치 (선택) */
+    /** 到着日フィルタ — 該当日付と完全一致（任意） */
     private final LocalDate arrivalDate;
 
 }

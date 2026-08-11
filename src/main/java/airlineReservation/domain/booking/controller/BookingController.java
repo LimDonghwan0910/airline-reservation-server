@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 일반회원 예약 API (등록, 조회) */
+/** 一般会員の予約 API（登録、検索） */
 @RestController
 @RequiredArgsConstructor
 public class BookingController {
@@ -55,12 +55,12 @@ public class BookingController {
     }
 
     /**
-     * GET /api/v1/searchBooking — 일반회원 예약 조회
+     * GET /api/v1/searchBooking — 一般会員の予約検索
      *
-     * @param userId  조회 대상 회원 ID (현재는 쿼리 파라미터, 추후 세션으로 변경 예정)
-     * @param request fromDate — 이 날짜 이후 출발 예약만 조회 (선택)
+     * @param userId  検索対象の会員ID（現在はクエリパラメータ。今後セッションへ変更予定）
+     * @param request fromDate — この日付以降の出発予約のみ検索（任意）
      *
-     * 흐름: Request DTO → ServiceInput → Service → ServiceOutput → Response DTO
+     * 流れ: Request DTO → ServiceInput → Service → ServiceOutput → Response DTO
      */
     @GetMapping(ApiEndpoints.Booking.SEARCH_BOOKING)
     public ResponseEntity<SearchBookingResponse> searchBooking(

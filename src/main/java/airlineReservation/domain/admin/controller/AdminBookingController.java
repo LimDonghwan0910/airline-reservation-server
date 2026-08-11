@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 관리자 예약 조회 API */
+/** 管理者の予約検索 API */
 @RestController
 @RequiredArgsConstructor
 public class AdminBookingController {
@@ -33,10 +33,10 @@ public class AdminBookingController {
     private final DeleteBookingServiceMapper deleteBookingMapper;
 
     /**
-     * GET /api/v1/admin/searchBooking — 관리자 예약 조회
+     * GET /api/v1/admin/searchBooking — 管理者の予約検索
      *
-     * 일반회원 조회와 동일한 SearchBookingService.searchByAdmin() + buildOutput() 사용.
-     * 차이는 검색 조건(userId, aircraftId, 출발일, 도착일)뿐.
+     * 一般会員検索と同じ SearchBookingService.searchByAdmin() + buildOutput() を使用する。
+     * 違いは検索条件（userId、aircraftId、出発日、到着日）のみ。
      */
     @GetMapping(ApiEndpoints.Admin.SEARCH_BOOKING_BY_ADMIN)
     public ResponseEntity<SearchBookingResponse> searchBookingByAdmin(

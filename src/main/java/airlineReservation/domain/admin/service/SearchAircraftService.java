@@ -1,56 +1,53 @@
 package airlineReservation.domain.admin.service;
 
-import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceInput.SearchAircraftServiceInput;
-import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.SearchAircraftServiceOutput;
 import airlineReservation.infra.entity.Aircraft;
 import airlineReservation.infra.entity.AircraftExample;
 import airlineReservation.infra.mapper.AircraftMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-@Service // ① 스프링의 비즈니스 로직 레이어 컴포넌트로 등록합니다.
-@RequiredArgsConstructor // ② final이 붙은 리포지토리를 스프링이 자동으로 주입(DI)해 줍니다.
+@Service // ① Spring のビジネスロジック層コンポーネントとして登録する
+@RequiredArgsConstructor // ② final のリポジトリを Spring が自動注入（DI）する
 public class SearchAircraftService {
 
     private final AircraftMapper aircraftMapper;
 
     /**
-     * 항공기 조건 검색 비즈니스 로직
+     * 航空機条件検索のビジネスロジック
      */
     public SearchAircraftServiceOutput search(SearchAircraftServiceInput input) {
 
-        // 2. MBG의 핵심 부품인 Example 객체를 생성합니다. (동적 WHERE 절을 만들어 줍니다)
+        // 2. MBG の中核部品である Example オブジェクトを生成する（動的 WHERE 句を作る）
         AircraftExample example = new AircraftExample();
         AircraftExample.Criteria criteria = example.createCriteria();
 
-        // 3. 삭제되지 않은(is_deleted = false) 비행기만 조회하도록 기본 조건을 겁니다.
+        // 3. 削除されていない（is_deleted = false）航空機のみを検索する基本条件を付ける
         criteria.andIsDeletedEqualTo(false);
 
-        // 4. 항공기 ID 조건이 들어온 경우 (동적 쿼리)
+        // 4. 航空機 ID 条件が渡された場合（動的クエリ）
         if (StringUtils.hasText(input.getAircraftId())) {
-            // 완전히 일치하는 ID를 찾거나, 필요시 Like 검색으로 변경 가능합니다.
+            // 完全一致の ID を検索する。必要なら Like 検索へ変更可能
             criteria.andAircraftIdEqualTo(input.getAircraftId());
         }
 
-        // 5. 항공기 이름 조건이 들어온 경우 (동적 쿼리 - 포함 검색 Like 적용)
+        // 5. 航空機名条件が渡された場合（動的クエリ - 部分一致 Like）
         if (StringUtils.hasText(input.getAircraftName())) {
-            // %이름% 형태로 매핑하여 부분 일치 검색이 가능하게 만듭니다.
+            // %名前% 形式でマッピングし、部分一致検索を可能にする
             criteria.andAircraftNameLike("%" + input.getAircraftName() + "%");
         }
 
-        // 정렬 조건 추가 (예: 최신순 또는 ID순으로 정렬하고 싶을 때)
+        // ソート条件を追加（例: 最新順または ID 順で並べたいとき）
         example.setOrderByClause("aircraft_id ASC");
 
-        // 6. MBG가 만들어 준 selectByExample 메서드로 DB 조회를 실행합니다.
+        // 6. MBG が生成した selectByExample メソッドで DB 検索を実行する
         List<Aircraft> aircraftList = aircraftMapper.selectByExample(example);
 
-        // 7. 서비스 출력 DTO에 담아서 컨트롤러로 반환합니다.
+        // 7. サービス出力 DTO に詰めてコントローラへ返す
         return SearchAircraftServiceOutput.builder()
                 .aircraftList(aircraftList)
                 .build();

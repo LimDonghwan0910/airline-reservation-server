@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 일반회원 예약 조회 DTO 변환.
+ * 一般会員の予約検索 DTO 変換。
  *
- * Controller(API DTO) ↔ Service(ServiceInput/ServiceOutput) 사이 형식 변환 담당.
- * OpenAPI 자동생성 DTO와 서비스 내부 모델을 분리하기 위해 존재한다.
+ * Controller（API DTO）↔ Service（ServiceInput/ServiceOutput）間の形式変換を担当する。
+ * OpenAPI 自動生成 DTO とサービス内部モデルを分離するために存在する。
  */
 @Component
 public class SearchBookingServiceMapper {
 
-    /** API 요청 + userId → 서비스 입력값 */
+    /** API リクエスト + userId → サービス入力値 */
     public SearchBookingServiceInput toServiceInput(Integer userId, SearchBookingRequest request) {
         return SearchBookingServiceInput.builder()
                 .userId(userId)
@@ -28,7 +28,7 @@ public class SearchBookingServiceMapper {
                 .build();
     }
 
-    /** 서비스 결과 → API 응답 JSON 형태 */
+    /** サービス結果 → API レスポンス JSON 形式 */
     public SearchBookingResponse toResponse(SearchBookingServiceOutput output) {
         SearchBookingResponse response = new SearchBookingResponse();
         List<SearchBookingResponseBookingListInner> bookingList = new ArrayList<>();
@@ -58,7 +58,7 @@ public class SearchBookingServiceMapper {
         return response;
     }
 
-    /** 좌석 목록을 OpenAPI 스키마(예약등록과 동일한 seat/name 구조)로 변환 */
+    /** 座席一覧を OpenAPI スキーマ（予約登録と同じ seat/name 構造）へ変換する */
     private List<CreateBookingRequestPassengerListInner> toSeatList(
             List<SearchBookingServiceOutput.SeatItem> seats
     ) {

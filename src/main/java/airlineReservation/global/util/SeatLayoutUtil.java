@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 항공기 좌석 배치 유틸.
- * 프론트엔드 seatLayout.js 와 동일한 규칙으로 좌석명을 생성한다.
+ * 航空機座席レイアウトユーティリティ。
+ * フロントエンド seatLayout.js と同じ規則で座席名を生成する。
  */
 public final class SeatLayoutUtil {
 
@@ -19,8 +19,8 @@ public final class SeatLayoutUtil {
     }
 
     /**
-     * rowCount × columnCount 기준으로 좌석명 목록 생성.
-     * 예) rowCount=2, columnCount=3 → 1A, 1B, 1C, 2A, 2B, 2C
+     * rowCount × columnCount を基準に座席名一覧を生成する。
+     * 例) rowCount=2, columnCount=3 → 1A, 1B, 1C, 2A, 2B, 2C
      */
     public static List<String> generateSeatNames(int rowCount, int columnCount) {
         int safeRows = clamp(rowCount, MIN_ROWS, MAX_ROWS);

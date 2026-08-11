@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 예약 조회 서비스 결과.
+ * 予約検索サービスの結果。
  *
- * DB에서는 좌석마다 row가 나오지만, Service의 buildOutput()에서
- * 예약 1건 = BookingItem + seats[] 형태로 묶인다.
+ * DB では座席ごとに row が出るが、Service の buildOutput() で
+ * 予約1件 = BookingItem + seats[] の形にまとめられる。
  */
 @Getter
 @Builder
@@ -18,7 +18,7 @@ public class SearchBookingServiceOutput {
 
     private final List<BookingItem> bookingList;
 
-    /** 예약 1건 (항공편 정보 + 탑승객/좌석 목록) */
+    /** 予約1件（航空便情報 + 搭乗者/座席一覧） */
     @Getter
     @Builder
     public static class BookingItem {
@@ -34,14 +34,14 @@ public class SearchBookingServiceOutput {
         private final LocalDateTime arrivalDatetime;
         private final String status;
         private final Integer totalPrice;
-        /** 탑승객 수 = seats.size() */
+        /** 搭乗者数 = seats.size() */
         private final Integer passengerCount;
         private final List<SeatItem> seats;
         private final LocalDateTime bookedTime;
 
     }
 
-    /** 탑승객 1명의 좌석 정보 */
+    /** 搭乗者1名の座席情報 */
     @Getter
     @Builder
     public static class SeatItem {

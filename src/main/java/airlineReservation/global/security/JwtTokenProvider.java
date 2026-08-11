@@ -27,8 +27,8 @@ public class JwtTokenProvider {
     }
 
     /**
-     * 로그인 성공 시 JWT 발급.
-     * subject = email (로그인 ID와 동일, Spring Security username으로 사용)
+     * ログイン成功時に JWT を発行する。
+     * subject = email（ログインIDと同じ。Spring Security の username として使用）
      */
     public String createToken(String email, Integer userId, Integer roleCode) {
         Date now = new Date();

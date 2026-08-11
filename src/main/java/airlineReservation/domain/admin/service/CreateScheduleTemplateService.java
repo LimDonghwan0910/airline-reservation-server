@@ -19,21 +19,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 정기 운항 템플릿 생성 서비스.
+ * 定期運航テンプレート作成サービス。
  *
- * [처리 흐름]
- * 1) schedule_templates 테이블에 "정기 운항 규칙(템플릿)" 1건 저장
- * 2) 시작일~종료일 사이 날짜를 하루씩 순회
- * 3) 그날 요일이 선택된 요일(mon~sun)이면 schedules 테이블에 실제 운항 1건 저장
+ * [処理フロー]
+ * 1) schedule_templates テーブルに「定期運航ルール（テンプレート）」を1件保存
+ * 2) 開始日〜終了日の日付を1日ずつ走査
+ * 3) その日の曜日が選択曜日（mon〜sun）であれば schedules テーブルに実運航を1件保存
  *
- * 예) 2026-07-01 ~ 2026-07-31, 화/목 선택, 09:00 출발
- *   → schedule_templates 1건 + 해당 기간의 모든 화요일/목요일 schedules N건 생성
+ * 例) 2026-07-01 ~ 2026-07-31、火/木選択、09:00出発
+ *   → schedule_templates 1件 + 当該期間の全火曜日/木曜日 schedules N件を生成
  */
 @Service
 @RequiredArgsConstructor
 public class CreateScheduleTemplateService {
 
-    /** schedules.status 기본값: 예정(SCHEDULED) */
+    /** schedules.status のデフォルト値: 予定（SCHEDULED） */
     private static final String STATUS_SCHEDULED = "SCHEDULED";
 
     private final ScheduleTemplatesMapper scheduleTemplatesMapper;
@@ -42,22 +42,22 @@ public class CreateScheduleTemplateService {
     private final ScheduleSeatProvisioningService scheduleSeatProvisioningService;
 
     /**
-     * 정기 운항 템플릿 + 실제 스케줄 일괄 생성.
-     * @Transactional: 템플릿/스케줄 중 하나라도 실패하면 전체 롤백
+     * 定期運航テンプレート + 実スケジュールを一括作成する。
+     * @Transactional: テンプレート/スケジュールのいずれかが失敗した場合、全体をロールバックする
      */
     @Transactional
     public CreateScheduleTemplateServiceOutput create(CreateScheduleTemplateServiceInput input) {
-        // 1. 항공기·공항이 DB에 존재하는지 검증 (없으면 예외 발생)
+        // 1. 航空機・空港が DB に存在するか検証（無ければ例外）
         scheduleReferenceValidator.validateAircraft(input.getAircraftId());
         scheduleReferenceValidator.validateAirport(input.getDepartureAirportId());
         scheduleReferenceValidator.validateAirport(input.getArrivalAirportId());
 
         CreateScheduleTemplateRequestDaysOfWeek daysOfWeek = input.getDaysOfWeek();
 
-        // 2. schedule_templates에 템플릿 1건 저장 → 생성된 template_id 반환
+        // 2. schedule_templates にテンプレートを1件保存 → 生成された template_id を返す
         Integer templateId = insertScheduleTemplate(input, daysOfWeek);
 
-        // 3. 시작일부터 종료일까지 하루씩 순회하며, 선택된 요일이면 schedules에 저장
+        // 3. 開始日から終了日まで1日ずつ走査し、選択曜日なら schedules に保存
         LocalDate currentDate = input.getStartDate();
         while (!currentDate.isAfter(input.getEndDate())) {
             if (isSelectedDayOfWeek(currentDate.getDayOfWeek(), daysOfWeek)) {
@@ -71,8 +71,8 @@ public class CreateScheduleTemplateService {
     }
 
     /**
-     * schedule_templates(정기 운항 템플릿) 1건 INSERT.
-     * 템플릿은 "언제, 어떤 요일, 몇 시에 운항하는지"의 규칙만 저장한다.
+     * schedule_templates（定期運航テンプレート）を1件 INSERT する。
+     * テンプレートは「いつ、どの曜日、何時に運航するか」のルールのみを保存する。
      */
     private Integer insertScheduleTemplate(
             CreateScheduleTemplateServiceInput input,
@@ -87,7 +87,7 @@ public class CreateScheduleTemplateService {
         template.setArrivalTime(input.getArrivalTime());
         template.setPrice(input.getPrice());
 
-        // API의 daysOfWeek(mon~sun) → DB 컬럼 is_monday ~ is_sunday 로 변환
+        // API の daysOfWeek（mon〜sun）→ DB カラム is_monday 〜 is_sunday へ変換
         template.setIsMonday(isDaySelected(daysOfWeek, DayOfWeek.MONDAY));
         template.setIsTuesday(isDaySelected(daysOfWeek, DayOfWeek.TUESDAY));
         template.setIsWednesday(isDaySelected(daysOfWeek, DayOfWeek.WEDNESDAY));
@@ -98,12 +98,12 @@ public class CreateScheduleTemplateService {
 
         scheduleTemplatesMapper.insertSelective(template);
 
-        // insertSelective 후 templateId가 entity에 자동 세팅되면 바로 반환
+        // insertSelective 後に templateId が entity へ自動設定されていればそのまま返す
         if (template.getTemplateId() != null) {
             return template.getTemplateId();
         }
 
-        // MyBatis 설정에 따라 PK가 entity에 안 채워질 수 있어, 방금 넣은 데이터로 재조회
+        // MyBatis 設定により PK が entity に埋まらない場合があるため、直前に挿入したデータで再検索する
         ScheduleTemplatesExample example = new ScheduleTemplatesExample();
         example.createCriteria()
                 .andAircraftIdEqualTo(template.getAircraftId())
@@ -116,23 +116,23 @@ public class CreateScheduleTemplateService {
         return scheduleTemplatesMapper.selectByExample(example).stream()
                 .findFirst()
                 .map(ScheduleTemplates::getTemplateId)
-                .orElseThrow(() -> new IllegalStateException("schedule_templates template_id 생성에 실패했습니다."));
+                .orElseThrow(() -> new IllegalStateException("schedule_templates の template_id 生成に失敗しました。"));
     }
 
     /**
-     * schedules(실제 운항 일정) 1건 INSERT.
+     * schedules（実運航スケジュール）を1件 INSERT する。
      *
-     * @param templateId  연결된 템플릿 PK (schedule_templates.template_id)
-     * @param flightDate  이 스케줄의 운항 날짜 (루프에서 하루씩 넘어오는 값)
+     * @param templateId  紐づくテンプレート PK（schedule_templates.template_id）
+     * @param flightDate  このスケジュールの運航日（ループで1日ずつ渡される値）
      */
     private void insertSchedule(
             Integer templateId,
             CreateScheduleTemplateServiceInput input,
             LocalDate flightDate) {
-        // 날짜 + 시각 → departure_datetime (예: 2026-07-22 09:00:00)
+        // 日付 + 時刻 → departure_datetime（例: 2026-07-22 09:00:00）
         LocalDateTime departureDateTime = LocalDateTime.of(flightDate, input.getDepartureTime());
 
-        // 도착 시각이 출발 시각보다 이르면 익일 도착 (예: 23:00 출발 → 01:00 다음날 도착)
+        // 到着時刻が出発時刻より早い場合は翌日到着（例: 23:00出発 → 01:00 翌日到着）
         LocalDate arrivalDate = input.getArrivalTime().isBefore(input.getDepartureTime())
                 ? flightDate.plusDays(1)
                 : flightDate;
@@ -154,8 +154,8 @@ public class CreateScheduleTemplateService {
     }
 
     /**
-     * insertSelective 후 schedule_id를 반환한다.
-     * MyBatis 설정에 따라 PK가 entity에 채워지지 않을 수 있어 재조회한다.
+     * insertSelective 後に schedule_id を返す。
+     * MyBatis 設定により PK が entity に埋まらない場合があるため再検索する。
      */
     private Integer resolveScheduleId(Schedule schedule) {
         if (schedule.getScheduleId() != null) {
@@ -173,17 +173,17 @@ public class CreateScheduleTemplateService {
         return scheduleMapper.selectByExample(example).stream()
                 .findFirst()
                 .map(Schedule::getScheduleId)
-                .orElseThrow(() -> new IllegalStateException("schedules schedule_id 생성에 실패했습니다."));
+                .orElseThrow(() -> new IllegalStateException("schedules の schedule_id 生成に失敗しました。"));
     }
 
-    /** 특정 날짜의 요일이 사용자가 선택한 요일인지 확인 */
+    /** 特定日付の曜日がユーザーが選択した曜日かどうかを確認する */
     private boolean isSelectedDayOfWeek(DayOfWeek dayOfWeek, CreateScheduleTemplateRequestDaysOfWeek daysOfWeek) {
         return isDaySelected(daysOfWeek, dayOfWeek);
     }
 
     /**
-     * daysOfWeek 객체에서 해당 요일 flag(mon~sun)가 true인지 확인.
-     * null이거나 false면 운항하지 않는 요일로 간주.
+     * daysOfWeek オブジェクトで該当曜日フラグ（mon〜sun）が true かどうかを確認する。
+     * null または false の場合は運航しない曜日とみなす。
      */
     private boolean isDaySelected(CreateScheduleTemplateRequestDaysOfWeek daysOfWeek, DayOfWeek dayOfWeek) {
         if (daysOfWeek == null) {

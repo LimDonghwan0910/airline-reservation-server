@@ -1,25 +1,25 @@
 package airlineReservation.global.constant;
 
 public class ApiEndpoints {
-    // API 버전 관리용 베이스 프리픽스
+    // APIバージョン管理用ベースプレフィックス
     public static final String API_V1 = "/api/v1";
     public static final String ADMIN_V1 = "/api/v1/admin";
 
-    // 유저
+    // ユーザー
     public static class Auth {
         public static final String CREATE_ACCOUNT = API_V1 + "/account/create";
         public static final String DELETE_ACCOUNT = API_V1 + "/account/delete";
         public static final String LOGIN = API_V1 + "/login";
     }
 
-    // 공통
+    // 共通
     public static class Common {
         public static final String GET_AIRPORTS = API_V1 + "/airports/get";
         public static final String GET_FLIGHTS = API_V1 + "/flights/get";
         public static final String GET_SEATS = API_V1 + "/seats/get";
     }
 
-    // 예약
+    // 予約
     public static class Booking {
         public static final String CREATE_BOOKING = API_V1 + "/bookings/create";
         public static final String SEARCH_BOOKING = API_V1 + "/bookings/search";
@@ -27,7 +27,7 @@ public class ApiEndpoints {
         public static final String DELETE_BOOKING = API_V1 + "/bookings/delete";
     }
 
-    // 관리자
+    // 管理者
     public static class Admin {
         public static final String CREATE_AIRCRAFT = ADMIN_V1 + "/aircrafts/create";
         public static final String SEARCH_AIRCRAFT = ADMIN_V1 + "/aircrafts/search";

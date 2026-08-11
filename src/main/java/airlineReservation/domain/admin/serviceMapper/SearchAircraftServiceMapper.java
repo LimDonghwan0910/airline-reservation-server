@@ -1,10 +1,10 @@
 package airlineReservation.domain.admin.serviceMapper;
 
-import airlineReservation.domain.admin.serviceInput.CreateAircraftServiceInput;
 import airlineReservation.domain.admin.serviceInput.SearchAircraftServiceInput;
-import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.SearchAircraftServiceOutput;
-import airlineReservation.infra.dto.*;
+import airlineReservation.infra.dto.SearchAircraftRequest;
+import airlineReservation.infra.dto.SearchAircraftResponse;
+import airlineReservation.infra.dto.SearchAircraftResponseAircraftListInner;
 import airlineReservation.infra.entity.Aircraft;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ public class SearchAircraftServiceMapper {
 
         if (output.getAircraftList() != null) {
             for (Aircraft entity : output.getAircraftList()) {
-                // openapi-generator가 리스트 아이템용으로 자동 생성한 객체를 조립합니다.
+                // openapi-generator がリストアイテム用に自動生成したオブジェクトを組み立てる
                 SearchAircraftResponseAircraftListInner item = new SearchAircraftResponseAircraftListInner();
                 item.setAircraftId(entity.getAircraftId());
                 item.setAircraftName(entity.getAircraftName());
@@ -48,7 +48,7 @@ public class SearchAircraftServiceMapper {
             }
         }
 
-        // OpenAPI 응답 객체에 최종 리스트를 바인딩합니다.
+        // OpenAPI レスポンスオブジェクトに最終リストをバインドする
         response.setAircraftList(apiList);
         return response;
     }

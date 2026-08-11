@@ -9,10 +9,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // 모든 API 주소에 대해
-                .allowedOrigins("http://localhost:5173") // Vue.js 로컬 주소 허용
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-                .allowedHeaders("*") // 전역 설정에서는 스프링이 내부적으로 패턴을 처리해 주므로 * 사용 가능
-                .allowCredentials(true); // 쿠키/인증 허용
+        registry.addMapping("/**") // すべての API アドレスに対して
+                .allowedOrigins("http://localhost:5173") // Vue.js ローカルアドレスを許可
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 許可する HTTP メソッド
+                .allowedHeaders("*") // グローバル設定では Spring が内部でパターン処理するため * が使用可能
+                .allowCredentials(true); // Cookie / 認証を許可
     }
 }

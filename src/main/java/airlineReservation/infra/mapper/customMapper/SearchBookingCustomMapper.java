@@ -8,16 +8,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * 예약 조회 MyBatis Mapper.
- * SQL은 SearchBookingCustomMapper.xml에 정의.
+ * 予約検索 MyBatis Mapper。
+ * SQL は SearchBookingCustomMapper.xml に定義する。
  */
 @Mapper
 public interface SearchBookingCustomMapper {
 
     /**
-     * 일반회원 예약 목록 조회.
-     * @param userId   본인 예약만 (필수)
-     * @param fromDate 출발일 이후 필터 (선택)
+     * 一般会員の予約一覧検索。
+     * @param userId   本人の予約のみ（必須）
+     * @param fromDate 出発日以降フィルタ（任意）
      */
     List<SearchBookingVo> selectBookingListForMember(
             @Param("userId") Integer userId,
@@ -25,8 +25,8 @@ public interface SearchBookingCustomMapper {
     );
 
     /**
-     * 관리자 예약 목록 조회.
-     * 모든 파라미터 선택 — null이면 해당 조건 미적용
+     * 管理者の予約一覧検索。
+     * すべてのパラメータは任意 — null の場合、該当条件は適用しない
      */
     List<SearchBookingVo> selectBookingListForAdmin(
             @Param("userId") Integer userId,

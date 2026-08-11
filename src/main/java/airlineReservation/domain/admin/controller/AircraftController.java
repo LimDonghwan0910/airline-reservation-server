@@ -16,12 +16,23 @@ import airlineReservation.domain.admin.serviceOutput.CreateAircraftServiceOutput
 import airlineReservation.domain.admin.serviceOutput.DeleteAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.SearchAircraftServiceOutput;
 import airlineReservation.domain.admin.serviceOutput.UpdateAircraftServiceOutput;
-import airlineReservation.infra.dto.*;
 import airlineReservation.global.constant.ApiEndpoints;
+import airlineReservation.infra.dto.CreateAircraftRequest;
+import airlineReservation.infra.dto.CreateAircraftResponse;
+import airlineReservation.infra.dto.DeleteAircraftRequest;
+import airlineReservation.infra.dto.DeleteAircraftResponse;
+import airlineReservation.infra.dto.SearchAircraftRequest;
+import airlineReservation.infra.dto.SearchAircraftResponse;
+import airlineReservation.infra.dto.UpdateAircraftRequest;
+import airlineReservation.infra.dto.UpdateAircraftResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

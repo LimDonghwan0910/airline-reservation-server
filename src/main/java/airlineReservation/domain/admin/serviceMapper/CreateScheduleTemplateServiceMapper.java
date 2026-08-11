@@ -6,8 +6,6 @@ import airlineReservation.infra.dto.CreateScheduleTemplateRequest;
 import airlineReservation.infra.dto.CreateScheduleTemplateResponse;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
-
 @Component
 public class CreateScheduleTemplateServiceMapper {
 

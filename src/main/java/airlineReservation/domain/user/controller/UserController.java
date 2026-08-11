@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 회원 API (가입, 로그인, 탈퇴) */
+/** 会員 API（登録、ログイン、退会） */
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -38,6 +38,12 @@ public class UserController {
     private final DeleteAccountService deleteAccountService;
     private final DeleteAccountServiceMapper deleteAccountServiceMapper;
 
+    /**
+     * 新規会員登録を行う。
+     *
+     * @param request 会員登録リクエスト情報
+     * @return 登録結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Auth.CREATE_ACCOUNT)
     public ResponseEntity<CreateAccountResponse> createAccount(
             @RequestBody CreateAccountRequest request
@@ -49,6 +55,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    /**
+     * 会員ログイン処理を行う。
+     *
+     * @param request ログインリクエスト情報
+     * @return ログイン結果およびトークン情報
+     */
     @PostMapping(ApiEndpoints.Auth.LOGIN)
     public ResponseEntity<LoginResponse> login(
             @RequestBody LoginRequest request
@@ -60,6 +72,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    /**
+     * 会員退会処理を行う。
+     *
+     * @param request 退会リクエスト情報
+     * @return 退会処理結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Auth.DELETE_ACCOUNT)
     public ResponseEntity<DeleteAccountResponse> deleteAccount(
             @RequestBody DeleteAccountRequest request
