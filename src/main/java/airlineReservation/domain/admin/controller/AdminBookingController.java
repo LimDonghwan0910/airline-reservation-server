@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/** 管理者の予約検索 API */
+/** 管理者予約 API（検索、取消） */
 @RestController
 @RequiredArgsConstructor
 public class AdminBookingController {
@@ -33,10 +33,10 @@ public class AdminBookingController {
     private final DeleteBookingServiceMapper deleteBookingMapper;
 
     /**
-     * GET /api/v1/admin/searchBooking — 管理者の予約検索
+     * 管理者向け条件で予約一覧を検索する。
      *
-     * 一般会員検索と同じ SearchBookingService.searchByAdmin() + buildOutput() を使用する。
-     * 違いは検索条件（userId、aircraftId、出発日、到着日）のみ。
+     * @param request 予約検索リクエスト情報
+     * @return 予約一覧レスポンス
      */
     @GetMapping(ApiEndpoints.Admin.SEARCH_BOOKING_BY_ADMIN)
     public ResponseEntity<SearchBookingResponse> searchBookingByAdmin(
@@ -49,6 +49,12 @@ public class AdminBookingController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 予約を取消する。
+     *
+     * @param request 予約取消リクエスト情報
+     * @return 取消結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.DELETE_BOOKING)
     public ResponseEntity<DeleteBookingResponse> deleteBooking(
             @RequestBody DeleteBookingRequest request

@@ -1,5 +1,7 @@
 package airlineReservation.global.util;
 
+import airlineReservation.global.constant.Const;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +11,6 @@ import java.util.List;
  */
 public final class SeatLayoutUtil {
 
-    private static final String[] COLUMN_LABELS = {"A", "B", "C", "D", "E", "F", "G", "H", "I"};
-    private static final int MIN_ROWS = 1;
-    private static final int MAX_ROWS = 20;
-    private static final int MIN_COLS = 1;
-    private static final int MAX_COLS = 9;
-
     private SeatLayoutUtil() {
     }
 
@@ -23,13 +19,13 @@ public final class SeatLayoutUtil {
      * 例) rowCount=2, columnCount=3 → 1A, 1B, 1C, 2A, 2B, 2C
      */
     public static List<String> generateSeatNames(int rowCount, int columnCount) {
-        int safeRows = clamp(rowCount, MIN_ROWS, MAX_ROWS);
-        int safeCols = clamp(columnCount, MIN_COLS, MAX_COLS);
+        int safeRows = clamp(rowCount, Const.SEAT_LAYOUT.MIN_ROWS, Const.SEAT_LAYOUT.MAX_ROWS);
+        int safeCols = clamp(columnCount, Const.SEAT_LAYOUT.MIN_COLS, Const.SEAT_LAYOUT.MAX_COLS);
 
         List<String> seatNames = new ArrayList<>(safeRows * safeCols);
         for (int row = 1; row <= safeRows; row++) {
             for (int col = 0; col < safeCols; col++) {
-                seatNames.add(row + COLUMN_LABELS[col]);
+                seatNames.add(row + Const.SEAT_LAYOUT.COLUMN_LABELS.get(col));
             }
         }
         return seatNames;

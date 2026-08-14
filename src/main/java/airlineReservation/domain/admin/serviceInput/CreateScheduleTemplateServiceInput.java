@@ -11,11 +11,8 @@ import java.time.LocalTime;
 @Builder
 public class CreateScheduleTemplateServiceInput {
 
-    // 空港機コード
     private String aircraftId;
-    // 出発空港コード
     private String departureAirportId;
-    // 到着空港コード
     private String arrivalAirportId;
 
     private LocalDate startDate;

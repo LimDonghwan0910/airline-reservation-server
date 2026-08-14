@@ -68,7 +68,7 @@ public class GetSeatService {
                     "存在しない運航スケジュールです: " + input.getScheduleId()
             );
         }
-        if (Const.BOOKING_STATUS.CANCELLED.equals(schedule.getStatus())) {
+        if (Const.SCHEDULE_STATUS.CANCELLED.equals(schedule.getStatus())) {
             throw new InvalidInputValueException(
                     ErrorCode.INVALID_INPUT_VALUE,
                     "キャンセルされた運航スケジュールです: " + input.getScheduleId()

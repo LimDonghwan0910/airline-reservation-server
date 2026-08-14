@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+/**
+ * スケジュール作成時の参照整合性チェックを行うバリデータ。
+ */
 @Component
 @RequiredArgsConstructor
 public class ScheduleReferenceValidator {
@@ -20,6 +23,13 @@ public class ScheduleReferenceValidator {
     private final AircraftMapper aircraftMapper;
     private final AirportMapper airportMapper;
 
+    /**
+     * 航空機が存在し、削除されていないことを確認する。
+     *
+     * @param aircraftId チェック対象の航空機ID
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 航空機が存在しない場合
+     */
     public void validateAircraft(String aircraftId) {
         if (!StringUtils.hasText(aircraftId)) {
             throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "便名（航空機）を選択してください。");
@@ -39,6 +49,13 @@ public class ScheduleReferenceValidator {
         }
     }
 
+    /**
+     * 空港が存在し、削除されていないことを確認する。
+     *
+     * @param airportId チェック対象の空港ID
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 空港が存在しない場合
+     */
     public void validateAirport(String airportId) {
         if (!StringUtils.hasText(airportId)) {
             throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "空港を選択してください。");

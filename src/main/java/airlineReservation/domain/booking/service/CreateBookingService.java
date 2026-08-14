@@ -68,7 +68,7 @@ public class CreateBookingService {
 
             ScheduleSeat seatUpdate = new ScheduleSeat();
             seatUpdate.setScheduledSeatNo(scheduleSeat.getScheduledSeatNo());
-            seatUpdate.setStatus(Const.BOOKING_STATUS.OCCUPIED);
+            seatUpdate.setStatus(Const.SEAT_STATUS.OCCUPIED);
             seatUpdate.setUpdatedBy(input.getUserId());
             seatUpdate.setUpdatedAt(now);
             scheduleSeatMapper.updateByPrimaryKeySelective(seatUpdate);
@@ -121,7 +121,7 @@ public class CreateBookingService {
             }
 
             ScheduleSeat scheduleSeat = seats.get(0);
-            if (!Const.BOOKING_STATUS.AVAILABLE.equals(scheduleSeat.getStatus())) {
+            if (!Const.SEAT_STATUS.AVAILABLE.equals(scheduleSeat.getStatus())) {
                 throw new DuplicateException(
                         ErrorCode.DUPLICATE_SEAT,
                         "選択した座席は既に予約されています: " + passenger.getSeat()

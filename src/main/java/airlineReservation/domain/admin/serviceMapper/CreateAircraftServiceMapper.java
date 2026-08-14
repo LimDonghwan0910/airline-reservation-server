@@ -14,7 +14,6 @@ public class CreateAircraftServiceMapper {
             return null;
         }
 
-        // ② Builder Pattern または基本コンストラクタ + Setter で値をコピーする
         return CreateAircraftServiceInput.builder()
                 .aircraftId(request.getAircraftId())
                 .aircraftName(request.getAircraftName())
@@ -23,9 +22,6 @@ public class CreateAircraftServiceMapper {
                 .build();
     }
 
-    /**
-     * Service Output → Controller Response 変換
-     */
     public CreateAircraftResponse toResponse(CreateAircraftServiceOutput output) {
 
         return new CreateAircraftResponse();

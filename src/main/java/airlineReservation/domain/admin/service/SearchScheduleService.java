@@ -13,12 +13,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 運航スケジュール検索処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class SearchScheduleService {
 
     private final ScheduleMapper scheduleMapper;
 
+    /**
+     * 条件に合致する運航スケジュール一覧を取得する。
+     *
+     * @param input
+     * @return serviceOutput
+     */
     public SearchScheduleServiceOutput search(SearchScheduleServiceInput input) {
         ScheduleExample example = new ScheduleExample();
         ScheduleExample.Criteria criteria = example.createCriteria();

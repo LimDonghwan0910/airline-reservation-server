@@ -11,12 +11,21 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+/**
+ * 定期運航テンプレート検索処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class SearchScheduleTemplateService {
 
     private final ScheduleTemplatesMapper scheduleTemplatesMapper;
 
+    /**
+     * 条件に合致する定期運航テンプレート一覧を取得する。
+     *
+     * @param input
+     * @return serviceOutput
+     */
     public SearchScheduleTemplateServiceOutput search(SearchScheduleTemplateServiceInput input) {
         ScheduleTemplatesExample example = new ScheduleTemplatesExample();
         ScheduleTemplatesExample.Criteria criteria = example.createCriteria();

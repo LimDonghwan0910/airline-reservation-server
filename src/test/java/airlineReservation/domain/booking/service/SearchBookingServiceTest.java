@@ -4,6 +4,7 @@ import airlineReservation.domain.admin.serviceInput.SearchBookingByAdminServiceI
 import airlineReservation.domain.booking.serviceInput.SearchBookingServiceInput;
 import airlineReservation.domain.booking.serviceOutput.SearchBookingServiceOutput;
 import airlineReservation.domain.booking.vo.SearchBookingVo;
+import airlineReservation.global.constant.Const;
 import airlineReservation.global.exception.InvalidInputValueException;
 import airlineReservation.infra.mapper.customMapper.SearchBookingCustomMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -156,7 +157,7 @@ class SearchBookingServiceTest {
                 .arrivalAirportId("CJU")
                 .departureDatetime(departure)
                 .arrivalDatetime(arrival)
-                .status("COMPLETED")
+                .status(Const.BOOKING_STATUS.COMPLETED)
                 .totalPrice(150000)
                 .bookedTime(bookedTime)
                 .passengerName(passengerName)

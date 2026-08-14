@@ -70,8 +70,8 @@ class GetFlightServiceTest {
                     eq(departureDate.atStartOfDay()),
                     eq(departureDate.plusDays(1).atStartOfDay()),
                     eq(2),
-                    eq(Const.BOOKING_STATUS.CANCELLED),
-                    eq(Const.BOOKING_STATUS.AVAILABLE)
+                    eq(Const.SCHEDULE_STATUS.CANCELLED),
+                    eq(Const.SEAT_STATUS.AVAILABLE)
             )).thenReturn(List.of(flight));
 
             // When: フライト一覧取得を実行する
@@ -91,8 +91,8 @@ class GetFlightServiceTest {
                     eq(departureDate.atStartOfDay()),
                     eq(departureDate.plusDays(1).atStartOfDay()),
                     eq(2),
-                    eq(Const.BOOKING_STATUS.CANCELLED),
-                    eq(Const.BOOKING_STATUS.AVAILABLE)
+                    eq(Const.SCHEDULE_STATUS.CANCELLED),
+                    eq(Const.SEAT_STATUS.AVAILABLE)
             );
         }
 
@@ -111,8 +111,8 @@ class GetFlightServiceTest {
                     eq(departureDate.atStartOfDay()),
                     eq(departureDate.plusDays(1).atStartOfDay()),
                     eq(2),
-                    eq(Const.BOOKING_STATUS.CANCELLED),
-                    eq(Const.BOOKING_STATUS.AVAILABLE)
+                    eq(Const.SCHEDULE_STATUS.CANCELLED),
+                    eq(Const.SEAT_STATUS.AVAILABLE)
             )).thenReturn(List.of());
 
             // When: フライト一覧取得を実行する

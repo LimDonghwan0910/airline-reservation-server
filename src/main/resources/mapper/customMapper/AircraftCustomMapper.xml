@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  航空機に紐づく参照データの確認。
+  更新・削除時に予約・スケジュール・テンプレート件数を1回の SQL で取得する。
+-->
+<mapper namespace="airlineReservation.infra.mapper.customMapper.AircraftCustomMapper">
+
+    <select id="selectDeletionConstraints"
+            resultType="airlineReservation.domain.admin.vo.AircraftDeletionConstraintVo">
+        SELECT
+            (
+                SELECT COUNT(*)
+                FROM bookings b
+                JOIN schedules s ON b.schedule_id = s.schedule_id
+                WHERE s.aircraft_id = #{aircraftId}
+                  AND b.is_deleted = FALSE
+                  AND b.status != #{bookingCancelledStatus}
+            ) AS activeBookingCount,
+            (
+                SELECT COUNT(*)
+                FROM schedules
+                WHERE aircraft_id = #{aircraftId}
+                  AND status != #{scheduleCancelledStatus}
+            ) AS activeScheduleCount,
+            (
+                SELECT COUNT(*)
+                FROM schedule_templates
+                WHERE aircraft_id = #{aircraftId}
+            ) AS scheduleTemplateCount
+    </select>
+
+</mapper>

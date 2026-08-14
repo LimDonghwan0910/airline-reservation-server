@@ -70,7 +70,7 @@ public class DeleteBookingService {
         for (PassengerDetail passenger : passengers) {
             ScheduleSeat seatUpdate = new ScheduleSeat();
             seatUpdate.setScheduledSeatNo(passenger.getScheduleSeatNo());
-            seatUpdate.setStatus(Const.BOOKING_STATUS.AVAILABLE);
+            seatUpdate.setStatus(Const.SEAT_STATUS.AVAILABLE);
             seatUpdate.setUpdatedAt(now);
             if (updatedBy != null) {
                 seatUpdate.setUpdatedBy(updatedBy);

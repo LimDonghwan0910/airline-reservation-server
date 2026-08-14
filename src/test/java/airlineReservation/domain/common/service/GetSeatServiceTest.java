@@ -148,7 +148,7 @@ class GetSeatServiceTest {
             // Given: 運航スケジュールがキャンセル済み
             GetSeatServiceInput input = validInput();
             Schedule cancelled = existingSchedule();
-            cancelled.setStatus(Const.BOOKING_STATUS.CANCELLED);
+            cancelled.setStatus(Const.SCHEDULE_STATUS.CANCELLED);
 
             when(scheduleMapper.selectByPrimaryKey(100)).thenReturn(cancelled);
 
@@ -172,7 +172,7 @@ class GetSeatServiceTest {
     private Schedule existingSchedule() {
         Schedule schedule = new Schedule();
         schedule.setScheduleId(100);
-        schedule.setStatus("SCHEDULED");
+        schedule.setStatus(Const.SCHEDULE_STATUS.SCHEDULED);
         return schedule;
     }
 
@@ -182,7 +182,7 @@ class GetSeatServiceTest {
         seat.setScheduledSeatNo(scheduledSeatNo);
         seat.setScheduleId(100);
         seat.setSeatName(seatName);
-        seat.setStatus(Const.BOOKING_STATUS.AVAILABLE);
+        seat.setStatus(Const.SEAT_STATUS.AVAILABLE);
         return seat;
     }
 }

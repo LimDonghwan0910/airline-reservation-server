@@ -49,8 +49,8 @@ public class GetFlightService {
                 start,
                 end,
                 input.getPassengerCount(),
-                Const.BOOKING_STATUS.CANCELLED,
-                Const.BOOKING_STATUS.AVAILABLE
+                Const.SCHEDULE_STATUS.CANCELLED,
+                Const.SEAT_STATUS.AVAILABLE
         );
 
         List<GetFlightsResponseFlightsListInner> flightList = new ArrayList<>();

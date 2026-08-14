@@ -1,6 +1,7 @@
 package airlineReservation.global.security;
 
 import airlineReservation.global.config.JwtProperties;
+import airlineReservation.global.constant.Const;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -12,10 +13,6 @@ import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
-
-    private static final String CLAIM_USER_ID = "userId";
-    private static final String CLAIM_ROLE = "role";
-    private static final String CLAIM_USER_NAME = "userName";
 
     private final JwtProperties jwtProperties;
     private final SecretKey secretKey;
@@ -37,9 +34,9 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .subject(email)
-                .claim(CLAIM_USER_ID, userId)
-                .claim(CLAIM_ROLE, roleCode)
-                .claim(CLAIM_USER_NAME, userName)
+                .claim(Const.JWT.CLAIM_USER_ID, userId)
+                .claim(Const.JWT.CLAIM_ROLE, roleCode)
+                .claim(Const.JWT.CLAIM_USER_NAME, userName)
                 .issuedAt(now)
                 .expiration(expiry)
                 .signWith(secretKey)
@@ -51,11 +48,11 @@ public class JwtTokenProvider {
     }
 
     public Integer getUserIdFromToken(String token) {
-        return getClaims(token).get(CLAIM_USER_ID, Integer.class);
+        return getClaims(token).get(Const.JWT.CLAIM_USER_ID, Integer.class);
     }
 
     public Integer getRoleCodeFromToken(String token) {
-        return getClaims(token).get(CLAIM_ROLE, Integer.class);
+        return getClaims(token).get(Const.JWT.CLAIM_ROLE, Integer.class);
     }
 
     public boolean validateToken(String token) {

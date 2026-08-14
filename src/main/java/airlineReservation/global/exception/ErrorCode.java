@@ -25,6 +25,10 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "SE0014", "会員が見つかりません。"),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "SE0015", "認証が必要です。"),
     ACTIVE_BOOKING_EXISTS(HttpStatus.CONFLICT, "SE0016", "有効な予約があるため退会できません。"),
+    DUPLICATE_AIRCRAFT_ID(HttpStatus.CONFLICT, "SE0017", "既に登録されている航空機IDです。"),
+    AIRCRAFT_HAS_ACTIVE_BOOKINGS(HttpStatus.CONFLICT, "SE0018", "有効な予約があるため航空機を更新できません。"),
+    AIRCRAFT_HAS_ACTIVE_SCHEDULES(HttpStatus.CONFLICT, "SE0019", "運航スケジュールが存在するため航空機を削除できません。"),
+    AIRCRAFT_HAS_SCHEDULE_TEMPLATE(HttpStatus.CONFLICT, "SE0020", "定期運航テンプレートが存在するため航空機を削除できません。"),
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SE9999", "サーバー内部エラーが発生しました。");
 

@@ -2,6 +2,7 @@ package airlineReservation.domain.admin.service;
 
 import airlineReservation.domain.admin.serviceInput.DeleteScheduleTemplateServiceInput;
 import airlineReservation.domain.admin.serviceOutput.DeleteScheduleTemplateServiceOutput;
+import airlineReservation.global.constant.Const;
 import airlineReservation.global.exception.ErrorCode;
 import airlineReservation.global.exception.InvalidInputValueException;
 import airlineReservation.global.exception.NotFoundException;
@@ -16,16 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 定期運航テンプレート削除処理を行うサービス。
+ */
 @Service
 @RequiredArgsConstructor
 public class DeleteScheduleTemplateService {
-
-    private static final String STATUS_CANCELLED = "CANCELLED";
 
     private final ScheduleTemplatesMapper scheduleTemplatesMapper;
     private final ScheduleMapper scheduleMapper;
     private final ScheduleSeatProvisioningService scheduleSeatProvisioningService;
 
+    /**
+     * 定期運航テンプレートを削除し、紐づくスケジュールをキャンセルする。
+     *
+     * @param input
+     * @return serviceOutput
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 対象テンプレートが存在しない場合
+     */
     @Transactional
     public DeleteScheduleTemplateServiceOutput delete(DeleteScheduleTemplateServiceInput input) {
         if (input.getTemplateId() == null) {
@@ -47,6 +57,11 @@ public class DeleteScheduleTemplateService {
                 .build();
     }
 
+    /**
+     * テンプレートに紐づく全スケジュールをキャンセルする。
+     *
+     * @param templateId 対象テンプレートID
+     */
     private void cancelLinkedSchedules(Integer templateId) {
         ScheduleExample example = new ScheduleExample();
         example.createCriteria().andTemplateIdEqualTo(templateId);
@@ -55,7 +70,7 @@ public class DeleteScheduleTemplateService {
         for (Schedule schedule : linkedSchedules) {
             Schedule update = new Schedule();
             update.setScheduleId(schedule.getScheduleId());
-            update.setStatus(STATUS_CANCELLED);
+            update.setStatus(Const.SCHEDULE_STATUS.CANCELLED);
             scheduleMapper.updateByPrimaryKeySelective(update);
             scheduleSeatProvisioningService.cancelForSchedule(schedule.getScheduleId());
         }

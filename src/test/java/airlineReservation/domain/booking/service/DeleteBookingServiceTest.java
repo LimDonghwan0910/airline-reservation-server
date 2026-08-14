@@ -131,7 +131,7 @@ class DeleteBookingServiceTest {
 
         ArgumentCaptor<ScheduleSeat> seatCaptor = ArgumentCaptor.forClass(ScheduleSeat.class);
         verify(scheduleSeatMapper).updateByPrimaryKeySelective(seatCaptor.capture());
-        assertThat(seatCaptor.getValue().getStatus()).isEqualTo(Const.BOOKING_STATUS.AVAILABLE);
+        assertThat(seatCaptor.getValue().getStatus()).isEqualTo(Const.SEAT_STATUS.AVAILABLE);
         assertThat(seatCaptor.getValue().getScheduledSeatNo()).isEqualTo(50);
 
         ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);

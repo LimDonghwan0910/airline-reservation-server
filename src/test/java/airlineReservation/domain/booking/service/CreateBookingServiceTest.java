@@ -169,7 +169,7 @@ class CreateBookingServiceTest {
         CreateBookingServiceInput input = validInput();
 
         ScheduleSeat occupiedSeat = availableSeat();
-        occupiedSeat.setStatus(Const.BOOKING_STATUS.OCCUPIED);
+        occupiedSeat.setStatus(Const.SEAT_STATUS.OCCUPIED);
 
         when(scheduleSeatMapper.selectByExample(any(ScheduleSeatExample.class)))
                 .thenReturn(List.of(occupiedSeat));
@@ -261,7 +261,7 @@ class CreateBookingServiceTest {
         seat.setScheduledSeatNo(1);
         seat.setScheduleId(10);
         seat.setSeatName("1A");
-        seat.setStatus(Const.BOOKING_STATUS.AVAILABLE);
+        seat.setStatus(Const.SEAT_STATUS.AVAILABLE);
         return seat;
     }
 }

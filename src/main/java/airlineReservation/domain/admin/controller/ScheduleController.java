@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 運航スケジュール API（テンプレート登録・検索・削除、スケジュール検索・削除） */
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
@@ -55,6 +56,12 @@ public class ScheduleController {
     private final DeleteScheduleService deleteScheduleService;
     private final DeleteScheduleServiceMapper deleteScheduleMapper;
 
+    /**
+     * 定期運航テンプレートを登録し、対象期間の実スケジュールを生成する。
+     *
+     * @param request テンプレート登録リクエスト情報
+     * @return 登録結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.CREATE_SCHEDULE_TEMPLATE)
     public ResponseEntity<CreateScheduleTemplateResponse> createScheduleTemplate(
             @RequestBody CreateScheduleTemplateRequest request) {
@@ -70,6 +77,12 @@ public class ScheduleController {
                 .body(response);
     }
 
+    /**
+     * 条件に合致する定期運航テンプレート一覧を取得する。
+     *
+     * @param request テンプレート検索リクエスト情報
+     * @return テンプレート一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Admin.SEARCH_SCHEDULE_TEMPLATE)
     public ResponseEntity<SearchScheduleTemplateResponse> searchScheduleTemplate(
             @ModelAttribute SearchScheduleTemplateRequest request) {
@@ -83,6 +96,12 @@ public class ScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 定期運航テンプレートを削除し、紐づくスケジュールをキャンセルする。
+     *
+     * @param request テンプレート削除リクエスト情報
+     * @return 削除結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.DELETE_SCHEDULE_TEMPLATE)
     public ResponseEntity<DeleteScheduleTemplateResponse> deleteScheduleTemplate(
             @RequestBody DeleteScheduleTemplateRequest request) {
@@ -96,6 +115,12 @@ public class ScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 条件に合致する運航スケジュール一覧を取得する。
+     *
+     * @param request スケジュール検索リクエスト情報
+     * @return スケジュール一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Admin.SEARCH_SCHEDULE)
     public ResponseEntity<SearchScheduleResponse> searchSchedule(
             @ModelAttribute SearchScheduleRequest request) {
@@ -109,6 +134,12 @@ public class ScheduleController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 運航スケジュールをキャンセルする。
+     *
+     * @param request スケジュール削除リクエスト情報
+     * @return 削除結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.DELETE_SCHEDULE)
     public ResponseEntity<DeleteScheduleResponse> deleteSchedule(
             @RequestBody DeleteScheduleRequest request) {

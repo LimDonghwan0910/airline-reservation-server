@@ -3,6 +3,7 @@ package airlineReservation.domain.admin.service;
 import airlineReservation.domain.admin.serviceInput.CreateScheduleTemplateServiceInput;
 import airlineReservation.domain.admin.serviceOutput.CreateScheduleTemplateServiceOutput;
 import airlineReservation.domain.admin.validator.ScheduleReferenceValidator;
+import airlineReservation.global.constant.Const;
 import airlineReservation.infra.dto.CreateScheduleTemplateRequestDaysOfWeek;
 import airlineReservation.infra.entity.Schedule;
 import airlineReservation.infra.entity.ScheduleExample;
@@ -19,22 +20,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 定期運航テンプレート作成サービス。
- *
- * [処理フロー]
- * 1) schedule_templates テーブルに「定期運航ルール（テンプレート）」を1件保存
- * 2) 開始日〜終了日の日付を1日ずつ走査
- * 3) その日の曜日が選択曜日（mon〜sun）であれば schedules テーブルに実運航を1件保存
- *
- * 例) 2026-07-01 ~ 2026-07-31、火/木選択、09:00出発
- *   → schedule_templates 1件 + 当該期間の全火曜日/木曜日 schedules N件を生成
+ * 定期運航テンプレート作成処理を行うサービス。
  */
 @Service
 @RequiredArgsConstructor
 public class CreateScheduleTemplateService {
-
-    /** schedules.status のデフォルト値: 予定（SCHEDULED） */
-    private static final String STATUS_SCHEDULED = "SCHEDULED";
 
     private final ScheduleTemplatesMapper scheduleTemplatesMapper;
     private final ScheduleMapper scheduleMapper;
@@ -42,22 +32,24 @@ public class CreateScheduleTemplateService {
     private final ScheduleSeatProvisioningService scheduleSeatProvisioningService;
 
     /**
-     * 定期運航テンプレート + 実スケジュールを一括作成する。
-     * @Transactional: テンプレート/スケジュールのいずれかが失敗した場合、全体をロールバックする
+     * 定期運航テンプレートを登録し、対象期間の実スケジュールを生成する。
+     *
+     * @param input
+     * @return serviceOutput
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 航空機または空港が存在しない場合
      */
     @Transactional
     public CreateScheduleTemplateServiceOutput create(CreateScheduleTemplateServiceInput input) {
-        // 1. 航空機・空港が DB に存在するか検証（無ければ例外）
         scheduleReferenceValidator.validateAircraft(input.getAircraftId());
         scheduleReferenceValidator.validateAirport(input.getDepartureAirportId());
         scheduleReferenceValidator.validateAirport(input.getArrivalAirportId());
 
         CreateScheduleTemplateRequestDaysOfWeek daysOfWeek = input.getDaysOfWeek();
 
-        // 2. schedule_templates にテンプレートを1件保存 → 生成された template_id を返す
         Integer templateId = insertScheduleTemplate(input, daysOfWeek);
 
-        // 3. 開始日から終了日まで1日ずつ走査し、選択曜日なら schedules に保存
+        // 開始日〜終了日を1日ずつ走査し、選択曜日なら schedules に保存
         LocalDate currentDate = input.getStartDate();
         while (!currentDate.isAfter(input.getEndDate())) {
             if (isSelectedDayOfWeek(currentDate.getDayOfWeek(), daysOfWeek)) {
@@ -71,8 +63,11 @@ public class CreateScheduleTemplateService {
     }
 
     /**
-     * schedule_templates（定期運航テンプレート）を1件 INSERT する。
-     * テンプレートは「いつ、どの曜日、何時に運航するか」のルールのみを保存する。
+     * 定期運航テンプレートを1件登録する。
+     *
+     * @param input
+     * @param daysOfWeek 運航曜日
+     * @return 生成されたテンプレートID
      */
     private Integer insertScheduleTemplate(
             CreateScheduleTemplateServiceInput input,
@@ -98,12 +93,11 @@ public class CreateScheduleTemplateService {
 
         scheduleTemplatesMapper.insertSelective(template);
 
-        // insertSelective 後に templateId が entity へ自動設定されていればそのまま返す
         if (template.getTemplateId() != null) {
             return template.getTemplateId();
         }
 
-        // MyBatis 設定により PK が entity に埋まらない場合があるため、直前に挿入したデータで再検索する
+        // MyBatis 設定により PK が entity に埋まらない場合があるため再検索する
         ScheduleTemplatesExample example = new ScheduleTemplatesExample();
         example.createCriteria()
                 .andAircraftIdEqualTo(template.getAircraftId())
@@ -120,19 +114,19 @@ public class CreateScheduleTemplateService {
     }
 
     /**
-     * schedules（実運航スケジュール）を1件 INSERT する。
+     * 実運航スケジュールを1件登録し、座席を払い出す。
      *
-     * @param templateId  紐づくテンプレート PK（schedule_templates.template_id）
-     * @param flightDate  このスケジュールの運航日（ループで1日ずつ渡される値）
+     * @param templateId 紐づくテンプレートID
+     * @param input
+     * @param flightDate 運航日
      */
     private void insertSchedule(
             Integer templateId,
             CreateScheduleTemplateServiceInput input,
             LocalDate flightDate) {
-        // 日付 + 時刻 → departure_datetime（例: 2026-07-22 09:00:00）
         LocalDateTime departureDateTime = LocalDateTime.of(flightDate, input.getDepartureTime());
 
-        // 到着時刻が出発時刻より早い場合は翌日到着（例: 23:00出発 → 01:00 翌日到着）
+        // 到着時刻が出発時刻より早い場合は翌日到着
         LocalDate arrivalDate = input.getArrivalTime().isBefore(input.getDepartureTime())
                 ? flightDate.plusDays(1)
                 : flightDate;
@@ -145,7 +139,7 @@ public class CreateScheduleTemplateService {
         schedule.setArrivalAirportId(input.getArrivalAirportId());
         schedule.setDepartureDatetime(departureDateTime);
         schedule.setArrivalDatetime(arrivalDateTime);
-        schedule.setStatus(STATUS_SCHEDULED);
+        schedule.setStatus(Const.SCHEDULE_STATUS.SCHEDULED);
 
         scheduleMapper.insertSelective(schedule);
 
@@ -154,14 +148,17 @@ public class CreateScheduleTemplateService {
     }
 
     /**
-     * insertSelective 後に schedule_id を返す。
-     * MyBatis 設定により PK が entity に埋まらない場合があるため再検索する。
+     * insertSelective 後の schedule_id を取得する。
+     *
+     * @param schedule 登録したスケジュール
+     * @return schedule_id
      */
     private Integer resolveScheduleId(Schedule schedule) {
         if (schedule.getScheduleId() != null) {
             return schedule.getScheduleId();
         }
 
+        // MyBatis 設定により PK が entity に埋まらない場合があるため再検索する
         ScheduleExample example = new ScheduleExample();
         example.createCriteria()
                 .andTemplateIdEqualTo(schedule.getTemplateId())
@@ -176,14 +173,23 @@ public class CreateScheduleTemplateService {
                 .orElseThrow(() -> new IllegalStateException("schedules の schedule_id 生成に失敗しました。"));
     }
 
-    /** 特定日付の曜日がユーザーが選択した曜日かどうかを確認する */
+    /**
+     * 指定曜日が選択されているかを確認する。
+     *
+     * @param dayOfWeek 確認対象の曜日
+     * @param daysOfWeek 選択曜日
+     * @return 選択されている場合 true
+     */
     private boolean isSelectedDayOfWeek(DayOfWeek dayOfWeek, CreateScheduleTemplateRequestDaysOfWeek daysOfWeek) {
         return isDaySelected(daysOfWeek, dayOfWeek);
     }
 
     /**
-     * daysOfWeek オブジェクトで該当曜日フラグ（mon〜sun）が true かどうかを確認する。
-     * null または false の場合は運航しない曜日とみなす。
+     * daysOfWeek の該当曜日フラグが true かを確認する。
+     *
+     * @param daysOfWeek 選択曜日
+     * @param dayOfWeek 確認対象の曜日
+     * @return 選択されている場合 true
      */
     private boolean isDaySelected(CreateScheduleTemplateRequestDaysOfWeek daysOfWeek, DayOfWeek dayOfWeek) {
         if (daysOfWeek == null) {

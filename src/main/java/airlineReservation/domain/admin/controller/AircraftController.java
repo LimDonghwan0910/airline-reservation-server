@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 航空機 API（登録、検索、更新、削除） */
 @RestController
 @RequiredArgsConstructor
 public class AircraftController {
@@ -47,7 +48,12 @@ public class AircraftController {
     private final UpdateAircraftService updateAircraftService;
     private final UpdateAircraftServiceMapper updateAircraftMapper;
 
-
+    /**
+     * 航空機を新規登録する。
+     *
+     * @param request 航空機登録リクエスト情報
+     * @return 登録結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.CREATE_AIRCRAFT)
     public ResponseEntity<CreateAircraftResponse> createAircraft(
             @RequestBody CreateAircraftRequest request) {
@@ -63,6 +69,12 @@ public class AircraftController {
                 .body(response);
     }
 
+    /**
+     * 条件に合致する航空機一覧を取得する。
+     *
+     * @param request 航空機検索リクエスト情報
+     * @return 航空機一覧レスポンス
+     */
     @GetMapping(ApiEndpoints.Admin.SEARCH_AIRCRAFT)
     public ResponseEntity<SearchAircraftResponse> searchAircraft(
             @ModelAttribute SearchAircraftRequest request
@@ -74,6 +86,12 @@ public class AircraftController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * 航空機情報を更新する。
+     *
+     * @param request 航空機更新リクエスト情報
+     * @return 更新結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.UPDATE_AIRCRAFT)
     public ResponseEntity<UpdateAircraftResponse> updateAircraft(
             @RequestBody UpdateAircraftRequest request) {
@@ -89,6 +107,12 @@ public class AircraftController {
                 .body(response);
     }
 
+    /**
+     * 航空機を論理削除する。
+     *
+     * @param request 航空機削除リクエスト情報
+     * @return 削除結果レスポンス
+     */
     @PostMapping(ApiEndpoints.Admin.DELETE_AIRCRAFT)
     public ResponseEntity<DeleteAircraftResponse> deleteAircraft(
             @RequestBody DeleteAircraftRequest request) {

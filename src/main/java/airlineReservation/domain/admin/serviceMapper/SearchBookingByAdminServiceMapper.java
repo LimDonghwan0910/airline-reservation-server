@@ -11,14 +11,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 管理者の予約検索 DTO 変換。
- * SearchBookingServiceMapper と toResponse ロジックは同じで、入力条件のみ異なる。
- */
 @Component
 public class SearchBookingByAdminServiceMapper {
 
-    /** API リクエスト → サービス入力値（aircraftId は API で Integer → String 変換） */
     public SearchBookingByAdminServiceInput toServiceInput(SearchBookingByAdminRequest request) {
         if (request == null) {
             return SearchBookingByAdminServiceInput.builder().build();
@@ -36,7 +31,6 @@ public class SearchBookingByAdminServiceMapper {
                 .build();
     }
 
-    /** サービス結果 → API レスポンス（一般会員検索と同じ Response 構造） */
     public SearchBookingResponse toResponse(SearchBookingServiceOutput output) {
         SearchBookingResponse response = new SearchBookingResponse();
         List<SearchBookingResponseBookingListInner> bookingList = new ArrayList<>();

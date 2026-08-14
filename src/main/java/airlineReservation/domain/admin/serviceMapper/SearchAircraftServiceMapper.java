@@ -14,9 +14,6 @@ import java.util.List;
 @Component
 public class SearchAircraftServiceMapper {
 
-    /**
-     * Request ➔ ServiceInput
-     */
     public SearchAircraftServiceInput toServiceInput(SearchAircraftRequest request) {
         if (request == null) return null;
 
@@ -26,9 +23,6 @@ public class SearchAircraftServiceMapper {
                 .build();
     }
 
-    /**
-     * ServiceOutput ➔ OpenAPI Response DTO
-     */
     public SearchAircraftResponse toResponse(SearchAircraftServiceOutput output) {
         if (output == null) return null;
 
@@ -37,7 +31,6 @@ public class SearchAircraftServiceMapper {
 
         if (output.getAircraftList() != null) {
             for (Aircraft entity : output.getAircraftList()) {
-                // openapi-generator がリストアイテム用に自動生成したオブジェクトを組み立てる
                 SearchAircraftResponseAircraftListInner item = new SearchAircraftResponseAircraftListInner();
                 item.setAircraftId(entity.getAircraftId());
                 item.setAircraftName(entity.getAircraftName());
@@ -48,7 +41,6 @@ public class SearchAircraftServiceMapper {
             }
         }
 
-        // OpenAPI レスポンスオブジェクトに最終リストをバインドする
         response.setAircraftList(apiList);
         return response;
     }
