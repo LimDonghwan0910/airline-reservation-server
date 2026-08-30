@@ -13,15 +13,16 @@ import airlineReservation.domain.user.serviceOutput.CreateAccountServiceOutput;
 import airlineReservation.domain.user.serviceOutput.DeleteAccountServiceOutput;
 import airlineReservation.domain.user.serviceOutput.LoginServiceOutput;
 import airlineReservation.global.constant.ApiEndpoints;
+import airlineReservation.global.security.CustomUserDetails;
 import airlineReservation.infra.dto.CreateAccountRequest;
 import airlineReservation.infra.dto.CreateAccountResponse;
-import airlineReservation.infra.dto.DeleteAccountRequest;
 import airlineReservation.infra.dto.DeleteAccountResponse;
 import airlineReservation.infra.dto.LoginRequest;
 import airlineReservation.infra.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,14 +76,16 @@ public class UserController {
     /**
      * 会員退会処理を行う。
      *
-     * @param request 退会リクエスト情報
+     * @param currentUser 認証済み会員情報
      * @return 退会処理結果レスポンス
      */
     @PostMapping(ApiEndpoints.Auth.DELETE_ACCOUNT)
     public ResponseEntity<DeleteAccountResponse> deleteAccount(
-            @RequestBody DeleteAccountRequest request
+            @AuthenticationPrincipal CustomUserDetails currentUser
     ) {
-        DeleteAccountServiceInput serviceInput = deleteAccountServiceMapper.toServiceInput(request);
+        DeleteAccountServiceInput serviceInput = DeleteAccountServiceInput.builder()
+                .userId(currentUser.getUserId())
+                .build();
         DeleteAccountServiceOutput serviceOutput = deleteAccountService.delete(serviceInput);
         DeleteAccountResponse response = deleteAccountServiceMapper.toResponse(serviceOutput);
 

@@ -11,7 +11,6 @@ java/airlineReservation/infra/dto/CreateBookingResponse.java
 java/airlineReservation/infra/dto/CreateScheduleTemplateRequest.java
 java/airlineReservation/infra/dto/CreateScheduleTemplateRequestDaysOfWeek.java
 java/airlineReservation/infra/dto/CreateScheduleTemplateResponse.java
-java/airlineReservation/infra/dto/DeleteAccountRequest.java
 java/airlineReservation/infra/dto/DeleteAccountResponse.java
 java/airlineReservation/infra/dto/DeleteAircraftRequest.java
 java/airlineReservation/infra/dto/DeleteAircraftResponse.java
