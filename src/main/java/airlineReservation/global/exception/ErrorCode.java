@@ -29,6 +29,9 @@ public enum ErrorCode {
     AIRCRAFT_HAS_ACTIVE_BOOKINGS(HttpStatus.CONFLICT, "SE0018", "有効な予約があるため航空機を更新できません。"),
     AIRCRAFT_HAS_ACTIVE_SCHEDULES(HttpStatus.CONFLICT, "SE0019", "運航スケジュールが存在するため航空機を削除できません。"),
     AIRCRAFT_HAS_SCHEDULE_TEMPLATE(HttpStatus.CONFLICT, "SE0020", "定期運航テンプレートが存在するため航空機を削除できません。"),
+    DUPLICATE_SCHEDULE_TEMPLATE(HttpStatus.CONFLICT, "SE0021", "同一便・同一区間で期間が重複する定期運航テンプレートが既に登録されています。"),
+    SCHEDULE_TEMPLATE_HAS_ACTIVE_BOOKINGS(HttpStatus.CONFLICT, "SE0022", "有効な予約があるため定期運航テンプレートを削除できません。"),
+    SCHEDULE_HAS_ACTIVE_BOOKINGS(HttpStatus.CONFLICT, "SE0023", "有効な予約があるため運航スケジュールを削除できません。"),
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SE9999", "サーバー内部エラーが発生しました。");
 

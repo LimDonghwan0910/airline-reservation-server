@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  定期運航テンプレートに紐づく参照データの確認。
+  登録時の行ロック、削除時の行ロックと有効予約件数を取得する。
+-->
+<mapper namespace="airlineReservation.infra.mapper.customMapper.ScheduleTemplateCustomMapper">
+
+    <select id="selectByIdForUpdate"
+            resultType="airlineReservation.infra.entity.ScheduleTemplates">
+        SELECT
+            template_id,
+            aircraft_id,
+            departure_airport_id,
+            arrival_airport_id,
+            start_date,
+            end_date,
+            departure_time,
+            arrival_time,
+            is_monday,
+            is_tuesday,
+            is_wednesday,
+            is_thursday,
+            is_friday,
+            is_saturday,
+            is_sunday,
+            created_by,
+            created_at,
+            updated_by,
+            updated_at,
+            price
+        FROM schedule_templates
+        WHERE template_id = #{templateId}
+        FOR UPDATE
+    </select>
+
+    <select id="lockByAircraftAndRoute" resultType="int">
+        SELECT template_id
+        FROM schedule_templates
+        WHERE aircraft_id = #{aircraftId}
+          AND departure_airport_id = #{departureAirportId}
+          AND arrival_airport_id = #{arrivalAirportId}
+        FOR UPDATE
+    </select>
+
+    <select id="lockLinkedSchedules" resultType="int">
+        SELECT schedule_id
+        FROM schedules
+        WHERE template_id = #{templateId}
+        FOR UPDATE
+    </select>
+
+    <select id="countActiveBookings" resultType="long">
+        SELECT COUNT(*)
+        FROM bookings b
+        JOIN schedules s ON b.schedule_id = s.schedule_id
+        WHERE s.template_id = #{templateId}
+          AND b.is_deleted = FALSE
+          AND b.status != #{bookingCancelledStatus}
+    </select>
+
+</mapper>

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class CreateScheduleTemplateServiceInput {
 
     private String aircraftId;
