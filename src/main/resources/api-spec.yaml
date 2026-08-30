@@ -3,7 +3,7 @@ info:
   title: 航空券予約システムAPI
   version: 1.0.0
 paths:
-  /api/v1/createAccount:
+  /api/v1/account/create:
     post:
       summary: 会員登録API
       operationId: createAccount
@@ -33,16 +33,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v1/deleteAccount:
+  /api/v1/account/delete:
     post:
       summary: 会員退会API
       operationId: deleteAccount
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeleteAccountRequest'
       responses:
         '201':
           description: 会員退会成功
@@ -602,14 +596,6 @@ components:
         success:
           type: boolean
 
-    DeleteAccountRequest:
-      type: object
-      required:
-        - userId
-      properties:
-        userId:
-          type: string
-
     DeleteAccountResponse:
       type: object
       properties:
@@ -635,6 +621,8 @@ components:
         success:
           type: boolean
         accessToken:
+          type: string
+        userName:
           type: string
 
 

@@ -13,7 +13,6 @@ import airlineReservation.infra.dto.CreateBookingRequest;
 import airlineReservation.infra.dto.CreateBookingResponse;
 import airlineReservation.infra.dto.CreateScheduleTemplateRequest;
 import airlineReservation.infra.dto.CreateScheduleTemplateResponse;
-import airlineReservation.infra.dto.DeleteAccountRequest;
 import airlineReservation.infra.dto.DeleteAccountResponse;
 import airlineReservation.infra.dto.DeleteAircraftRequest;
 import airlineReservation.infra.dto.DeleteAircraftResponse;
@@ -69,7 +68,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-11T10:31:14.711529+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-30T17:47:13.211020+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "api", description = "the api API")
 public interface ApiApi {
@@ -136,7 +135,7 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/createAccount : 会員登録API
+     * POST /api/v1/account/create : 会員登録API
      *
      * @param createAccountRequest  (required)
      * @return 会員登録成功 (status code 201)
@@ -160,7 +159,7 @@ public interface ApiApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/api/v1/createAccount",
+        value = "/api/v1/account/create",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
@@ -364,9 +363,8 @@ public interface ApiApi {
 
 
     /**
-     * POST /api/v1/deleteAccount : 会員退会API
+     * POST /api/v1/account/delete : 会員退会API
      *
-     * @param deleteAccountRequest  (required)
      * @return 会員退会成功 (status code 201)
      *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
      *         or サーバー内部エラー (status code 500)
@@ -388,13 +386,12 @@ public interface ApiApi {
     )
     @RequestMapping(
         method = RequestMethod.POST,
-        value = "/api/v1/deleteAccount",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+        value = "/api/v1/account/delete",
+        produces = { "application/json" }
     )
     
     default ResponseEntity<DeleteAccountResponse> deleteAccount(
-        @Parameter(name = "DeleteAccountRequest", description = "", required = true) @Valid @RequestBody DeleteAccountRequest deleteAccountRequest
+        
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -855,7 +852,7 @@ public interface ApiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"success\" : true, \"accessToken\" : \"accessToken\" }";
+                    String exampleString = "{ \"success\" : true, \"accessToken\" : \"accessToken\", \"userName\" : \"userName\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
