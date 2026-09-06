@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 予約作成・キャンセル時に更新対象を直列化するための行ロック。 -->
+<mapper namespace="airlineReservation.infra.mapper.customMapper.BookingCustomMapper">
+
+    <select id="selectByIdForUpdate" resultType="airlineReservation.infra.entity.Booking">
+        SELECT booking_id, user_id, schedule_id, total_price, booking_time, status, is_deleted,
+               created_by, created_at, updated_by, updated_at
+        FROM bookings
+        WHERE booking_id = #{bookingId}
+        FOR UPDATE
+    </select>
+
+    <select id="selectScheduleSeatsForUpdate" resultType="airlineReservation.infra.entity.ScheduleSeat">
+        SELECT scheduled_seat_no, schedule_id, seat_name, status,
+               created_by, created_at, updated_by, updated_at
+        FROM schedule_seats
+        WHERE schedule_id = #{scheduleId}
+          AND seat_name IN
+        <foreach collection="seatNames" item="seatName" open="(" separator="," close=")">
+            #{seatName}
+        </foreach>
+        ORDER BY scheduled_seat_no
+        FOR UPDATE
+    </select>
+
+    <select id="selectScheduleSeatsByIdsForUpdate" resultType="airlineReservation.infra.entity.ScheduleSeat">
+        SELECT scheduled_seat_no, schedule_id, seat_name, status,
+               created_by, created_at, updated_by, updated_at
+        FROM schedule_seats
+        WHERE scheduled_seat_no IN
+        <foreach collection="scheduledSeatNos" item="scheduledSeatNo" open="(" separator="," close=")">
+            #{scheduledSeatNo}
+        </foreach>
+        ORDER BY scheduled_seat_no
+        FOR UPDATE
+    </select>
+
+</mapper>

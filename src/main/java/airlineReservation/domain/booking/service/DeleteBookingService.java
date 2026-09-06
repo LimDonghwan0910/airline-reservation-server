@@ -13,6 +13,7 @@ import airlineReservation.infra.entity.ScheduleSeat;
 import airlineReservation.infra.mapper.BookingMapper;
 import airlineReservation.infra.mapper.PassengerDetailMapper;
 import airlineReservation.infra.mapper.ScheduleSeatMapper;
+import airlineReservation.infra.mapper.customMapper.BookingCustomMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +28,21 @@ public class DeleteBookingService {
     private final BookingMapper bookingMapper;
     private final PassengerDetailMapper passengerDetailMapper;
     private final ScheduleSeatMapper scheduleSeatMapper;
+    private final BookingCustomMapper bookingCustomMapper;
 
+    /**
+     * 予約をキャンセルする。予約行と対象座席をロックし、同じ予約の二重キャンセルと座席状態の競合を防ぐ。
+     *
+     * @throws InvalidInputValueException 入力項目が誤っている場合、または既にキャンセル済みの場合
+     * @throws NotFoundException 対象予約、または予約に紐づく座席が存在しない場合
+     */
     @Transactional
     public DeleteBookingServiceOutput delete(DeleteBookingServiceInput input) {
         if (input.getBookingId() == null) {
             throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "予約IDを入力してください。");
         }
 
-        Booking booking = bookingMapper.selectByPrimaryKey(input.getBookingId());
+        Booking booking = bookingCustomMapper.selectByIdForUpdate(input.getBookingId());
         if (booking == null || Boolean.TRUE.equals(booking.getIsDeleted())) {
             throw new NotFoundException(ErrorCode.BOOKING_NOT_FOUND);
         }
@@ -65,6 +73,14 @@ public class DeleteBookingService {
                 .andIsDeletedEqualTo(false);
 
         List<PassengerDetail> passengers = passengerDetailMapper.selectByExample(example);
+        List<Integer> scheduledSeatNos = passengers.stream()
+                .map(PassengerDetail::getScheduleSeatNo)
+                .distinct()
+                .toList();
+        if (!scheduledSeatNos.isEmpty()
+                && bookingCustomMapper.selectScheduleSeatsByIdsForUpdate(scheduledSeatNos).size() != scheduledSeatNos.size()) {
+            throw new NotFoundException(ErrorCode.SEAT_NOT_FOUND, "予約に紐づく座席が見つかりません。");
+        }
         LocalDateTime now = LocalDateTime.now();
 
         for (PassengerDetail passenger : passengers) {

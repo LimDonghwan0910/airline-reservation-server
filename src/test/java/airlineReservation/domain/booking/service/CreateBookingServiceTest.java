@@ -9,10 +9,10 @@ import airlineReservation.global.exception.NotFoundException;
 import airlineReservation.infra.dto.CreateBookingRequestPassengerListInner;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.ScheduleSeat;
-import airlineReservation.infra.entity.ScheduleSeatExample;
 import airlineReservation.infra.mapper.BookingMapper;
 import airlineReservation.infra.mapper.PassengerDetailMapper;
 import airlineReservation.infra.mapper.ScheduleSeatMapper;
+import airlineReservation.infra.mapper.customMapper.BookingCustomMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,6 +43,9 @@ class CreateBookingServiceTest {
 
     @Mock
     private ScheduleSeatMapper scheduleSeatMapper;
+
+    @Mock
+    private BookingCustomMapper bookingCustomMapper;
 
     @InjectMocks
     private CreateBookingService createBookingService;
@@ -155,7 +158,7 @@ class CreateBookingServiceTest {
     void create_failsWhenSeatDoesNotExist() {
         CreateBookingServiceInput input = validInput();
 
-        when(scheduleSeatMapper.selectByExample(any(ScheduleSeatExample.class)))
+        when(bookingCustomMapper.selectScheduleSeatsForUpdate(any(), any()))
                 .thenReturn(List.of());
 
         assertThatThrownBy(() -> createBookingService.create(input))
@@ -171,7 +174,7 @@ class CreateBookingServiceTest {
         ScheduleSeat occupiedSeat = availableSeat();
         occupiedSeat.setStatus(Const.SEAT_STATUS.OCCUPIED);
 
-        when(scheduleSeatMapper.selectByExample(any(ScheduleSeatExample.class)))
+        when(bookingCustomMapper.selectScheduleSeatsForUpdate(any(), any()))
                 .thenReturn(List.of(occupiedSeat));
 
         assertThatThrownBy(() -> createBookingService.create(input))
@@ -184,7 +187,7 @@ class CreateBookingServiceTest {
     void create_succeedsWithValidInput() {
         CreateBookingServiceInput input = validInput();
 
-        when(scheduleSeatMapper.selectByExample(any(ScheduleSeatExample.class)))
+        when(bookingCustomMapper.selectScheduleSeatsForUpdate(any(), any()))
                 .thenReturn(List.of(availableSeat()));
 
         when(bookingMapper.insertSelective(any(Booking.class))).thenAnswer(invocation -> {
@@ -230,9 +233,8 @@ class CreateBookingServiceTest {
         seat1B.setScheduledSeatNo(2);
         seat1B.setSeatName("1B");
 
-        when(scheduleSeatMapper.selectByExample(any(ScheduleSeatExample.class)))
-                .thenReturn(List.of(seat1A))
-                .thenReturn(List.of(seat1B));
+        when(bookingCustomMapper.selectScheduleSeatsForUpdate(any(), any()))
+                .thenReturn(List.of(seat1A, seat1B));
 
         when(bookingMapper.insertSelective(any(Booking.class))).thenAnswer(invocation -> {
             Booking booking = invocation.getArgument(0);
@@ -245,6 +247,24 @@ class CreateBookingServiceTest {
         assertThat(output.getBookingId()).isEqualTo(200);
         verify(passengerDetailMapper, times(2)).insertSelective(any());
         verify(scheduleSeatMapper, times(2)).updateByPrimaryKeySelective(any());
+    }
+
+    @Test
+    @DisplayName("同じ座席を複数の搭乗者に指定した場合は例外が発生する")
+    void create_failsWhenSeatIsDuplicatedInRequest() {
+        CreateBookingRequestPassengerListInner secondPassenger = new CreateBookingRequestPassengerListInner()
+                .seat("1A")
+                .name("佐藤花子");
+        CreateBookingServiceInput input = CreateBookingServiceInput.builder()
+                .userId(1)
+                .scheduleId(10)
+                .totalPrice(300000)
+                .passengerList(List.of(passenger, secondPassenger))
+                .build();
+
+        assertThatThrownBy(() -> createBookingService.create(input))
+                .isInstanceOf(DuplicateException.class)
+                .hasMessage("同じ座席を複数の搭乗者に指定できません: 1A");
     }
 
     private CreateBookingServiceInput validInput() {

@@ -12,6 +12,7 @@ import airlineReservation.infra.entity.ScheduleSeat;
 import airlineReservation.infra.mapper.BookingMapper;
 import airlineReservation.infra.mapper.PassengerDetailMapper;
 import airlineReservation.infra.mapper.ScheduleSeatMapper;
+import airlineReservation.infra.mapper.customMapper.BookingCustomMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,9 @@ class DeleteBookingServiceTest {
     @Mock
     private ScheduleSeatMapper scheduleSeatMapper;
 
+    @Mock
+    private BookingCustomMapper bookingCustomMapper;
+
     @InjectMocks
     private DeleteBookingService deleteBookingService;
 
@@ -65,7 +69,7 @@ class DeleteBookingServiceTest {
                 .updatedBy(1)
                 .build();
 
-        when(bookingMapper.selectByPrimaryKey(999)).thenReturn(null);
+        when(bookingCustomMapper.selectByIdForUpdate(999)).thenReturn(null);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
                 .isInstanceOf(NotFoundException.class)
@@ -83,7 +87,7 @@ class DeleteBookingServiceTest {
         Booking deletedBooking = activeBooking();
         deletedBooking.setIsDeleted(true);
 
-        when(bookingMapper.selectByPrimaryKey(1)).thenReturn(deletedBooking);
+        when(bookingCustomMapper.selectByIdForUpdate(1)).thenReturn(deletedBooking);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
                 .isInstanceOf(NotFoundException.class)
@@ -101,7 +105,7 @@ class DeleteBookingServiceTest {
         Booking cancelledBooking = activeBooking();
         cancelledBooking.setStatus(Const.BOOKING_STATUS.CANCELLED);
 
-        when(bookingMapper.selectByPrimaryKey(1)).thenReturn(cancelledBooking);
+        when(bookingCustomMapper.selectByIdForUpdate(1)).thenReturn(cancelledBooking);
 
         assertThatThrownBy(() -> deleteBookingService.delete(input))
                 .isInstanceOf(InvalidInputValueException.class)
@@ -116,7 +120,7 @@ class DeleteBookingServiceTest {
                 .updatedBy(10)
                 .build();
 
-        when(bookingMapper.selectByPrimaryKey(1)).thenReturn(activeBooking());
+        when(bookingCustomMapper.selectByIdForUpdate(1)).thenReturn(activeBooking());
 
         PassengerDetail passenger = new PassengerDetail();
         passenger.setPassengerDetailId(100);
@@ -124,6 +128,8 @@ class DeleteBookingServiceTest {
 
         when(passengerDetailMapper.selectByExample(any(PassengerDetailExample.class)))
                 .thenReturn(List.of(passenger));
+        when(bookingCustomMapper.selectScheduleSeatsByIdsForUpdate(List.of(50)))
+                .thenReturn(List.of(new ScheduleSeat()));
 
         DeleteBookingServiceOutput output = deleteBookingService.delete(input);
 
@@ -148,7 +154,7 @@ class DeleteBookingServiceTest {
                 .updatedBy(10)
                 .build();
 
-        when(bookingMapper.selectByPrimaryKey(1)).thenReturn(activeBooking());
+        when(bookingCustomMapper.selectByIdForUpdate(1)).thenReturn(activeBooking());
         when(passengerDetailMapper.selectByExample(any(PassengerDetailExample.class)))
                 .thenReturn(List.of());
 

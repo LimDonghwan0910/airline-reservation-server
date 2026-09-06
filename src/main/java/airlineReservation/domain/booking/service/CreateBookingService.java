@@ -11,17 +11,21 @@ import airlineReservation.infra.dto.CreateBookingRequestPassengerListInner;
 import airlineReservation.infra.entity.Booking;
 import airlineReservation.infra.entity.PassengerDetail;
 import airlineReservation.infra.entity.ScheduleSeat;
-import airlineReservation.infra.entity.ScheduleSeatExample;
 import airlineReservation.infra.mapper.BookingMapper;
 import airlineReservation.infra.mapper.PassengerDetailMapper;
 import airlineReservation.infra.mapper.ScheduleSeatMapper;
+import airlineReservation.infra.mapper.customMapper.BookingCustomMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +34,15 @@ public class CreateBookingService {
     private final BookingMapper bookingMapper;
     private final PassengerDetailMapper passengerDetailMapper;
     private final ScheduleSeatMapper scheduleSeatMapper;
+    private final BookingCustomMapper bookingCustomMapper;
 
+    /**
+     * 予約を作成する。選択座席を行ロックしてから空席判定と占有更新を同一トランザクションで行う。
+     *
+     * @throws InvalidInputValueException 入力項目が誤っている場合
+     * @throws NotFoundException 指定座席が存在しない場合
+     * @throws DuplicateException 指定座席が重複している、または既に予約済みの場合
+     */
     @Transactional
     public CreateBookingServiceOutput create(CreateBookingServiceInput input) {
         validateInput(input);
@@ -93,9 +105,16 @@ public class CreateBookingService {
             throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "搭乗者情報を入力してください。");
         }
 
+        Set<String> selectedSeats = new HashSet<>();
         for (CreateBookingRequestPassengerListInner passenger : input.getPassengerList()) {
             if (passenger.getSeat() == null || passenger.getSeat().isBlank()) {
                 throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "座席を選択してください。");
+            }
+            if (!selectedSeats.add(passenger.getSeat())) {
+                throw new DuplicateException(
+                        ErrorCode.DUPLICATE_SEAT,
+                        "同じ座席を複数の搭乗者に指定できません: " + passenger.getSeat()
+                );
             }
             if (passenger.getName() == null || passenger.getName().isBlank()) {
                 throw new InvalidInputValueException(ErrorCode.INPUT_NOT_FOUND, "搭乗者名を入力してください。");
@@ -107,20 +126,22 @@ public class CreateBookingService {
             Integer scheduleId,
             List<CreateBookingRequestPassengerListInner> passengerList
     ) {
+        List<String> seatNames = passengerList.stream()
+                .map(CreateBookingRequestPassengerListInner::getSeat)
+                .toList();
+        List<ScheduleSeat> lockedSeats = bookingCustomMapper.selectScheduleSeatsForUpdate(scheduleId, seatNames);
+        Map<String, ScheduleSeat> lockedSeatByName = new HashMap<>();
+        for (ScheduleSeat lockedSeat : lockedSeats) {
+            lockedSeatByName.put(lockedSeat.getSeatName(), lockedSeat);
+        }
+
         List<ScheduleSeat> reservedSeats = new ArrayList<>();
-
         for (CreateBookingRequestPassengerListInner passenger : passengerList) {
-            ScheduleSeatExample example = new ScheduleSeatExample();
-            example.createCriteria()
-                    .andScheduleIdEqualTo(scheduleId)
-                    .andSeatNameEqualTo(passenger.getSeat());
-
-            List<ScheduleSeat> seats = scheduleSeatMapper.selectByExample(example);
-            if (seats.isEmpty()) {
+            ScheduleSeat scheduleSeat = lockedSeatByName.get(passenger.getSeat());
+            if (scheduleSeat == null) {
                 throw new NotFoundException(ErrorCode.SEAT_NOT_FOUND, "存在しない座席です: " + passenger.getSeat());
             }
 
-            ScheduleSeat scheduleSeat = seats.get(0);
             if (!Const.SEAT_STATUS.AVAILABLE.equals(scheduleSeat.getStatus())) {
                 throw new DuplicateException(
                         ErrorCode.DUPLICATE_SEAT,
