@@ -56,11 +56,17 @@
     <select id="selectBookingListForAdmin"
             resultType="airlineReservation.domain.booking.vo.SearchBookingVo">
         <include refid="searchBookingSelect"/>
-        <if test="userId != null">
-            AND b.user_id = #{userId}
+        <if test="userName != null and userName != ''">
+            AND u.user_name ILIKE '%' || #{userName} || '%'
         </if>
         <if test="aircraftId != null and aircraftId != ''">
             AND s.aircraft_id = #{aircraftId}
+        </if>
+        <if test="departureAirportId != null and departureAirportId != ''">
+            AND s.departure_airport_id = #{departureAirportId}
+        </if>
+        <if test="arrivalAirportId != null and arrivalAirportId != ''">
+            AND s.arrival_airport_id = #{arrivalAirportId}
         </if>
         <if test="departureDate != null">
             AND CAST(s.departure_datetime AS DATE) = #{departureDate}

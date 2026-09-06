@@ -51,8 +51,10 @@ public class SearchBookingService {
      */
     public SearchBookingServiceOutput searchByAdmin(SearchBookingByAdminServiceInput input) {
         List<SearchBookingVo> rows = searchBookingCustomMapper.selectBookingListForAdmin(
-                input.getUserId(),
+                input.getUserName(),
                 input.getAircraftId(),
+                input.getDepartureAirportId(),
+                input.getArrivalAirportId(),
                 input.getDepartureDate(),
                 input.getArrivalDate()
         );

@@ -20,14 +20,18 @@ import jakarta.annotation.Generated;
  * SearchBookingByAdminRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-30T17:47:13.211020+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-09-06T20:24:24.884517+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 public class SearchBookingByAdminRequest implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private Integer userId;
+  private String userName;
 
-  private Integer aircraftId;
+  private String aircraftId;
+
+  private String departureAirportId;
+
+  private String arrivalAirportId;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate departureDate;
@@ -35,27 +39,27 @@ public class SearchBookingByAdminRequest implements Serializable {
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
   private LocalDate arrivalDate;
 
-  public SearchBookingByAdminRequest userId(Integer userId) {
-    this.userId = userId;
+  public SearchBookingByAdminRequest userName(String userName) {
+    this.userName = userName;
     return this;
   }
 
   /**
-   * Get userId
-   * @return userId
+   * Get userName
+   * @return userName
   */
-  
-  @Schema(name = "user_id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("user_id")
-  public Integer getUserId() {
-    return userId;
+
+  @Schema(name = "userName", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userName")
+  public String getUserName() {
+    return userName;
   }
 
-  public void setUserId(Integer userId) {
-    this.userId = userId;
+  public void setUserName(String userName) {
+    this.userName = userName;
   }
 
-  public SearchBookingByAdminRequest aircraftId(Integer aircraftId) {
+  public SearchBookingByAdminRequest aircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
     return this;
   }
@@ -64,15 +68,55 @@ public class SearchBookingByAdminRequest implements Serializable {
    * Get aircraftId
    * @return aircraftId
   */
-  
+
   @Schema(name = "aircraftId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("aircraftId")
-  public Integer getAircraftId() {
+  public String getAircraftId() {
     return aircraftId;
   }
 
-  public void setAircraftId(Integer aircraftId) {
+  public void setAircraftId(String aircraftId) {
     this.aircraftId = aircraftId;
+  }
+
+  public SearchBookingByAdminRequest departureAirportId(String departureAirportId) {
+    this.departureAirportId = departureAirportId;
+    return this;
+  }
+
+  /**
+   * Get departureAirportId
+   * @return departureAirportId
+  */
+
+  @Schema(name = "departureAirportId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("departureAirportId")
+  public String getDepartureAirportId() {
+    return departureAirportId;
+  }
+
+  public void setDepartureAirportId(String departureAirportId) {
+    this.departureAirportId = departureAirportId;
+  }
+
+  public SearchBookingByAdminRequest arrivalAirportId(String arrivalAirportId) {
+    this.arrivalAirportId = arrivalAirportId;
+    return this;
+  }
+
+  /**
+   * Get arrivalAirportId
+   * @return arrivalAirportId
+  */
+
+  @Schema(name = "arrivalAirportId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("arrivalAirportId")
+  public String getArrivalAirportId() {
+    return arrivalAirportId;
+  }
+
+  public void setArrivalAirportId(String arrivalAirportId) {
+    this.arrivalAirportId = arrivalAirportId;
   }
 
   public SearchBookingByAdminRequest departureDate(LocalDate departureDate) {
@@ -124,23 +168,27 @@ public class SearchBookingByAdminRequest implements Serializable {
       return false;
     }
     SearchBookingByAdminRequest searchBookingByAdminRequest = (SearchBookingByAdminRequest) o;
-    return Objects.equals(this.userId, searchBookingByAdminRequest.userId) &&
+    return Objects.equals(this.userName, searchBookingByAdminRequest.userName) &&
         Objects.equals(this.aircraftId, searchBookingByAdminRequest.aircraftId) &&
+        Objects.equals(this.departureAirportId, searchBookingByAdminRequest.departureAirportId) &&
+        Objects.equals(this.arrivalAirportId, searchBookingByAdminRequest.arrivalAirportId) &&
         Objects.equals(this.departureDate, searchBookingByAdminRequest.departureDate) &&
         Objects.equals(this.arrivalDate, searchBookingByAdminRequest.arrivalDate);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, aircraftId, departureDate, arrivalDate);
+    return Objects.hash(userName, aircraftId, departureAirportId, arrivalAirportId, departureDate, arrivalDate);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class SearchBookingByAdminRequest {\n");
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    userName: ").append(toIndentedString(userName)).append("\n");
     sb.append("    aircraftId: ").append(toIndentedString(aircraftId)).append("\n");
+    sb.append("    departureAirportId: ").append(toIndentedString(departureAirportId)).append("\n");
+    sb.append("    arrivalAirportId: ").append(toIndentedString(arrivalAirportId)).append("\n");
     sb.append("    departureDate: ").append(toIndentedString(departureDate)).append("\n");
     sb.append("    arrivalDate: ").append(toIndentedString(arrivalDate)).append("\n");
     sb.append("}");
@@ -158,4 +206,3 @@ public class SearchBookingByAdminRequest implements Serializable {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

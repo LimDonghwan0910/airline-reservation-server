@@ -447,16 +447,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/v1/admin/searchBooking:
+  /api/v1/admin/bookings/search:
     get:
       summary: 管理者予約検索API
       operationId: admin/searchBooking
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SearchBookingByAdminRequest'
+      parameters:
+        - name: userName
+          in: query
+          schema:
+            type: string
+        - name: aircraftId
+          in: query
+          schema:
+            type: string
+        - name: departureAirportId
+          in: query
+          schema:
+            type: string
+        - name: arrivalAirportId
+          in: query
+          schema:
+            type: string
+        - name: departureDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: arrivalDate
+          in: query
+          schema:
+            type: string
+            format: date
       responses:
         '200':
           description: 管理者予約検索成功
@@ -951,10 +972,14 @@ components:
     SearchBookingByAdminRequest:
       type: object
       properties:
-        user_id:
-          type: integer
+        userName:
+          type: string
         aircraftId:
-          type: integer
+          type: string
+        departureAirportId:
+          type: string
+        arrivalAirportId:
+          type: string
         departureDate:
           type: string
           format: date

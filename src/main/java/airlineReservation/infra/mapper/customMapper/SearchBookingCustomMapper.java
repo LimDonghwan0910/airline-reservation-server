@@ -29,8 +29,10 @@ public interface SearchBookingCustomMapper {
      * すべてのパラメータは任意 — null の場合、該当条件は適用しない
      */
     List<SearchBookingVo> selectBookingListForAdmin(
-            @Param("userId") Integer userId,
+            @Param("userName") String userName,
             @Param("aircraftId") String aircraftId,
+            @Param("departureAirportId") String departureAirportId,
+            @Param("arrivalAirportId") String arrivalAirportId,
             @Param("departureDate") LocalDate departureDate,
             @Param("arrivalDate") LocalDate arrivalDate
     );

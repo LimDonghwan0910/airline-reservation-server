@@ -13,6 +13,7 @@ import airlineReservation.infra.dto.CreateBookingRequest;
 import airlineReservation.infra.dto.CreateBookingResponse;
 import airlineReservation.infra.dto.CreateScheduleTemplateRequest;
 import airlineReservation.infra.dto.CreateScheduleTemplateResponse;
+import org.springframework.format.annotation.DateTimeFormat;
 import airlineReservation.infra.dto.DeleteAccountResponse;
 import airlineReservation.infra.dto.DeleteAircraftRequest;
 import airlineReservation.infra.dto.DeleteAircraftResponse;
@@ -29,11 +30,11 @@ import airlineReservation.infra.dto.GetFlightsRequest;
 import airlineReservation.infra.dto.GetFlightsResponse;
 import airlineReservation.infra.dto.GetSeatsRequest;
 import airlineReservation.infra.dto.GetSeatsResponse;
+import java.time.LocalDate;
 import airlineReservation.infra.dto.LoginRequest;
 import airlineReservation.infra.dto.LoginResponse;
 import airlineReservation.infra.dto.SearchAircraftRequest;
 import airlineReservation.infra.dto.SearchAircraftResponse;
-import airlineReservation.infra.dto.SearchBookingByAdminRequest;
 import airlineReservation.infra.dto.SearchBookingRequest;
 import airlineReservation.infra.dto.SearchBookingResponse;
 import airlineReservation.infra.dto.SearchScheduleRequest;
@@ -68,7 +69,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-30T17:47:13.211020+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-09-06T20:24:24.884517+09:00[Asia/Tokyo]", comments = "Generator version: 7.4.0")
 @Validated
 @Tag(name = "api", description = "the api API")
 public interface ApiApi {
@@ -78,9 +79,14 @@ public interface ApiApi {
     }
 
     /**
-     * GET /api/v1/admin/searchBooking : 管理者予約検索API
+     * GET /api/v1/admin/bookings/search : 管理者予約検索API
      *
-     * @param searchBookingByAdminRequest  (required)
+     * @param userName  (optional)
+     * @param aircraftId  (optional)
+     * @param departureAirportId  (optional)
+     * @param arrivalAirportId  (optional)
+     * @param departureDate  (optional)
+     * @param arrivalDate  (optional)
      * @return 管理者予約検索成功 (status code 200)
      *         or 不正なリクエスト（パラメータ欠落、バリデーション失敗など） (status code 400)
      *         or サーバー内部エラー (status code 500)
@@ -102,13 +108,17 @@ public interface ApiApi {
     )
     @RequestMapping(
         method = RequestMethod.GET,
-        value = "/api/v1/admin/searchBooking",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+        value = "/api/v1/admin/bookings/search",
+        produces = { "application/json" }
     )
     
     default ResponseEntity<SearchBookingResponse> adminSearchBooking(
-        @Parameter(name = "SearchBookingByAdminRequest", description = "", required = true) @Valid @RequestBody SearchBookingByAdminRequest searchBookingByAdminRequest
+        @Parameter(name = "userName", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userName", required = false) Optional<String> userName,
+        @Parameter(name = "aircraftId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "aircraftId", required = false) Optional<String> aircraftId,
+        @Parameter(name = "departureAirportId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "departureAirportId", required = false) Optional<String> departureAirportId,
+        @Parameter(name = "arrivalAirportId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "arrivalAirportId", required = false) Optional<String> arrivalAirportId,
+        @Parameter(name = "departureDate", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "departureDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> departureDate,
+        @Parameter(name = "arrivalDate", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "arrivalDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> arrivalDate
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

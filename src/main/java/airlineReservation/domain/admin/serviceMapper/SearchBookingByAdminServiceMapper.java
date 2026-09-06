@@ -19,13 +19,11 @@ public class SearchBookingByAdminServiceMapper {
             return SearchBookingByAdminServiceInput.builder().build();
         }
 
-        String aircraftId = request.getAircraftId() != null
-                ? String.valueOf(request.getAircraftId())
-                : null;
-
         return SearchBookingByAdminServiceInput.builder()
-                .userId(request.getUserId())
-                .aircraftId(aircraftId)
+                .userName(request.getUserName())
+                .aircraftId(request.getAircraftId())
+                .departureAirportId(request.getDepartureAirportId())
+                .arrivalAirportId(request.getArrivalAirportId())
                 .departureDate(request.getDepartureDate())
                 .arrivalDate(request.getArrivalDate())
                 .build();

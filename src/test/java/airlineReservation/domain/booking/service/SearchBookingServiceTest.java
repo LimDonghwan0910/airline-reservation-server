@@ -124,19 +124,23 @@ class SearchBookingServiceTest {
         LocalDate arrivalDate = LocalDate.of(2026, 8, 2);
 
         SearchBookingByAdminServiceInput input = SearchBookingByAdminServiceInput.builder()
-                .userId(3)
+                .userName("テスト")
                 .aircraftId("B737")
+                .departureAirportId("GMP")
+                .arrivalAirportId("CJU")
                 .departureDate(departureDate)
                 .arrivalDate(arrivalDate)
                 .build();
 
-        when(searchBookingCustomMapper.selectBookingListForAdmin(3, "B737", departureDate, arrivalDate))
+        when(searchBookingCustomMapper.selectBookingListForAdmin(
+                "テスト", "B737", "GMP", "CJU", departureDate, arrivalDate))
                 .thenReturn(List.of());
 
         SearchBookingServiceOutput output = searchBookingService.searchByAdmin(input);
 
         assertThat(output.getBookingList()).isEmpty();
-        verify(searchBookingCustomMapper).selectBookingListForAdmin(3, "B737", departureDate, arrivalDate);
+        verify(searchBookingCustomMapper).selectBookingListForAdmin(
+                "テスト", "B737", "GMP", "CJU", departureDate, arrivalDate);
     }
 
     private SearchBookingVo bookingRow(
