@@ -130,6 +130,76 @@ class BookingConcurrencyIntegrationTest {
                 .isTrue();
     }
 
+    @Test
+    @DisplayName("予約取消と同一座席の新規予約が同時に実行されても、座席状態は有効予約と一致する")
+    void createAndCancel_keepSeatStateConsistentUnderContention() throws Exception {
+        jdbcTemplate.update("""
+                INSERT INTO schedule_seats (schedule_id, seat_name, status, created_by, created_at, updated_by, updated_at)
+                VALUES (?, '1A', 'AVAILABLE', 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP)
+                """, SCHEDULE_ID);
+        createBookingService.create(CreateBookingServiceInput.builder()
+                .userId(1)
+                .scheduleId(SCHEDULE_ID)
+                .totalPrice(100_000)
+                .passengerList(List.of(new CreateBookingRequestPassengerListInner().seat("1A").name("original")))
+                .build());
+        Integer originalBookingId = jdbcTemplate.queryForObject(
+                "SELECT booking_id FROM bookings WHERE user_id = 1",
+                Integer.class
+        );
+
+        List<Throwable> results = runTwoConcurrently(
+                () -> {
+                    try {
+                        deleteBookingService.delete(DeleteBookingServiceInput.builder()
+                                .bookingId(originalBookingId)
+                                .updatedBy(1)
+                                .build());
+                        return null;
+                    } catch (Throwable throwable) {
+                        return throwable;
+                    }
+                },
+                () -> {
+                    try {
+                        createBookingService.create(CreateBookingServiceInput.builder()
+                                .userId(2)
+                                .scheduleId(SCHEDULE_ID)
+                                .totalPrice(100_000)
+                                .passengerList(List.of(new CreateBookingRequestPassengerListInner().seat("1A").name("new")))
+                                .build());
+                        return null;
+                    } catch (Throwable throwable) {
+                        return throwable;
+                    }
+                }
+        );
+
+        assertThat(results.get(0)).isNull();
+        assertThat(results.get(1) == null || results.get(1) instanceof DuplicateException).isTrue();
+        assertThat(jdbcTemplate.queryForObject(
+                "SELECT status FROM bookings WHERE booking_id = ?",
+                String.class,
+                originalBookingId
+        )).isEqualTo(Const.BOOKING_STATUS.CANCELLED);
+
+        Integer activeBookingCount = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM bookings WHERE is_deleted = FALSE",
+                Integer.class
+        );
+        String seatStatus = jdbcTemplate.queryForObject(
+                "SELECT status FROM schedule_seats WHERE schedule_id = ? AND seat_name = '1A'",
+                String.class,
+                SCHEDULE_ID
+        );
+        if (activeBookingCount == 1) {
+            assertThat(seatStatus).isEqualTo(Const.SEAT_STATUS.OCCUPIED);
+        } else {
+            assertThat(activeBookingCount).isZero();
+            assertThat(seatStatus).isEqualTo(Const.SEAT_STATUS.AVAILABLE);
+        }
+    }
+
     private List<Throwable> runConcurrently(Callable<Throwable> action) throws Exception {
         ExecutorService executor = Executors.newFixedThreadPool(CONCURRENT_REQUESTS);
         CountDownLatch ready = new CountDownLatch(CONCURRENT_REQUESTS);
@@ -143,6 +213,40 @@ class BookingConcurrencyIntegrationTest {
                     return action.call();
                 }));
             }
+            assertThat(ready.await(10, TimeUnit.SECONDS)).isTrue();
+            start.countDown();
+
+            List<Throwable> results = new ArrayList<>();
+            for (Future<Throwable> future : futures) {
+                results.add(future.get(15, TimeUnit.SECONDS));
+            }
+            return results;
+        } finally {
+            executor.shutdownNow();
+            assertThat(executor.awaitTermination(10, TimeUnit.SECONDS)).isTrue();
+        }
+    }
+
+    private List<Throwable> runTwoConcurrently(
+            Callable<Throwable> firstAction,
+            Callable<Throwable> secondAction
+    ) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        CountDownLatch ready = new CountDownLatch(2);
+        CountDownLatch start = new CountDownLatch(1);
+        try {
+            List<Future<Throwable>> futures = List.of(
+                    executor.submit(() -> {
+                        ready.countDown();
+                        assertThat(start.await(10, TimeUnit.SECONDS)).isTrue();
+                        return firstAction.call();
+                    }),
+                    executor.submit(() -> {
+                        ready.countDown();
+                        assertThat(start.await(10, TimeUnit.SECONDS)).isTrue();
+                        return secondAction.call();
+                    })
+            );
             assertThat(ready.await(10, TimeUnit.SECONDS)).isTrue();
             start.countDown();
 
